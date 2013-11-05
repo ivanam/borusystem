@@ -1,0 +1,86 @@
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>{% block titulo %}{% endblock %}</title>
+<link rel="stylesheet" href="{{STATIC_URL}}css/ui-lightness/jquery-ui-1.10.3.custom.css"  type="text/css" media="all" />
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-ui-1.10.3.custom.min.js"></script>
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/bootstrap.js"></script>
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/funciones.js"></script>
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/twitter-bootstrap-hover-dropdown.min.js"></script>
+<link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap.css"  type="text/css" media="all" />
+<link rel="stylesheet" href="{{STATIC_URL}}css/boru.css"  type="text/css" media="all" />
+</head>
+<body>
+<div id="contenedor">
+    <div id="cabecera" class="cont_cabecera"><img src="{{STATIC_URL}}img/boru_logo2.png" width="120"></div>
+    <div id="cuerpo">
+        <div id="cuerpo_up"></div>
+        <div id="cuerpo_medio">
+
+            <!--inicio de nav bar //-->
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="usuario_log_fix">
+                        <div class="icon-user"></div>
+                        <div class="label label-inverse" id="nombre_usuario">{{user}}</div>
+                    </div>
+                    <ul class="nav">
+                        <li><a href="menu_mozo.html">Menu Mozo</a></li>
+                        <li class=""><a href="#">Seleccionar Mesas</a></li>
+                        <li><a href="#">Seleccionar Menu</a></li>
+                        <li><a href="#">Finalizar Menu</a></li>
+                    </ul>
+                    <div class="cerrar_sesion_fix" id="cerrar_sescion_actual">
+                        <a href="{% url 'logout' %}" target="_self">
+                            <div class="label label-inverse">
+                                &nbsp;&nbsp;Cerrar Sesion&nbsp;&nbsp;
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- fin de nav bar //-->
+
+            <!-- inicio contenedor principal izq//-->
+            <div class="contenedor_principal_izq">
+                {% if perms.Administrador.is_admin %}
+                <div class="mesas_seleccionadas">
+                    <div class="label label-inverse mesa_seleccionada_item">Accesos Directos</div>
+                    <div class="mesas">
+                        <!-- inicio link admin //-->
+                        <div class="label label-success mesa_seleccionada_item mesa_seleccionada_item_mozo">
+                            <div class="contenedor_texto_link"><a href="{% url 'administrador' %}" target="_self">Panel
+                                de Adm</a></div>
+                        </div>
+                        <div class="label label-success mesa_seleccionada_item mesa_seleccionada_item_mozo">
+                            <div class="contenedor_texto_link"><a href="{% url 'cajero' %}" target="_self">Panel de
+                                Cajero</a></div>
+                        </div>
+                        <!-- fin link admin //-->
+                    </div>
+                </div>
+                {% endif %}
+                <!-- div puesto solo para mantener el ancho del contenedor izq//-->
+                <div class="mesas_seleccionadas cont_" style="visibility:hidden;">&nbsp</div>
+            </div>
+            <!-- fin contenedor principal izq//-->
+
+            <!-- inicio contenedor principal centro//-->
+            <div class="contenedor_principal_centro">
+
+                <!-- INICIO CONTENIDO WEB //-->
+                {% block contenido %}{% endblock %}
+                <!-- FIN CONTENIDO WEB //-->
+
+                <div class="salto_linea"></div>
+            </div>
+            <!-- fin contenedor principal centro//-->
+        </div>
+        <!-- fin contenedor cuerpo medio //-->
+        <div id="cuerpo_down"></div>
+    </div>
+</div>
+{% block script %}{% endblock %}
+</body>
+</html>

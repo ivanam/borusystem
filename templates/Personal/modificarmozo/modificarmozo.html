@@ -1,0 +1,160 @@
+{% extends "base_administrador.html" %}
+{% block titulo %}Boru - Modificar Mozo{% endblock %}
+{% block contenido %}
+<div class="izquierda">
+    <div class="listado_modificar_mozos cont_redondeado">
+        <div class="label label-inverse titulo_menu" id="listado_mozos">Listado de Mozos</div>
+        <!-- inicio listado de mozos //-->
+        {% for m in mozos %}
+        <div class="listado_modificar_mozo_item {% if not m.is_active %}inactivo{% endif %}">
+            <div class="listado_mozo_item_campo">
+                <img src="{{STATIC_URL}}img/conf/{% if m.is_active %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}" urldel="{% url 'modificarmozo_id_del' m.id %}" estado="{{m.is_active}}"  class="eliminar_mozo" nombre="{{m.first_name}} {{m.last_name}}" title="{% if not m.is_active %}Acivar{% else %}Eliminar{% endif %} mozo: {{m.first_name|capfirst}} {{m.last_name|capfirst}}">
+            </div>
+            <div class="cargar_modificar_mozo" href="{% url 'modificarmozo_id' m.id %}">
+                <div class="listado_mozo_item_campo" title="Numero de Documento: {{m.numeroDoc}}">{{m.numeroDoc}}</div>
+                <div class="listado_mozo_item_campo" title="Apellido: {{m.last_name|capfirst}}">{{m.last_name|capfirst|truncatechars:9}}</div>
+                <div class="listado_mozo_item_campo" title="Nombre: {{m.first_name|capfirst}}">{{m.first_name|capfirst|truncatechars:10}}</div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- fin listado de mozos//-->
+    </div>
+</div>
+
+<div class="derecha">
+    <div id="con_menu_mozo" class="cont_redondeado contenedor_principal_big">
+        <div class="label label-inverse titulo_menu">Modificar Mozos</div>
+        <br>
+
+        <div class="salto_linea"></div>
+        <div id="mesas_libres" class="bloque_mesas">
+            <div class="salto_linea"></div>
+            <!--Aca inicio contenido//-->
+            <form action="" method="post" name="add_mozo" id="id_add_mozo">
+                {{ formulario.non_field_errors }}
+
+                <!--<input type="hidden" id="id_id" name="id" value="">//-->
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg">*</span> Usuario</div>
+                    <div class="contenedor_input">
+                        {{ formulario.username }}
+                        <div class="form_error_msg">{{ formulario.username.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg">*</span> Contrase&ntilde;a</div>
+                    <div class="contenedor_input">
+                        {{ formulario.password }}
+                        <div class="form_error_msg">{{ formulario.password.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> Nombre</div>
+                    <div class="contenedor_input">
+                        {{ formulario.first_name }}
+                        <div class="form_error_msg">{{ formulario.first_name.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> Apellido</div>
+                    <div class="contenedor_input">
+                        {{ formulario.last_name }}
+                        <div class="form_error_msg">{{ formulario.last_name.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> E-mail</div>
+                    <div class="contenedor_input">
+                        {{ formulario.email }}
+                        <div class="form_error_msg">{{ formulario.email.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> Tipo Documento</div>
+                    <div class="contenedor_input">
+                        {{ formulario.tipoDoc}}
+                        <div class="form_error_msg">{{ formulario.tipoDoc.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> Numero Documento</div>
+                    <div class="contenedor_input">
+                        {{ formulario.numeroDoc }}
+                        <div class="form_error_msg">{{ formulario.numeroDoc.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> Telefono</div>
+                    <div class="contenedor_input">
+                        {{ formulario.telefono }}
+                        <div class="form_error_msg">{{ formulario.telefono.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> Direccion</div>
+                    <div class="contenedor_input">
+                        {{ formulario.direccion }}
+                        <div class="form_error_msg">{{ formulario.direccion.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> Turno</div>
+                    <div class="contenedor_input">
+                        {{ formulario.turno }}
+                        <div class="form_error_msg">{{ formulario.turno.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> Activo</div>
+                    <div class="contenedor_input">
+                        {{ formulario.is_active }}
+                        <div class="form_error_msg">{{ formulario.is_active.errors|striptags}}</div>
+                    </div>
+                </div>
+                {% csrf_token %}
+                <div class="salto_linea"></div>
+                <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Mozo"
+                       class="btn btn-large btn-primary">
+            </form>
+            <!-- Aca fin de contenido//-->
+        </div>
+        <!-- fin bloke de mesas//-->
+        <div class="salto_linea"></div>
+        <span class="form_error_msg">* Campos Obligatorios</span>
+    </div>
+    <!-- fin contenedor principal//-->
+</div>
+<!-- derecha fin//-->
+{% endblock %}
+
+{% block script %}
+<script>
+
+$(document).ready(function(){
+
+	 $(".cargar_modificar_mozo").each(function(i){
+	 	$(this).css("cursor","pointer");
+			$(this).click(function(event){
+				var uri=$(this).attr("href");
+				$(location).attr('href',uri);
+			});
+	 });
+
+	 $(".eliminar_mozo").each(function(i){
+	 	$(this).css("cursor","pointer");
+
+			$(this).click(function(event){
+				var mozo = $(this).attr("nombre");
+				var estado = $(this).attr("estado");
+				var msg = (estado == "True")?"Usted desea eliminar al mozo ":"Usted desea activar al mozo ";
+                if( confirm(msg+mozo+"?") ){
+                   $(location).attr('href', $(this).attr("urldel") );
+                }
+			});
+	 });
+
+	$('.dropdown-toggle').dropdownHover(options);
+
+});
+</script>
+{% endblock %}

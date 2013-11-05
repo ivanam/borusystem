@@ -1,0 +1,121 @@
+{% extends "base_administrador.html" %}
+{% block titulo %}Boru - Alta Menu del Día{% endblock %}
+{% block contenido %}
+
+<div class="izquierda">
+    <div class="listado_modificar_mozos cont_redondeado">
+        <div class="label label-inverse titulo_menu" id="listado_mozos">Listado de Platos</div>
+        <!-- inicio listado de mozos //-->
+        {% for p in Plato %}
+        <div class="listado_modificar_mozo_item">
+            <div class="cargar_modificar_mozo">
+                <div class="listado_mozo_item_campo campo_texto_01"  title="{{p.nombre}}">{{p.nombre}}</div>
+                <div class="listado_mozo_item_campo campo_texto_01" title="{{p.precio}}">{{p.precio}}</div>
+                <div class="listado_mozo_item_campo campo campo_texto_01" title="{{p.stock}}">{{p.stock}}</div>
+            </div>
+            <div class="campo_texto_01">
+                <input type="checkbox" name="chkId" class="check_eliminar_mozo" value="{{m.id}}">
+            </div>
+        </div>
+        {% endfor %}
+        <!-- fin listado de mozos//-->
+    </div>
+</div>
+<div class="derecha">
+<div id="con_menu_mozo" class="cont_redondeado contenedor_principal_big">
+    <div class="label label-inverse titulo_menu">Alta Menu del Día</div>
+    <br>
+
+    <div class="salto_linea"></div>
+    <div id="mesas_libres" class="bloque_mesas">
+        <div class="salto_linea"></div>
+
+        <!--Aca inicio contenido//-->
+        <form action="" method="post" name="add_menu_diao" id="id_add_menu_dia">
+            {{ formulario.non_field_errors }}
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Nombre</div>
+                <div class="contenedor_input">
+                    {{ formulario.nombre }}
+                    <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
+                </div>
+            </div>
+
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg"></span> Precio</div>
+                <div class="contenedor_input">
+                    {{ formulario.precio }}
+                    <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg"></span> Stock</div>
+                <div class="contenedor_input">
+                    {{ formulario.stock }}
+                    <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
+                </div>
+            </div>
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg"></span> Descripcion</div>
+                <div class="contenedor_input">
+                    {{ formulario.descripcion}}
+                    <div class="form_error_msg">{{ formulario.descripcion.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg"></span> Fecha Inicio</div>
+                <div class="contenedor_input">
+                    {{ formulario.fecha_Inicio }}
+                    <div class="form_error_msg">{{ formulario.numeroDoc.errors|striptags }}</div>
+                </div>
+            </div>
+            {% csrf_token %}
+            <div class="salto_linea"></div>
+            <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Alta Menu Dia"
+                   class="btn btn-large btn-primary">
+
+        </form>
+        <!-- Aca fin de contenido//-->
+
+    </div>
+    <!-- fin bloke de mesas//-->
+    <div class="salto_linea"></div>
+    <span class="form_error_msg">* Campos Obligatorios</span>
+</div><!-- fin contenedor principal//-->
+</div>
+{% endblock %}
+{% block script %}
+<script>
+// Traducción al español
+$(function($){
+    $.datepicker.regional['es'] = {
+        closeText: 'Cerrar',
+        prevText: '<Ant',
+        nextText: 'Sig>',
+        currentText: 'Hoy',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        weekHeader: 'Sm',
+        dateFormat: 'dd/mm/yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.setDefaults($.datepicker.regional['es']);
+});
+
+$(document).ready(function(){
+    $("#id_fecha_Inicio").attr("readonly",true);
+	$("#id_fecha_Inicio").datepicker();
+	$('.dropdown-toggle').dropdownHover(options);
+});
+</script>
+{% endblock %}

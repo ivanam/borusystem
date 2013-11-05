@@ -1,0 +1,47 @@
+{% extends "base_mozo.html" %}
+{% block titulo %}Boru - Mozo{% endblock %}
+{% block contenido %}
+	  <!-- inicio contenedor principal //-->
+	  <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
+        <div class="label label-inverse titulo_menu">Menu Mozo</div>
+        <br>
+        <div class="btn-group btn-group-vertical">
+          <button class="btn btn-info btn-large btn_menu_mozo" id="crear_comanda">Crear Comanda</button>
+          <button class="btn btn-warning btn-large btn_menu_mozo" id="mis_comandas_pedidos">Mis Comandas/Pedidos</button>
+        </div>
+      </div>
+	  <!-- fin contenedor principal //-->
+
+
+<!-- Modal -->
+<div id="poputComensales" class="modalMozo modal hide fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel" class="modal-titulo">Ingresar Comensales</h3>
+    </div>
+    <div class="modal-body">
+
+
+            Ingresar Comensales
+            <input name="numeroComensales" id="comensales" type="text" value="">
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Aceptar</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    </div>
+</div>
+<!-- Fin Modal -->
+
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+    $("#crear_comanda").click(function(event){
+        $('#poputComensales').modal("show");
+    });
+});
+</script>
+{% endblock %}

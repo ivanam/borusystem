@@ -1,0 +1,28 @@
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT, show_indexes=True)
+
+
+
+para indicarle a django que una pagina necesita que el usuario este logueado,
+en la vista de la pagina agregamos lo siguiente:
+
+from django.contrib.auth.decorators import login_required
+
+@login_required()
+def home(request):
+    return render_to_response('home.html', {'user': request.user}, context_instance=RequestContext(request))
+
+
+si la vista es una clase
+
+esto lo importamos
+from django.utils.decorators import method_decorator 
+
+
+y agregamos a la vista esto:
+@method_decorator(login_required)
+	def dispatch(self, *args, **kwargs):
+		return super(altabebida,self).dispatch(*args,**kwargs)

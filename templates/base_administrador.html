@@ -1,0 +1,245 @@
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>{% block titulo %}{% endblock %}</title>
+<link rel="stylesheet" href="{{STATIC_URL}}css/ui-lightness/jquery-ui-1.10.3.custom.css"  type="text/css" media="all" />
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-ui-1.10.3.custom.min.js"></script>
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/bootstrap.js"></script>
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/funciones.js"></script>
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/twitter-bootstrap-hover-dropdown.min.js"></script>
+<link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap.css"  type="text/css" media="all" />
+<link rel="stylesheet" href="{{STATIC_URL}}css/boru.css"  type="text/css" media="all" />
+</head>
+<body>
+<div id="contenedor">
+ 
+  <div id="cabecera" class="cont_cabecera_adm nombreSeccion">
+      <a href="{% url 'administrador' %}"><img src="{{STATIC_URL}}img/boru_logo2.png" width="120"></a>
+  </div>
+  
+  <div id="cuerpo">
+  <!-- inicio del contenido de la pagina -->
+      
+	  <!--inicio de nav bar //-->
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="usuario_log_fix">
+            <div class="icon-user"></div>
+            <div class="label label-inverse" id="nombre_usuario">{{user}}</div>
+          </div>
+          <ul class="nav">
+          
+		    <!-- menu mozos //-->
+		    <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+					Mozos <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="{% url 'altamozo' %}">Alta Mozos</a></li>
+					<li><a href="{% url 'modificarmozo' %}">Modificar Mozos</a></li>
+					<li><a href="{% url 'eliminarmozo' %}">Eliminar Mozos</a></li>
+				</ul>
+			</li>
+			<!-- fin menu mozos //-->
+		    
+			
+			
+		    <!-- menu mesa //-->
+		    <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+					Mesas <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="{% url 'altamesa' %}">Alta Mesa</a></li>
+					<li><a href="{% url 'modificarmesa' %}">Modificar Mesa</a></li>
+					<!--<li><a href="adm_mesa_eliminar.html">Eliminar Mesa</a></li>//-->
+					<div class="divider"></div>
+					<li><a href="adm_mesa_addtipo.html">Crear tipo de Mesa</a></li>
+					<div class="divider"></div>
+					<li><a href="adm_mesa_cambiar_sector.html">Cambiar Mesa de Sector</a></li>
+				</ul>
+			</li>
+			<!-- fin menu mesa //-->
+			
+		    <!-- menu sector //-->
+		    <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+					Sectores <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+					<li><a href="{% url 'altasector' %}">Alta Sector</a></li>
+					<li><a href="{% url 'modificarsector' %}">Modificar Sector</a></li>
+					<!--<li><a href="adm_sector_eliminar.html">Eliminar Sector</a></li>//-->
+				</ul>
+			</li>
+			<!-- fin menu sector //-->
+			
+
+		    <!-- menu productos //-->
+		    <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+					Productos <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+				
+					<li><a href="{% url 'altabebida' %}">Alta Bebida</a></li>
+					<li><a href="adm_productos_bebida_modificar.html">Modificar Bebida</a></li>
+					<li><a href="adm_productos_bebida_eliminar.html">Eliminar Bebida</a></li>
+					<div class="divider"></div>
+					<li><a href="adm_productos_bebida_addpromocion.html">Poner Bebida en Promocion</a></li>
+					<li><a href="adm_productos_bebida_removepromocion.html">Sacar Bebida de Promocion</a></li>
+					
+					<div class="divider"></div>
+					
+					<li><a href="{% url 'altaplato' %}">Alta Plato</a></li>
+					<li><a href="adm_productos_plato_modificar.html">Modificar Plato</a></li>
+					<li><a href="adm_productos_plato_eliminar.html">Eliminar Plato</a></li>
+					<div class="divider"></div>
+					<li><a href="adm_productos_plato_addpromocion.html">Poner Plato en Promocion</a></li>
+					<li><a href="adm_productos_plato_removepromocion.html">Sacar Plato de Promocion</a></li>
+					
+				</ul>
+			</li>
+			<!-- fin menu productos //-->
+			
+            
+		    <!-- menu menues //-->
+		    <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+					Menues <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+				
+					<li><a href="{% url 'altamenudia' %}">Alta Menu del Dia</a></li>
+					<li><a href="adm_menu_dia_modificar.html">Modificar Menu del Dia</a></li>
+					<li><a href="adm_menu_dia_eliminar.html">Eliminar Menu del Dia</a></li>
+					<div class="divider"></div>
+					
+					<li><a href="adm_menu_ejecutivo.html">Alta Menu Ejecutivo</a></li>
+					<li><a href="adm_menu_ejecutivo_modificar.html">Modificar Menu Ejecutivo</a></li>
+					<li><a href="adm_menu_ejecutivo_eliminar.html">Eliminar Menu Ejecutivo</a></li>
+					
+				</ul>
+			</li>
+			<!-- fin menu menues //-->
+			
+            <!-- menu carta //-->
+		    <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+					Carta <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+				    <li><a href="{% url 'altacarta' %}">Alta Carta</a></li>
+					<li><a href="{% url 'altaseccion' %}">Crear Seccion Carta</a></li>
+					<li><a href="adm_carta_modificar.html">Modificar Seccion Carta</a></li>
+					<li><a href="adm_carta_eliminar.html">Eliminar Seccion Carta</a></li>
+					<div class="divider"></div>
+					
+					<li><a href="adm_carta_add_producto.html">Agregar Productos a Seccion Carta</a></li>
+					<li><a href="adm_carta_remove_producto.html">Eliminar Productos de Seccion Carta</a></li>
+					
+					
+				</ul>
+			</li>
+			<!-- fin menu carta //-->
+			
+            <!-- menu pretickets //-->
+		    <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+					Pretickets <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+				
+					<li><a href="adm_pretickets_modificar_por_reclamo.html">Modificar Preticets por Reclamo</a></li>			
+					
+				</ul>
+			</li>
+			<!-- fin menu pretickets //-->
+			
+			
+            <!-- menu stock //-->
+		    <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+					Stock <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+				
+					<li><a href="adm_stock_masmenos.html">Incrementar/Decrementar Stock</a></li>			
+					
+				</ul>
+			</li>
+			<!-- fin menu pretickets //-->
+			
+			
+            <!-- menu clientes //-->
+		    <li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+					Clientes <b class="caret"></b>
+				</a>
+				<ul class="dropdown-menu">
+				
+					<li><a href="adm_clientes.html">Alta Clientes</a></li>
+					<li><a href="adm_clientes_modificar.html">Modificar Clientes</a></li>
+					<li><a href="adm_clientes_eliminar.html">Eliminar Clientes</a></li>
+				</ul>
+			</li>
+			<!-- fin menu clientes //-->
+			
+          
+		  </ul>
+          <div class="cerrar_sesion_fix" id="cerrar_sescion_actual">
+            <a href="{% url 'logout' %}" target="_self">
+            	<div class="label label-inverse">
+            		&nbsp;&nbsp;Cerrar Sesion&nbsp;&nbsp;
+            	</div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- fin de nav bar //-->
+	  
+	  <!-- inicio contenedor principal izq//-->
+	  <div class="contenedor_principal_izq">
+		  <div class="mesas_seleccionadas">
+			<div class="label label-inverse mesa_seleccionada_item">Accesos Directos</div>
+			<div class="mesas">
+			  <!-- inicio mesas selecionadas //-->
+			  <div class="label label-success mesa_seleccionada_item mesa_seleccionada_item_adm">
+			  <div class="contenedor_texto_link">
+			  <a href="{% url 'mozo' %}" target="_self">Panel de Mozo</a>
+			  </div>
+			  </div>
+			  
+			  <div class="label label-success mesa_seleccionada_item mesa_seleccionada_item_adm">
+			  <div class="contenedor_texto_link">
+			  <a href="{% url 'cajero' %}" target="_self">Panel de Cajero</a>
+			  </div>
+			  </div>
+			  <!-- fin mesas selecionadas //-->
+			</div>
+		  </div>
+      </div>
+	  <!-- fin contenedor principal izq//-->
+	  
+	  
+  	  <!-- inicio contenedor principal centro//-->
+	  <div class="contenedor_principal_centro">
+	  
+	  
+		<!-- INICIO CONTENIDO WEB //-->
+		{% block contenido %}{% endblock %}
+		<!-- FIN CONTENIDO WEB //-->
+
+	  
+	  <div class="salto_linea"></div>
+      </div><!-- fin contenedor principal centro//-->
+	  
+      	  
+  <!-- fin del contenido de la pagina -->
+  </div>
+  <div class="salto_linea"></div>
+</div>
+{% block script %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,309 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Boru Resto-Bar</title>
+<link rel="stylesheet" href="css/bootstrap.css"  type="text/css" media="all" />
+<link rel="stylesheet" href="css/boru.css"  type="text/css" media="all" />
+<script type="text/javascript" language="javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="js/jquery-cookie.js"></script>
+<script type="text/javascript" language="javascript" src="js/jquery-ui.min.js"></script>
+<script type="text/javascript" language="javascript" src="js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" language="javascript" src="js/funciones.js"></script>
+</head>
+<body>
+<div id="contenedor">
+  
+  <div id="cabecera" class="cont_cabecera"><img src="img/boru_logo2.png" width="120"></div>
+  
+  <div id="cuerpo">
+  <!-- inicio del contenido de la pagina -->
+      
+	  <!--inicio de nav bar //-->
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="usuario_log_fix">
+            <div class="icon-user"></div>
+            <div class="label label-inverse" id="nombre_usuario">Gaston Mura</div>
+          </div>
+          <ul class="nav">
+            <li><a href="menu_mozo.html">Menu Mozo</a></li>
+            <li class="active"><a href="#">Seleccionar Mesas</a></li>
+            <li><a href="#">Seleccionar Menu</a></li>
+            <li><a href="#">Finalizar Menu</a></li>
+          </ul>
+          <div class="cerrar_sesion_fix" id="cerrar_sescion_actual">
+            <div class="label label-inverse">&nbsp;&nbsp;Cerrar Sesion&nbsp;&nbsp;</div>
+          </div>
+        </div>
+      </div>
+      <!-- fin de nav bar //-->
+	  
+	  <!-- inicio contenedor principal izq//-->
+	  <div class="contenedor_principal_izq">
+		  <div class="mesas_seleccionadas">
+			<div class="label label-inverse mesa_seleccionada_item"><div class="contenedor_texto">Mesas Seleccionadas</div></div>
+			<div class="mesas">
+			  <!-- inicio mesas selecionadas //-->
+			  <!-- fin mesas selecionadas //-->
+			</div>
+			<div class="label label-inverse mesa_seleccionada_item"><div class="contenedor_texto">Total Comensales: <span id="total_comensales">0</span></div></div>
+		  </div>
+      </div>
+	  <!-- fin contenedor principal izq//-->
+	  
+	  
+  	  <!-- inicio contenedor principal centro//-->
+	  <div class="contenedor_principal_centro">
+	  
+	  <div class="contenedor_secundario">
+	  <div class="btn_anterior" id="btn_anterior"></div>
+	  <div class="btn_siguiente" id="btn_siguiente"></div>
+	  
+	  <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
+        <div class="label label-inverse titulo_menu">Seleccionar Mesas</div>
+        <br>
+        <div class="salto_linea"></div>
+        <div id="mesas_libres" class="bloque_mesas">
+		<div class="label label-inverse titulo_menu">Sector 1</div>
+		<div class="salto_linea"></div>
+          <div id="mesa_01" class="mesa_item mesa_item2" numero_mesa="1" capacidad="5" tipo="mesa" seleccionado="false">
+            <div class="num_mesa">
+              <div class="fondo_transparente badge badge-inverse">01</div>
+            </div>
+            <div class="mesa_info">
+              <div class="label label-info mesa_info_titulo">Mesa</div>
+              <div class="label label-info mesa_info_titulo">5 personas</div>
+            </div>
+          </div>
+          <div id="mesa_03" class="mesa_item mesa_item2" numero_mesa="3" capacidad="4" tipo="reservado" seleccionado="false">
+            <div class="num_mesa">
+              <div class="fondo_transparente badge badge-inverse">03</div>
+            </div>
+            <div class="mesa_info">
+              <div class="label label-info mesa_info_titulo">Reservado</div>
+              <div class="label label-info mesa_info_titulo">4 personas</div>
+            </div>
+          </div>
+          <div id="mesa_05" class="mesa_item mesa_item2" numero_mesa="5" capacidad="1" tipo="barra" seleccionado="false">
+            <div class="num_mesa">
+              <div class="fondo_transparente badge badge-inverse">05</div>
+            </div>
+            <div class="mesa_info">
+              <div class="label label-info mesa_info_titulo">Barra</div>
+              <div class="label label-info mesa_info_titulo">1 persona</div>
+            </div>
+          </div>
+		  <div class="salto_linea"></div>
+		  		<div class="label label-inverse titulo_menu">Sector 2</div>
+		<div class="salto_linea"></div>
+          <div id="mesa_08" class="mesa_item mesa_item2" numero_mesa="8" capacidad="4" tipo="mesa" seleccionado="false">
+            <div class="num_mesa">
+              <div class="fondo_transparente badge badge-inverse">08</div>
+            </div>
+            <div class="mesa_info">
+              <div class="label label-info mesa_info_titulo">Mesa</div>
+              <div class="label label-info mesa_info_titulo">4 personas</div>
+            </div>
+          </div>
+          <div id="mesa_15" class="mesa_item mesa_item2" numero_mesa="15" capacidad="8" tipo="mesa" seleccionado="false">
+            <div class="num_mesa">
+              <div class="fondo_transparente badge badge-inverse">15</div>
+            </div>
+            <div class="mesa_info">
+              <div class="label label-info mesa_info_titulo">Mesa</div>
+              <div class="label label-info mesa_info_titulo">8 personas</div>
+            </div>
+          </div>
+          <div id="mesa_17" class="mesa_item mesa_item2" numero_mesa="17" capacidad="10" tipo="reservado" seleccionado="false">
+            <div class="num_mesa">
+              <div class="fondo_transparente badge badge-inverse">17</div>
+            </div>
+            <div class="mesa_info">
+              <div class="label label-info mesa_info_titulo">Reservado</div>
+              <div class="label label-info mesa_info_titulo">10 personas</div>
+            </div>
+          </div>
+		  <div class="salto_linea"></div>
+		  		<div class="label label-inverse titulo_menu">Sector 3</div>
+		<div class="salto_linea"></div>
+          <div id="mesa_18" class="mesa_item mesa_item2" numero_mesa="18" capacidad="5" tipo="mesa" seleccionado="false">
+            <div class="num_mesa">
+              <div class="fondo_transparente badge badge-inverse">18</div>
+            </div>
+            <div class="mesa_info">
+              <div class="label label-info mesa_info_titulo">Mesa</div>
+              <div class="label label-info mesa_info_titulo">5 personas</div>
+            </div>
+          </div>
+          <div id="mesa_21" class="mesa_item mesa_item2" numero_mesa="21" capacidad="1" tipo="barra" seleccionado="false">
+            <div class="num_mesa">
+              <div class="fondo_transparente badge badge-inverse">21</div>
+            </div>
+            <div class="mesa_info">
+              <div class="label label-info mesa_info_titulo">Barra</div>
+              <div class="label label-info mesa_info_titulo">1 persona</div>
+            </div>
+          </div>
+          <div id="mesa_23" class="mesa_item mesa_item2" numero_mesa="23" capacidad="5" tipo="reservado" seleccionado="false">
+            <div class="num_mesa">
+              <div class="fondo_transparente badge badge-inverse">23</div>
+            </div>
+            <div class="mesa_info">
+              <div class="label label-info mesa_info_titulo">Reservado</div>
+              <div class="label label-info mesa_info_titulo">5 personas</div>
+            </div>
+          </div>
+          <div id="mesa_25" class="mesa_item mesa_item2" numero_mesa="25" capacidad="4" tipo="mesa" seleccionado="false">
+            <div class="num_mesa">
+              <div class="fondo_transparente badge badge-inverse">25</div>
+            </div>
+            <div class="mesa_info">
+              <div class="label label-info mesa_info_titulo">Mesa</div>
+              <div class="label label-info mesa_info_titulo">4 personas</div>
+            </div>
+          </div>
+          <div id="mesa_27" class="mesa_item mesa_item2" numero_mesa="27" capacidad="1" tipo="barra" seleccionado="false">
+            <div class="num_mesa">
+              <div class="fondo_transparente badge badge-inverse">27</div>
+            </div>
+            <div class="mesa_info">
+              <div class="label label-info mesa_info_titulo">Barra</div>
+              <div class="label label-info mesa_info_titulo">1 persona</div>
+            </div>
+          </div>
+        </div><!-- fin bloke de mesas//-->
+      </div><!-- fin contenedor principal//-->
+	  </div><!-- fin de contenedor secundario //-->
+	  <div class="salto_linea"></div>
+      </div><!-- fin contenedor principal centro//-->
+	  
+      	  
+  <!-- fin del contenido de la pagina -->
+  </div>
+  <div class="salto_linea"></div>
+  <div id="pie" class="cont_copy">&nbsp;&nbsp;&nbsp;Boru Resto-Bar - 2013 <span class="icon-tag"> </span> </div>
+
+</div>
+<script>
+$(document).ready(function(){
+     
+	//cadena donde guardo los datos de las mesas 
+	var cadCookie="";
+	var hay_mesas=false;
+
+	//genero el numero de comanda
+	var num_comanda=Math.floor(Math.random()*150000);
+	
+	//guardo el numero de comanda
+	cadCookie=num_comanda+":"
+	
+	//leo lo que guarde
+	//leerCookie("nombre_usuario");
+	$("#nombre_usuario").html($.cookie('usuario'));
+	
+	//le doy funcionalidad al boton cerrar sesion
+	$("#cerrar_sescion_actual").click(function(){
+		delCookies();	
+		document.location.href = 'index.html';
+	});
+	
+	$("#btn_anterior").click(function(){
+		document.location.href = 'menu_mozo.html';
+	});	
+	
+	//le doy funcionalidad al boton sig
+	$("#btn_siguiente").click(function(){
+			
+			
+		$(".mesa_item").each(function(i){
+			
+			var es_seleccionado=$(this).attr("seleccionado");
+			
+			//si hya alguna mesa seleccionada
+			if(es_seleccionado=="true"){
+			
+				//cabio bandera de que hay mesas seleccionadas
+				hay_mesas=true;
+				
+				//rescato los datos de la mesa
+				var es_mesa=$(this).attr("numero_mesa");
+				var es_capacidad=$(this).attr("capacidad");
+				var es_tipo=$(this).attr("tipo");
+			    
+				
+				
+				//armo la cadena para guardaren la cookie
+				cadCookie=cadCookie+es_mesa+"_"+es_tipo+"_"+es_capacidad+" ";
+				
+				//guardo en cookie
+				//document.cookie = 'comanda=' + num_comanda + ' - mesas=' + cadCookie + ';expires=' + Caduca(50) + ';path=/boru';
+				$.cookie('comanda', cadCookie);
+				
+			}
+			
+		});		
+			
+		if(hay_mesas)	
+		document.location.href = 'seleccionar_menu.html';
+	});
+	
+	//le asocio una funcion a cada miembro d ela clase mesa_item
+	$(".mesa_item").each(function(i){
+				
+		 $(this).click(function(event){
+
+		 	var capacidad = $(this).attr("capacidad");
+		 	var numero_mesa = $(this).attr("numero_mesa");
+			var tipo = $(this).attr("tipo");
+			var seleccionado = $(this).attr("seleccionado");
+
+            var total_comensales=$("#total_comensales").html();
+            
+			var mesas = $(".mesas").html();
+			var cad = '<div class="label label-info mesa_seleccionada_item">Mesa: '+numero_mesa+'<br> Capacidad: '+capacidad+'</div>';
+				
+				if(seleccionado == "false"){
+				
+					$(this).attr("seleccionado", "true");
+					$(this).removeClass("mesa_item2");
+					$(this).addClass("mesa_item_inhabilitada");
+					
+					mesas = mesas + cad;
+					$(".mesas").html(mesas);
+					
+					total_comensales = parseInt(total_comensales)+parseInt(capacidad);
+									
+					$("#total_comensales").html(total_comensales);
+					
+				}
+				else{
+				
+					$(this).attr("seleccionado", "false");
+					
+					$(this).addClass("mesa_item2");
+					$(this).removeClass("mesa_item_inhabilitada");
+					
+					var cad2 = $(".mesas").html();
+			
+					var cad3 = cad2.replace(cad,' ');
+
+					$(".mesas").html(cad3);
+					
+					total_comensales = parseInt(total_comensales)-parseInt(capacidad);
+									
+					$("#total_comensales").html(total_comensales);
+													
+					if(total_comensales == 0)
+						hay_mesas = false;
+				}
+			
+		 
+		 });
+     });
+	
+	
+
+});
+</script>
+</body>
+</html>

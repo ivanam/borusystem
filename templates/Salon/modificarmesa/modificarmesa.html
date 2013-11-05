@@ -1,0 +1,184 @@
+{% extends "base_administrador.html" %}
+{% block titulo %}Boru - Modificar Mesa{% endblock %}
+{% block contenido %}
+
+	<div class="izquierda">
+	  <div class="listado_modificar_mozos cont_redondeado">
+        <div class="label label-inverse titulo_menu">Listado de Mesas</div>
+
+       <!-- inicio listado de mozos //-->
+          <!-- inicio encabezados del listado //-->
+          <div class="listado_item_campo_header label label-inverse">
+              <div class="listado_item_campo_base listado_item_campo_02">
+                 &nbsp
+              </div>
+              <div class="listado_item_campo_base listado_item_campo_04" title="Sector">
+                  Sec
+              </div>
+
+              <div class="listado_item_campo_base listado_item_campo_02" title="Tipo">
+                  Tipo
+              </div>
+
+              <div class="listado_item_campo_base listado_item_campo_02" title="Capacidad">
+                  Cap.
+              </div>
+
+              <div class="listado_item_campo_base listado_item_campo_02" title="Ocupada">
+                  Ocup.
+              </div>
+
+              <div class="listado_item_campo_base listado_item_campo_01" title="Numero de Mesa">
+                  Nº
+              </div>
+          </div>
+          <!-- fin de encabezados del listado //-->
+
+          {% for m in mesas %}
+          <div class="listado_modificar_mozo_item {% if not m.activo %}inactivo{% endif %}">
+
+              <div class="listado_item_campo_base listado_item_campo_02">
+                  <img src="{{STATIC_URL}}img/conf/{% if m.activo %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
+                       urldel="{% url 'modificarmesa_id_del' m.id %}" estado="{{m.activo}}" class="eliminar_mesa"
+                       nombre="{{m.id}}"
+                       title="{% if not m.activo %}Acivar{% else %}Desactivar{% endif %} mesa: {{m.id}}">
+              </div>
+
+
+              <div class="cargar_modificar_mozo" href="{% url 'modificarmesa_id' m.id %}">
+
+                  <div class="listado_item_campo_base listado_item_campo_04" title="Sector: {{m.sector}}">
+                      {{m.sector|capfirst|truncatechars:10}}
+                  </div>
+
+                  <div class="listado_item_campo_base listado_item_campo_02" title="Tipo de mesa: {{m.get_tipo_display}}">
+                      {{m.get_tipo_display}}
+                  </div>
+
+                  <div class="listado_item_campo_base listado_item_campo_02" title="Capacidad: {{m.capacidad}}">
+                      {{m.capacidad}}
+                  </div>
+
+                  <div class="listado_item_campo_base listado_item_campo_02" title="{{m.get_ocupada_display}}">
+                      {{m.get_ocupada_display|truncatechars:6}}
+                  </div>
+
+                  <div class="listado_item_campo_base listado_item_campo_01" title="Numero de mesa: {{m.id}}">
+                      {{m.id}}
+                  </div>
+
+              </div>
+          </div>
+          {% endfor %}
+		 <!-- fin listado de mozos//-->
+      </div>
+   </div>
+
+	<div class="derecha">
+	  <div id="con_menu_mesa" class="cont_redondeado contenedor_principal_big">
+    <div class="label label-inverse titulo_menu">Modificar Mesas</div>
+    <br>
+
+    <div class="salto_linea"></div>
+    <div id="mesas_libres" class="bloque_mesas">
+        <div class="salto_linea"></div>
+
+        <!--Aca inicio contenido//-->
+        <form action="" method="post" name="add_mesa" id="id_add_mesa">
+            {{ formulario.non_field_errors }}
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Tipo</div>
+                <div class="contenedor_input">
+                    <!--<input type="text" name="username" value="" class="validar_campo">-->
+                    {{ formulario.tipo }}
+                    <div class="form_error_msg">{{ formulario.tipo.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Capacidad</div>
+                <div class="contenedor_input">
+                    <!--<input type="password" name="password" value="" class="validar_campo">-->
+                    {{ formulario.capacidad }}
+                    <div class="form_error_msg">{{ formulario.capacidad.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg"></span> Ocupada</div>
+                <div class="contenedor_input">
+                    <!--<input type="text" name="first_name" value="" class="validar_campo">-->
+                    {{ formulario.ocupada }}
+                    <div class="form_error_msg">{{ formulario.ocupada.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg"></span> Activo</div>
+                <div class="contenedor_input">
+                    <!--<input type="text" name="last_name" value="" class="validar_campo">-->
+                    {{ formulario.activo }}
+                    <div class="form_error_msg">{{ formulario.activo.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg"></span> Sector</div>
+                <div class="contenedor_input">
+                    {{ formulario.sector }}
+                    <div class="form_error_msg">{{ formulario.sector.errors|striptags }}</div>
+                </div>
+            </div>
+
+                                    {% csrf_token %}
+                                    <div class="salto_linea"></div>
+                                    <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Alta Mozo"
+                                           class="btn btn-large btn-primary">
+
+        </form>
+        <!-- Aca fin de contenido//-->
+
+    </div>
+    <!-- fin bloke de mesas//-->
+    <div class="salto_linea"></div>
+    <span class="form_error_msg">* Campos Obligatorios</span>
+</div><!-- fin contenedor principal//-->
+
+    </div><!-- derecha fin//-->
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+
+	 $(".cargar_modificar_mozo").each(function(i){
+	 	$(this).css("cursor","pointer");
+			$(this).click(function(event){
+				var uri=$(this).attr("href");
+				$(location).attr('href',uri);
+			});
+	 });
+
+	 $(".eliminar_mesa").each(function(i){
+	 	$(this).css("cursor","pointer");
+
+			$(this).click(function(event){
+				var mozo = $(this).attr("nombre");
+				var estado = $(this).attr("estado");
+				var msg = (estado == "True")?"Usted desea desactivar la mesa ":"Usted desea activar la mesa ";
+                if( confirm(msg+mozo+"?") ){
+                   $(location).attr('href', $(this).attr("urldel") );
+                }
+			});
+	 });
+
+	$('.dropdown-toggle').dropdownHover(options);
+
+});
+</script>
+{% endblock %}

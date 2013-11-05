@@ -1,0 +1,27 @@
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>{% block titulo %}{% endblock %}</title>
+<link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap.css"  type="text/css" media="all" />
+<link rel="stylesheet" href="{{STATIC_URL}}css/boru.css"  type="text/css" media="all" />
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-cookie.js"></script>
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/funciones.js"></script>
+</head>
+<body>
+<div id="contenedor">
+  <div id="cabecera" class="cont_cabecera"><img src="{{STATIC_URL}}img/boru_logo2.png" width="120"></div>
+  <div id="cuerpo">
+    <div id="cuerpo_up"></div>
+    <div id="cuerpo_medio">
+	
+      <!-- inicio del contenido de la pagina -->
+	  {% block contenido %}{% endblock %}
+      <!-- fin del contenido de la pagina -->
+	  
+    </div>
+    <div id="cuerpo_down"></div>
+  </div>
+</div>
+</body>
+</html>

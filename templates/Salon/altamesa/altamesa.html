@@ -1,0 +1,110 @@
+{% extends "base_administrador.html" %}
+{% block titulo %}Boru - Alta Mesa{% endblock %}
+{% block contenido %}
+
+
+<div id="con_menu_mesa" class="cont_redondeado contenedor_principal_big">
+    <div class="label label-inverse titulo_menu">Alta Mesa</div>
+    <br>
+
+    <div class="salto_linea"></div>
+    <div id="mesas_libres" class="bloque_mesas">
+        <div class="salto_linea"></div>
+
+        <!--Aca inicio contenido//-->
+
+        <form action="" method="post" name="add_mesa" id="id_add_mesa">
+            {{ formulario.non_field_errors }}
+
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Tipo</div>
+                <div class="contenedor_input">
+                    <!--<input type="password" name="password" value="" class="validar_campo">-->
+                    {{ formulario.tipo }}
+                    <!--<input type="text" name="tipo">-->
+
+                    <div class="form_error_msg">{{ formulario.tipo.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Capacidad</div>
+                <div class="contenedor_input">
+                    <!--<input type="text" name="first_name" value="" class="validar_campo">-->
+                    {{ formulario.capacidad }}
+
+
+                    <div class="form_error_msg">{{ formulario.capacidad.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Ocupada</div>
+                <div class="contenedor_input">
+                    <!--<input type="text" name="last_name" value="" class="validar_campo">-->
+                    {{ formulario.ocupada }}
+                    <!--<input type="text" name="ocupada">-->
+
+                    <div class="form_error_msg">{{ formulario.ocupada.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Activo</div>
+                <div class="contenedor_input">
+                    {{ formulario.activo }}
+                    <!--<input type="text" name="activo">-->
+
+                    <div class="form_error_msg">{{ formulario.activo.errors|striptags }}</div>
+                </div>
+
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Sector</div>
+                <div class="contenedor_input">
+                    {{ formulario.sector }}
+                    <!--<input type="text" name="activo">-->
+
+                    <div class="form_error_msg">{{ formulario.sector.errors|striptags }}</div>
+                </div>
+
+            </div>
+
+                {% csrf_token %}
+                <div class="salto_linea"></div>
+                <!--{{formulario.as_table}}-->
+                <input type="submit" name="btn_add_mesa" id="btn_id_add_mesa" value="Alta Mesa"
+                       class="btn btn-large btn-primary">
+
+
+        </form>
+        <!-- Aca fin de contenido//-->
+        <!-- Aca fin de contenido//-->
+
+    </div>
+    <!-- fin bloke de mesas//-->
+<div class="salto_linea"></div>
+    <span class="form_error_msg">* Campos Obligatorios</span>
+</div><!-- fin contenedor principal//-->
+
+</div><!-- derecha fin//-->
+{% endblock %}
+
+
+{% block script %}
+<script>
+
+$(document).ready(function(){
+
+    $('.dropdown-toggle').dropdownHover(options);
+    
+});
+
+
+</script>
+{% endblock %}

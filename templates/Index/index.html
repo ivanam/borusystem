@@ -1,0 +1,35 @@
+{% extends "base_index.html" %}
+{% block titulo %}Boru - Login{% endblock %}
+
+{% block contenido %}
+      <form method="post" action="." target="_self" enctype="application/x-www-form-urlencoded" id="form_login">
+        {% csrf_token %}
+        <div id="con_login" class="cont_redondeado contenedor_principal">
+          <div class="label label-inverse titulo_menu">Login Usuarios</div>
+          <div class="salto_linea"></div>
+          <br>
+          <div id="con_usuario" class="">
+            <div class="texto_form"><img src="{{STATIC_URL}}img/glyphicons_043_group.png" height="15"></div>
+            <div id="input_normal" class="input_login">
+              <input class="input-large" type="text" maxlength="15" id="usr" value="Ingrese su nombre de Usuario" name="username" onFocus="if(this.value=='Ingrese su nombre de Usuario')this.value='';"/>
+            </div>
+          </div>
+          <div class="salto_linea"></div>
+          <div id="con_contrasenia" class="">
+            <div class="texto_form"><img src="{{STATIC_URL}}img/glyphicons_248_asterisk.png" width="15"><img src="{{STATIC_URL}}img/glyphicons_248_asterisk.png" width="15"><img src="{{STATIC_URL}}img/glyphicons_248_asterisk.png" width="15"></div>
+            <div id="input_normal" class="input_login">
+              <input class="input-large"  type="password" id="psw" value="contrasenia" name="password" onFocus="if(this.value=='contrasenia')this.value='';"/>
+            </div>
+          </div>
+          <div class="salto_linea"></div>
+          <div id="con_enviar" class="">
+            <input type="submit" id="btn_entrar" class="btn btn-large" value="Entrar">
+            <input type="hidden" name="next" value="{{ next }}"/>
+          </div>
+        </div>
+      </form>
+
+      {% if mostrarError %}
+      <div id="div_error" class="cont_redondeado cont_error">Error: nombre de usuario o contrasea incorrectos!</div>
+      {% endif %}
+{% endblock %}

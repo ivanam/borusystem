@@ -1,0 +1,64 @@
+{% extends "base_administrador.html" %}
+{% block titulo %}Boru - Administrador{% endblock %}
+{% block contenido %}
+<!-- Inicio de contenedor secundario //-->
+<div class="contenedor_secundario">
+<div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
+        <div class="label label-inverse titulo_menu">Opciones mas usadas</div>
+        <br>
+        <div class="salto_linea"></div>
+    <div id="mesas_libres" class="bloque_mesas">
+        <div class="salto_linea"></div>
+		
+		<!--Aca inicio contenido//-->
+		<div id="cat_01" class="cat_item" rel="platos_add">
+              <div class="img_cont"> <img src="{{STATIC_URL}}img/mas_plato.png" width="25"> </div>
+              <div class="label label-inverse">+ Platos</div>
+            </div>
+            <div id="cat_01" class="cat_item" rel="platos_remove">
+              <div class="img_cont"> <img src="{{STATIC_URL}}img/menos_plato.png" width="25"> </div>
+              <div class="label label-inverse">- Platos</div>
+            </div>
+            <div id="cat_01" class="cat_item" rel="platos_editar">
+              <div class="img_cont"> <img src="{{STATIC_URL}}img/modificar_plato.png" width="25"> </div>
+              <div class="label label-inverse">Edit Platos</div>
+            </div>
+            <div id="cat_01" class="cat_item" rel="bebidas_add">
+              <div class="img_cont"> <img src="{{STATIC_URL}}img/mas_bebida.png" width="32"> </div>
+              <div class="label label-inverse">+ Bebidas</div>
+            </div>
+            <div id="cat_01" class="cat_item" rel="bebidas_remove">
+              <div class="img_cont"> <img src="{{STATIC_URL}}img/menos_bebida.png" width="32"> </div>
+              <div class="label label-inverse">- Bebidas</div>
+            </div>
+            <div id="cat_01" class="cat_item" rel="bebidas_editar">
+              <div class="img_cont"> <img src="{{STATIC_URL}}img/modificar_bebida.png" width="32"> </div>
+              <div class="label label-inverse">Edit Bebidas</div>
+            </div>
+            
+            <a href="{% url 'altamozo' %}">
+            <div id="cat_01" class="cat_item" rel="mozo_add">
+              <div class="img_cont"> <img src="{{STATIC_URL}}img/mas_mozo.png" width="30"></div>
+              <div class="label label-inverse">+ Mozos</div>
+            </div>
+            </a> 
+			      
+            <div id="cat_01" class="cat_item" rel="mozo_remove">
+              <div class="img_cont"> <img src="{{STATIC_URL}}img/menos_mozo.png" width="30"> </div>
+              <div class="label label-inverse">- Mozos</div>
+            </div>		
+		<!-- Aca fin de contenedor//-->
+		</div><!-- fin bloke de mesas//-->
+</div><!-- fin contenedor principal//-->
+</div>
+    <!-- fin de contenedor secundario //-->
+{% endblock %}
+{% block script %}
+<script>
+$(document).ready(function(){
+     
+	$('.dropdown-toggle').dropdownHover(options);
+	
+});
+</script>
+{% endblock %}

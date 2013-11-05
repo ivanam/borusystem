@@ -1,0 +1,93 @@
+{% extends "base_administrador.html" %}
+{% block titulo %}Boru - Alta Bebida{% endblock %}
+{% block contenido %}
+
+<div id="con_menu_mozo" class="cont_redondeado contenedor_principal_big">
+    <div class="label label-inverse titulo_menu">Alta Bebida</div>
+    <br>
+
+    <div class="salto_linea"></div>
+    <div id="mesas_libres" class="bloque_mesas">
+        <div class="salto_linea"></div>
+
+        <!--Aca inicio contenido//-->
+        <form action="" target="_self" method="post" name="add_mozo" id="id_add_mozo">
+            {{ formulario.non_field_errors }}
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto">Nombre</div>
+                <div class="contenedor_input">
+                    {{ formulario.nombre }}
+                    <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto">Marca</div>
+                <div class="contenedor_input">
+                    {{ formulario.marca }}
+                    <div class="form_error_msg">{{ formulario.marca.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto">Precio</div>
+                <div class="contenedor_input">
+                    {{ formulario.precio }}
+                    <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto">Descuento</div>
+                <div class="contenedor_input">
+                    {{ formulario.descuento }}
+                    <div class="form_error_msg">{{ formulario.descuento.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto">Stock</div>
+                <div class="contenedor_input">
+                    {{ formulario.stock }}
+                    <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
+                </div>
+            </div>
+
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto">En Promocion</div>
+                <div class="contenedor_input">
+                    {{ formulario.enPromocion }}
+                    <div class="form_error_msg">{{ formulario.enPromocion.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto">Activo</div>
+                <div class="contenedor_input">
+                    {{ formulario.activo }}
+                    <div class="form_error_msg">{{ formulario.activo.errors|striptags }}</div>
+                </div>
+            </div>
+
+            {% csrf_token %}
+            <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Alta Bebida"
+                   class="btn btn-large btn-primary">
+        </form>
+        <!-- Aca fin de contenido//-->
+
+    </div>
+    <!-- fin bloke de mesas//-->
+</div><!-- fin contenedor principal//-->
+
+{% endblock %}
+{% block script %}
+<script>
+
+$(document).ready(function(){
+	$('.dropdown-toggle').dropdownHover(options);
+});
+
+</script>
+{% endblock %}
