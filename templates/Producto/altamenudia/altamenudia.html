@@ -2,26 +2,7 @@
 {% block titulo %}Boru - Alta Menu del Día{% endblock %}
 {% block contenido %}
 
-<div class="izquierda">
-    <div class="listado_modificar_mozos cont_redondeado">
-        <div class="label label-inverse titulo_menu" id="listado_mozos">Listado de Platos</div>
-        <!-- inicio listado de mozos //-->
-        {% for p in Plato %}
-        <div class="listado_modificar_mozo_item">
-            <div class="cargar_modificar_mozo">
-                <div class="listado_mozo_item_campo campo_texto_01"  title="{{p.nombre}}">{{p.nombre}}</div>
-                <div class="listado_mozo_item_campo campo_texto_01" title="{{p.precio}}">{{p.precio}}</div>
-                <div class="listado_mozo_item_campo campo campo_texto_01" title="{{p.stock}}">{{p.stock}}</div>
-            </div>
-            <div class="campo_texto_01">
-                <input type="checkbox" name="chkId" class="check_eliminar_mozo" value="{{m.id}}">
-            </div>
-        </div>
-        {% endfor %}
-        <!-- fin listado de mozos//-->
-    </div>
-</div>
-<div class="derecha">
+
 <div id="con_menu_mozo" class="cont_redondeado contenedor_principal_big">
     <div class="label label-inverse titulo_menu">Alta Menu del Día</div>
     <br>
@@ -86,7 +67,7 @@
     <div class="salto_linea"></div>
     <span class="form_error_msg">* Campos Obligatorios</span>
 </div><!-- fin contenedor principal//-->
-</div>
+
 {% endblock %}
 {% block script %}
 <script>
