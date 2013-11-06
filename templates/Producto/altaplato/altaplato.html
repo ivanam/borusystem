@@ -115,7 +115,25 @@ $(function($){
     $.datepicker.setDefaults($.datepicker.regional['es']);
 });
 
+
+function promocion(){
+    if ($("#id_enPromocion").val()== "True"){
+        $("#id_descuento").attr("readonly",false);
+        $("#id_descuento").attr("value","50");
+    }
+    else{
+        $("#id_descuento").attr("readonly",true);
+        $("#id_descuento").attr("value","0");
+    }
+}
+
 $(document).ready(function(){
+
+    $("#id_enPromocion").change(function(event){
+        promocion();
+    });
+
+    promocion();
     $("#id_fecha_Inicio").attr("readonly",true);
 	$("#id_fecha_Inicio").datepicker();
 	$('.dropdown-toggle').dropdownHover(options);
