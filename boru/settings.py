@@ -135,6 +135,7 @@ INSTALLED_APPS = (
     'gestiones.Producto.altabebida',
     'gestiones.Producto.altamenudia',
     'gestiones.Producto.altaplato',
+    'gestiones.Producto.modificarplato',
     'gestiones.Producto.producto',
 
     'gestiones.Personal.altamozo',

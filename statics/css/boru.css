@@ -13,6 +13,10 @@ margin: 2px 1px;
 overflow:hidden;
 text-align:center;
 }
+.listado_item_campo_00{
+height:auto;
+width:45px;
+}
 .listado_item_campo_01{
 height:auto;
 width:15px;
@@ -177,6 +181,22 @@ border-right:1px solid #CCCCCC;
 font-size:11px;
 font-weight:bold;
 }
+.comanda_numero2{
+padding-bottom:10px;
+height:15px;
+width:250px;
+-webkit-border-radius: 7px 7px 0px 0px;
+-moz-border-radius:  7px 7px 0px 0px;
+border-radius:  7px 7px 0px 0px;
+margin:00px;
+display:block;
+clear:both;
+border-top:1px solid #CCCCCC;
+border-left:1px solid #CCCCCC;
+border-right:1px solid #CCCCCC;
+font-size:11px;
+font-weight:bold;
+}
 .contenedor_comanda_data{
 background-image:linear-gradient(to bottom, rgb(230, 230, 230), rgb(255,255,255));
 float:left;
@@ -184,6 +204,21 @@ display:block;
 clear:both;
 height:auto;
 width:645px;
+border-top:1px solid #CCCCCC;
+border-left:1px solid #CCCCCC;
+border-right:1px solid #CCCCCC;
+border-bottom:1px solid #CCCCCC;
+-webkit-border-radius: 0px 7px 7px 7px;
+-moz-border-radius:  0px 7px 7px 7px;
+border-radius:  0px 7px 7px 7px;
+}
+.contenedor_comanda_data2{
+background-image:linear-gradient(to bottom, rgb(130, 130, 130), rgb(255,255,255));
+margin:00px 50px;
+display:block;
+clear:both;
+height:100;
+width:250px;
 border-top:1px solid #CCCCCC;
 border-left:1px solid #CCCCCC;
 border-right:1px solid #CCCCCC;
@@ -202,8 +237,21 @@ filter: alpha(opacity = 80);
 font-size:12px;
 overflow:visible;
 }
-
-
+.contenedor_cantidad{
+height:100px;
+width:250px;
+margin:00px;
+}
+.contenedor_comanda_item2{
+height:150px;
+width:525px;
+margin:4px  auto 10px auto;
+display:block;
+opacity:0.8;
+filter: alpha(opacity = 80);
+font-size:32px;
+overflow:visible;
+}
 .contenedor_comanda_data:hover{
 opacity:1;
 filter: alpha(opacity = 100);

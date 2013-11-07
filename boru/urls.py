@@ -33,6 +33,7 @@ urlpatterns = patterns('',
     url(r'^administrador/altamenudia/', include('gestiones.Producto.altamenudia.urls')),
         url(r'^administrador/altamenuejecutivo/', include('gestiones.Producto.altamenuejecutivo.urls')),
     url(r'^administrador/altaplato/', include('gestiones.Producto.altaplato.urls')),
+    url(r'^administrador/modificarplato/', include('gestiones.Producto.modificarplato.urls')),
 
     url(r'^administrador/altamozo/', include('gestiones.Personal.altamozo.urls')),
     url(r'^administrador/modificarmozo/', include('gestiones.Personal.modificarmozo.urls')),

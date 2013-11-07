@@ -2,6 +2,7 @@ from django.forms import ModelForm, Select
 from gestiones.Salon.altamesa.models import Mesa
 
 
+
 class altaMesaForm(ModelForm):
     class Meta:
         model = Mesa
