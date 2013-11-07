@@ -3,6 +3,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = patterns('',
-                       url(r'^$', 'gestiones.Producto.altamenuejecutivo.views.altamenuejecutivo', name="altamenuejecuti"),
+                       url(r'^$', 'gestiones.Producto.altamenuejecutivo.views.altamenuejecutivo', name="altamenuejecutivo"),
 
 )

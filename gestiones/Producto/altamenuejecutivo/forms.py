@@ -8,5 +8,5 @@ class altaMenuEjecutivoForm(ModelForm):
     class Meta:
         model = Ejecutivo
         fields = (
-            'nombre', 'precio', 'stock', 'descripcion', 'fecha_Inicio')
+            'nombre', 'precio', 'stock', 'descripcion', 'fecha_Inicio', 'fecha_fin')
 

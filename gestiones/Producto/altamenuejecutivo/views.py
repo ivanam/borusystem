@@ -19,11 +19,24 @@ def altamenuejecutivo(request):
             stock = formulario.cleaned_data['stock']
             descripcion = formulario.cleaned_data['descripcion']
             fecha = formulario.cleaned_data['fecha_Inicio']
-            menu = Ejecutivo(nombre, precio, stock, descripcion, fecha)
-            menu.save()
+            fechaFin = formulario.cleaned_data['fecha_fin']
+            menu = Ejecutivo.objects.create(nombre=nombre,precio= precio,stock= stock, descripcion=descripcion,fecha_Inicio= fecha,fecha_fin= fechaFin)
+            #menu.save()
 
 
-    formulario = altaMenuEjecutivoForm()
-    return render_to_response('Producto/altamenuejecutivo/altamenuejecutivo.html', {'formulario': formulario, 'Plato': platos},
-                              context_instance=RequestContext(request))
+               # formulario = altaMenuEjecutivoForm()
+                #return render_to_response('Producto/altamenuejecutivo/altamenuejecutivo.html', {'formulario': formulario, 'Plato': platos},
+                 #                         context_instance=RequestContext(request))
 
+            #mostramos que la operacion fue exitosa
+            return render_to_response('Producto/altamenuejecutivo/altamenuejecutivoexito.html', {'formulario': formulario, 'Plato': platos},
+                                      context_instance=RequestContext(request))
+
+        return render_to_response('Producto/altamenuejecutivo/altamenuejecutivo.html', {'formulario': formulario, 'Plato': platos},
+                                  context_instance=RequestContext(request))
+
+    else:
+
+        formulario = altaMenuEjecutivoForm()
+        return render_to_response('Producto/altamenuejecutivo/altamenuejecutivo.html', {'formulario': formulario, 'Plato': platos},
+                                  context_instance=RequestContext(request))

@@ -49,10 +49,18 @@
             </div>
 
             <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg"></span> Fecha Fin</div>
+                <div class="contenedor_texto"><span class="form_error_msg"></span> Fecha Inicio</div>
                 <div class="contenedor_input">
                     {{ formulario.fecha_Inicio }}
-                    <div class="form_error_msg">{{ formulario.numeroDoc.errors|striptags }}</div>
+                    <div class="form_error_msg">{{ formulario.fecha_Inicio.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg"></span> Fecha Fin</div>
+                <div class="contenedor_input">
+                    {{ formulario.fecha_fin }}
+                    <div class="form_error_msg">{{ formulario.fecha_fin.errors|striptags }}</div>
                 </div>
             </div>
             {% csrf_token %}
@@ -97,6 +105,11 @@ $(function($){
 $(document).ready(function(){
     $("#id_fecha_Inicio").attr("readonly",true);
 	$("#id_fecha_Inicio").datepicker();
+
+	$("#id_fecha_fin").attr("readonly",true);
+	$("#id_fecha_fin").datepicker();
+
+
 	$('.dropdown-toggle').dropdownHover(options);
 });
 </script>
