@@ -26,10 +26,10 @@
                         <div class="label label-inverse" id="nombre_usuario">{{user}}</div>
                     </div>
                     <ul class="nav">
-                        <li><a href="menu_mozo.html">Menu Mozo</a></li>
+                        <li><a href="menu_mozo.html">Crear Comanda</a></li>
                         <li class=""><a href="#">Seleccionar Mesas</a></li>
                         <li><a href="#">Seleccionar Menu</a></li>
-                        <li><a href="#">Finalizar Menu</a></li>
+                        <li><a href="#">Finalizar</a></li>
                     </ul>
                     <div class="cerrar_sesion_fix" id="cerrar_sescion_actual">
                         <a href="{% url 'logout' %}" target="_self">
@@ -47,7 +47,7 @@
                 {% if perms.Administrador.is_admin %}
                 <div class="mesas_seleccionadas">
                     <div class="label label-inverse mesa_seleccionada_item">Accesos Directos</div>
-                    <div class="mesas">
+                    <div>
                         <!-- inicio link admin //-->
                         <div class="label label-success mesa_seleccionada_item mesa_seleccionada_item_mozo">
                             <div class="contenedor_texto_link"><a href="{% url 'administrador' %}" target="_self">Panel
