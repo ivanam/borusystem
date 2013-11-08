@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'gestiones.Index',
     'gestiones.Administrador',
     'gestiones.Producto.altabebida',
+    'gestiones.Producto.modificarbebida',
     'gestiones.Producto.altamenudia',
     'gestiones.Producto.altamenuejecutivo',
     'gestiones.Producto.modificarmenudia',

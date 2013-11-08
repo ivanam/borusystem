@@ -22,4 +22,3 @@ class altaPlatoForm(ModelForm):
         self.fields['seccion'].widget = Select(choices=secciones)
         promocion = ((True, 'Si'), (False, 'No'))
         self.fields['enPromocion'].widget = Select(choices=promocion)
-
