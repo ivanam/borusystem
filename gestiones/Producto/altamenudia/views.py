@@ -19,11 +19,23 @@ def altamenudia(request):
             stock = formulario.cleaned_data['stock']
             descripcion = formulario.cleaned_data['descripcion']
             fecha = formulario.cleaned_data['fecha_Inicio']
-            menu = DelDia(nombre, precio, stock, descripcion, fecha)
-            menu.save()
+            menu = DelDia.objects.create(nombre=nombre,precio= precio,stock= stock, descripcion=descripcion,fecha_Inicio= fecha)
+            #menu.save()
 
 
-    formulario = altaMenuDiaForm()
-    return render_to_response('Producto/altamenudia/altamenudia.html', {'formulario': formulario, 'Plato': platos},
-                              context_instance=RequestContext(request))
+               # formulario = altaMenuDiaForm()
+                #return render_to_response('Producto/altamenudia/altamenudia.html', {'formulario': formulario, 'Plato': platos},
+                 #                         context_instance=RequestContext(request))
 
+            #mostramos que la operacion fue exitosa
+            return render_to_response('Producto/altamenudia/altamenudiaexito.html', {'formulario': formulario, 'Plato': platos},
+                                      context_instance=RequestContext(request))
+
+        return render_to_response('Producto/altamenudiao/altamenudia.html', {'formulario': formulario, 'Plato': platos},
+                                  context_instance=RequestContext(request))
+
+    else:
+
+        formulario = altaMenuDiaForm()
+        return render_to_response('Producto/altamenudia/altamenudia.html', {'formulario': formulario, 'Plato': platos},
+                        context_instance=RequestContext(request))

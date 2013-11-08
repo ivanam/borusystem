@@ -1,0 +1,195 @@
+{% extends "base_administrador.html" %}
+{% block titulo %}Boru - Modificar Menu Dia{% endblock %}
+{% block contenido %}
+
+	<div class="izquierda">
+	  <div class="listado_modificar_mozos cont_redondeado">
+        <div class="label label-inverse titulo_menu">Listado de Menues</div>
+
+       <!-- inicio listado de mozos //-->
+          <!-- inicio encabezados del listado //-->
+          <div class="listado_item_campo_header label label-inverse">
+              <div class="listado_item_campo_base listado_item_campo_02">
+                 &nbsp
+              </div>
+              <div class="listado_item_campo_base listado_item_campo_04" title="Nombre">
+                  Nombre
+              </div>
+
+              <div class="listado_item_campo_base listado_item_campo_02" title="Precio">
+                  Precio
+              </div>
+
+              <div class="listado_item_campo_base listado_item_campo_02" title="Stock">
+                  Stock
+              </div>
+
+              <div class="listado_item_campo_base listado_item_campo_02" title="Activo">
+                  Activo
+              </div>
+
+
+          </div>
+          <!-- fin de encabezados del listado //-->
+
+          {% for m in menues %}
+          <div class="listado_modificar_mozo_item {% if not m.activo %}inactivo{% endif %}">
+
+              <div class="listado_item_campo_base listado_item_campo_02">
+                  <img src="{{STATIC_URL}}img/conf/{% if m.activo %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
+                       urldel="{% url 'modificarmenu_id_del' m.id %}" estado="{{m.activo}}" class="eliminar_menu"
+                       nombre="{{m.id}}"
+                       title="{% if not m.activo %}Acivar{% else %}Desactivar{% endif %} menu: {{m.id}}">
+              </div>
+
+
+              <div class="cargar_modificar_mozo" href="{% url 'modificarmenu_id' m.id %}">
+
+                  <div class="listado_item_campo_base listado_item_campo_04" title="Nombre: {{m.nombre}}">
+                      {{m.nombre|capfirst|truncatechars:10}}
+                  </div>
+
+                  <div class="listado_item_campo_base listado_item_campo_02" title="Precio: {{m.precio}}">
+                      {{m.precio}}
+                  </div>
+
+                  <div class="listado_item_campo_base listado_item_campo_02" title="Stock: {{m.stock}}">
+                      {{m.capacidad}}
+                  </div>
+
+                  <div class="listado_item_campo_base listado_item_campo_02" title="{{m.activo}}">
+                      {{m.activo|truncatechars:6}}
+                  </div>
+
+
+
+              </div>
+          </div>
+          {% endfor %}
+		 <!-- fin listado de mozos//-->
+      </div>
+   </div>
+
+	<div class="derecha">
+	  <div id="con_menu_mesa" class="cont_redondeado contenedor_principal_big">
+    <div class="label label-inverse titulo_menu">Modificar Menues</div>
+    <br>
+
+    <div class="salto_linea"></div>
+    <div id="menues" class="bloque_menues">
+        <div class="salto_linea"></div>
+
+        <!--Aca inicio contenido//-->
+        <form action="" method="post" name="add_menu" id="id_add_menu">
+            {{ formulario.non_field_errors }}
+
+
+
+             <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Nombre </div>
+                <div class="contenedor_input">
+                    <!--<input type="text" name="username" value="" class="validar_campo">-->
+                    {{ formulario.nombre }}
+                    <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
+                </div>
+            </div>
+
+             <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Precio </div>
+                <div class="contenedor_input">
+                    <!--<input type="text" name="username" value="" class="validar_campo">-->
+                    {{ formulario.precio }}
+                    <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Stock </div>
+                <div class="contenedor_input">
+                    <!--<input type="text" name="username" value="" class="validar_campo">-->
+                    {{ formulario.stock }}
+                    <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Descripcion</div>
+                <div class="contenedor_input">
+                    <!--<input type="text" name="username" value="" class="validar_campo">-->
+                    {{ formulario.descripcion }}
+                    <div class="form_error_msg">{{ formulario.descripcion.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Fecha Inicio</div>
+                <div class="contenedor_input">
+                    <!--<input type="password" name="password" value="" class="validar_campo">-->
+                    {{ formulario.fecha_Inicio }}
+                    <div class="form_error_msg">{{ formulario.fecha_Inicio.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg"></span> Platos</div>
+                <div class="contenedor_input">
+                    <!--<input type="text" name="first_name" value="" class="validar_campo">-->
+                    {{ formulario.platos }}
+                    <div class="form_error_msg">{{ formulario.platos.errors|striptags }}</div>
+                </div>
+            </div>
+
+
+                                    {% csrf_token %}
+                                    <div class="salto_linea"></div>
+                                    <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Menu"
+                                           class="btn btn-large btn-primary">
+
+        </form>
+        <!-- Aca fin de contenido//-->
+
+    </div>
+    <!-- fin bloke de mesas//-->
+    <div class="salto_linea"></div>
+    <span class="form_error_msg">* Campos Obligatorios</span>
+</div><!-- fin contenedor principal//-->
+
+    </div><!-- derecha fin//-->
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+
+	 $(".cargar_modificar_mozo").each(function(i){
+	 	$(this).css("cursor","pointer");
+			$(this).click(function(event){
+				var uri=$(this).attr("href");
+				$(location).attr('href',uri);
+			});
+	 });
+
+	 $(".eliminar_menu").each(function(i){
+	 	$(this).css("cursor","pointer");
+
+			$(this).click(function(event){
+				var mozo = $(this).attr("nombre");
+				var estado = $(this).attr("estado");
+				var msg = (estado == "True")?"Usted desea desactivar la mesa ":"Usted desea activar un menu ";
+                if( confirm(msg+mozo+"?") ){
+                   $(location).attr('href', $(this).attr("urldel") );
+                }
+			});
+	 });
+
+	$('.dropdown-toggle').dropdownHover(options);
+
+});
+</script>
+{% endblock %}

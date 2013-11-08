@@ -31,7 +31,9 @@ urlpatterns = patterns('',
 
     url(r'^administrador/altabebida/', include('gestiones.Producto.altabebida.urls')),
     url(r'^administrador/altamenudia/', include('gestiones.Producto.altamenudia.urls')),
-        url(r'^administrador/altamenuejecutivo/', include('gestiones.Producto.altamenuejecutivo.urls')),
+    url(r'^administrador/altamenuejecutivo/', include('gestiones.Producto.altamenuejecutivo.urls')),
+    url(r'^administrador/modificarmenudia/', include('gestiones.Producto.modificarmenudia.urls')),
+    url(r'^administrador/modificarmenuejecutivo/', include('gestiones.Producto.modificarmenuejecutivo.urls')),
     url(r'^administrador/altaplato/', include('gestiones.Producto.altaplato.urls')),
     url(r'^administrador/modificarplato/', include('gestiones.Producto.modificarplato.urls')),
 
