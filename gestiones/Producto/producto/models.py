@@ -1,7 +1,5 @@
 from django.contrib.auth.models import *
 
-
-
 class Producto(models.Model):
     nombre = models.CharField("Nombre", max_length=50)
     precio = models.FloatField("Precio")

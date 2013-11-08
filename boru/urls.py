@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     url(r'^administrador/', include('gestiones.Administrador.urls')),
 
     url(r'^administrador/altabebida/', include('gestiones.Producto.altabebida.urls')),
+    url(r'^administrador/modificarbebida/', include('gestiones.Producto.modificarbebida.urls')),
     url(r'^administrador/altamenudia/', include('gestiones.Producto.altamenudia.urls')),
     url(r'^administrador/altamenuejecutivo/', include('gestiones.Producto.altamenuejecutivo.urls')),
     url(r'^administrador/modificarmenudia/', include('gestiones.Producto.modificarmenudia.urls')),
