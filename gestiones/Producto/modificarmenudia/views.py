@@ -8,8 +8,7 @@ from django.http import HttpResponseRedirect
 
 
 @permission_required('Administrador.is_admin', login_url="login")
-def modificarmenudia(request, id_menu = None):
-
+def modificarmenudia(request, id_menu=None):
     #rescato los menues
     menues = DelDia.objects.all().order_by('-activo')
 
@@ -18,15 +17,16 @@ def modificarmenudia(request, id_menu = None):
         unMenu = DelDia.objects.get(pk=id_menu)
 
         #creo diccionario con los datos del mozo para mostrarlos ne el formulario
-        datosMenu = {'id': unMenu.id, 'nombre': unMenu.nombre, 'precio': unMenu.precio, 'stock':unMenu.stock, 'descripcion': unMenu.descripcion,
+        datosMenu = {'id': unMenu.id, 'nombre': unMenu.nombre, 'precio': unMenu.precio, 'stock': unMenu.stock,
+                     'descripcion': unMenu.descripcion,
                      'fecha_Inicio': unMenu.fecha_Inicio, 'platos': unMenu.platos}
 
     except:
         datosMenu = ''
-        unMenu=None
+        unMenu = None
 
 
-     #si se apreto el boton de modificar
+        #si se apreto el boton de modificar
     if request.method == 'POST' and unMenu != None:
 
         #le indico al form que tome los datos del request y le paso la instancia de user que obtuve mas arriba
@@ -47,9 +47,9 @@ def modificarmenudia(request, id_menu = None):
             unMenu.nombre = nombre
             unMenu.precio = precio
             unMenu.stock = stock
-            unMenu.descripcion= descripcion
-            unMenu.fecha_Inicio= fecha_Inicio
-            unMenu.platos = platos
+            unMenu.descripcion = descripcion
+            unMenu.fecha_Inicio = fecha_Inicio
+           # unMenu.platos = platos
             unMenu.save()
 
             #mostramos que la operacion fue exitosa
@@ -72,12 +72,11 @@ def modificarmenudia(request, id_menu = None):
 
 @permission_required('Administrador.is_admin', login_url="login")
 def modificarmenudel(request, id_menu):
-
     try:
         #obtengo en el caso de que venga el id por GET, al usuario
         unMenu = DelDia.objects.get(pk=id_menu)
     except:
-        unaMenu=None
+        unaMenu = None
 
     #si se apreto el boton de modificar
     if request.method == 'GET' and unMenu != None:

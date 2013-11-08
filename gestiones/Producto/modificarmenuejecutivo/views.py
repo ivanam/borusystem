@@ -8,18 +8,18 @@ from django.http import HttpResponseRedirect
 
 
 @permission_required('Administrador.is_admin', login_url="login")
-def modificarmenuejecutivo(request, id_menu = None):
+def modificarmenuejecutivo(request, id_menue = None):
 
     #rescato los menues
     menues = Ejecutivo.objects.all().order_by('-activo')
 
     try:
         #obtengo en el caso de que venga el id por GET, al usuario
-        unMenu = Ejecutivo.objects.get(pk=id_menu)
+        unMenu = Ejecutivo.objects.get(pk=id_menue)
 
         #creo diccionario con los datos del mozo para mostrarlos ne el formulario
         datosMenu = {'id': unMenu.id, 'nombre': unMenu.nombre, 'precio': unMenu.precio, 'stock':unMenu.stock, 'descripcion': unMenu.descripcion,
-                     'fecha_Inicio': unMenu.fecha_Inicio,'fecha_fin': unMenu.fecha_fin, 'platos': unMenu.platos}
+                     'fecha_Inicio': unMenu.fecha_Inicio,'fecha_fin': unMenu.fecha_fin}
 
     except:
         datosMenu = ''
@@ -41,7 +41,7 @@ def modificarmenuejecutivo(request, id_menu = None):
             descripcion = formulario.cleaned_data['descripcion']
             fecha_Inicio = formulario.cleaned_data['fecha_Inicio']
             fecha_fin = formulario.cleaned_data['fecha_fin']
-            platos = formulario.cleaned_data['platos']
+            #platos = formulario.cleaned_data['platos']
 
 
             #seteo los nuevos datos en el objeto usuarioMozo que obtuvimos al principio
@@ -51,7 +51,7 @@ def modificarmenuejecutivo(request, id_menu = None):
             unMenu.descripcion= descripcion
             unMenu.fecha_Inicio= fecha_Inicio
             unMenu.fecha_fin= fecha_fin
-            unMenu.platos = platos
+            #unMenu.platos = platos
             unMenu.save()
 
             #mostramos que la operacion fue exitosa
@@ -73,11 +73,11 @@ def modificarmenuejecutivo(request, id_menu = None):
 
 
 @permission_required('Administrador.is_admin', login_url="login")
-def modificarmenuedel(request, id_menu):
+def modificarmenuedel(request, id_menue):
 
     try:
         #obtengo en el caso de que venga el id por GET, al usuario
-        unMenu = Ejecutivo.objects.get(pk=id_menu)
+        unMenu = Ejecutivo.objects.get(pk=id_menue)
     except:
         unaMenu=None
 
