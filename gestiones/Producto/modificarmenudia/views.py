@@ -19,7 +19,7 @@ def modificarmenudia(request, id_menu=None):
         #creo diccionario con los datos del mozo para mostrarlos ne el formulario
         datosMenu = {'id': unMenu.id, 'nombre': unMenu.nombre, 'precio': unMenu.precio, 'stock': unMenu.stock,
                      'descripcion': unMenu.descripcion,
-                     'fecha_Inicio': unMenu.fecha_Inicio, 'platos': unMenu.platos}
+                     'fecha_Inicio': unMenu.fecha_Inicio}
 
     except:
         datosMenu = ''
@@ -30,7 +30,7 @@ def modificarmenudia(request, id_menu=None):
     if request.method == 'POST' and unMenu != None:
 
         #le indico al form que tome los datos del request y le paso la instancia de user que obtuve mas arriba
-        formulario = modificarmenudia(request.POST, instance=unMenu)
+        formulario = modificarMenuDiaForm(request.POST, instance=unMenu)
 
         #si el formulario es valido
         if formulario.is_valid():
@@ -40,7 +40,7 @@ def modificarmenudia(request, id_menu=None):
             stock = formulario.cleaned_data['stock']
             descripcion = formulario.cleaned_data['descripcion']
             fecha_Inicio = formulario.cleaned_data['fecha_Inicio']
-            platos = formulario.cleaned_data['platos']
+            #platos = formulario.cleaned_data['platos']
 
 
             #seteo los nuevos datos en el objeto usuarioMozo que obtuvimos al principio
@@ -49,7 +49,7 @@ def modificarmenudia(request, id_menu=None):
             unMenu.stock = stock
             unMenu.descripcion = descripcion
             unMenu.fecha_Inicio = fecha_Inicio
-           # unMenu.platos = platos
+           #     unMenu.platos = platos
             unMenu.save()
 
             #mostramos que la operacion fue exitosa
@@ -76,7 +76,7 @@ def modificarmenudel(request, id_menu):
         #obtengo en el caso de que venga el id por GET, al usuario
         unMenu = DelDia.objects.get(pk=id_menu)
     except:
-        unaMenu = None
+        unMenu = None
 
     #si se apreto el boton de modificar
     if request.method == 'GET' and unMenu != None:

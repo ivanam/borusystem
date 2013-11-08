@@ -30,7 +30,7 @@ def modificarmenuejecutivo(request, id_menue = None):
     if request.method == 'POST' and unMenu != None:
 
         #le indico al form que tome los datos del request y le paso la instancia de user que obtuve mas arriba
-        formulario = modificarmenuejecutivo(request.POST, instance=unMenu)
+        formulario = modificarMenuEjecutivoForm(request.POST, instance=unMenu)
 
         #si el formulario es valido
         if formulario.is_valid():

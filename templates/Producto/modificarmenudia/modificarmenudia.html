@@ -135,16 +135,6 @@
                 </div>
             </div>
 
-            <div class="contenefor_form_row">
-
-                <div class="contenedor_texto"><span class="form_error_msg"></span> Platos</div>
-                <div class="contenedor_input">
-                    <!--<input type="text" name="first_name" value="" class="validar_campo">-->
-                    {{ formulario.platos }}
-                    <div class="form_error_msg">{{ formulario.platos.errors|striptags }}</div>
-                </div>
-            </div>
-
 
                                     {% csrf_token %}
                                     <div class="salto_linea"></div>
