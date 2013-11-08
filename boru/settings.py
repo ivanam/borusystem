@@ -10,7 +10,7 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
-
+#holaaa
 MANAGERS = ADMINS
 
 DATABASES = {
