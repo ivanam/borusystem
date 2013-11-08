@@ -158,6 +158,7 @@ INSTALLED_APPS = (
     'gestiones.Cajero',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    # Este es un comentario de ivana
 )
 
 # A sample logging configuration. The only tangible logging
