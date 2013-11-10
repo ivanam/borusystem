@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'gestiones.Index',
     'gestiones.Administrador',
     'gestiones.Producto.altabebida',
+    'gestiones.Producto.modificarbebida',
     'gestiones.Producto.altamenudia',
     'gestiones.Producto.altamenuejecutivo',
     'gestiones.Producto.modificarmenudia',
@@ -160,7 +161,6 @@ INSTALLED_APPS = (
     'gestiones.Comanda.comanda',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    # Este es un comentario de ivana
 )
 
 # A sample logging configuration. The only tangible logging
