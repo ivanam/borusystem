@@ -1,0 +1,22 @@
+
+<div id="{{seccion.nombre}}">
+  <table class="table table-hover" id="tb_cerveza">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Cantidad</th>
+      <th scope="col">Acciones</th>
+    </tr>
+    {% for p in seccion.platoss.all %}
+    <tr class="tr_item_info" activo="false" cantidad="1" precio="40" nombre="Heineken" procesado="false" id="tr_0">
+      <th scope="row">1</th>
+      <td>{{p.nombre}}</td>
+      <td>{{p.precio}}</td>
+      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2" readonly="true"></td>
+      <td><input name="mas" type="button" value="+" class="btn btn-large">
+        <input name="menos" type="button" value="-" class="btn btn-large"></td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>

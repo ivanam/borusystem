@@ -722,9 +722,10 @@ margin:5px auto 5px auto;*/
 
 .mesa_seleccionada_item{
 width:140px;
-height:28px;
+height:auto;
 margin:1px 1px;
 }
+
 
 .mesa_item_ocupada{
 background-color:#ff0000;

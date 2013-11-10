@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Context
 from django.template.loader import get_template
+from gestiones.Carta.altacarta.models import SeccionCarta
 from gestiones.Salon.altamesa.models import Mesa
 
 
@@ -23,16 +24,32 @@ def crearcomanda(request):
         #if isinstance(request.POST['cantidadC'], int):
         print("valid")
         #lo guardo ne una variable de session
+        cantidad = request.POST['cantidadC']
         request.session['cantidadC']=request.POST['cantidadC']
         #recupero las mesas que estan activas
         mesas=Mesa.objects.filter(activo__exact=1)
         #recupero el panel que muestra las mesas seleccionadas
         panel_seleccionar_mesa=get_template('Mozo/panel_mesas_seleccionadas.html')
         #lo inserto en el resto del template y lo muestro
-        return render_to_response('Mozo/seleccionar_mesas.html', {'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({}) ),'mesas':mesas }, context_instance=RequestContext(request))
+        return render_to_response('Mozo/seleccionar_mesas.html', {'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas }, context_instance=RequestContext(request))
 
         #return HttpResponseRedirect(reverse('mozo'))
     else:
         print("else")
         #si trato de entrar sin haber enviado el form,me vuelve a la primera pagina
         return HttpResponseRedirect(reverse('mozo'))
+
+def seleccionarproductos(request):
+    seccion = SeccionCarta.objects.filter(activo__exact=1)
+    panel_seleccionar_producto=get_template('Mozo/panel_menu_seleccionado.html')
+    return render_to_response('Mozo/seleccionar_menu.html', {'seccion': seccion, 'panel_seleccionar_mesa':panel_seleccionar_producto.render( Context({}) )}, context_instance=RequestContext(request))
+
+def cargararproductosajax(request):
+    print("Entre en la funcion de vista")
+    if request.method == 'GET':
+        id_seccion = request.GET['id_seccion']
+        seccion = SeccionCarta.objects.get(pk=id_seccion)
+        #platos = [(secc.key, secc.value) for secc in seccion.platoss]
+        #platos = seccion.platoss
+        return render_to_response('Mozo/productos_items.html', {'seccion': seccion}, context_instance=RequestContext(request))
+

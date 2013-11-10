@@ -156,6 +156,8 @@ INSTALLED_APPS = (
     'gestiones.Logout',
     'gestiones.Mozo',
     'gestiones.Cajero',
+
+    'gestiones.Comanda.comanda',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     # Este es un comentario de ivana

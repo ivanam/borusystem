@@ -1,68 +1,7 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Boru Resto-Bar</title>
-<link rel="stylesheet" href="css/bootstrap.css"  type="text/css" media="all" />
-<link rel="stylesheet" href="css/boru.css"  type="text/css" media="all" />
-<script type="text/javascript" language="javascript" src="js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript" language="javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" language="javascript" src="js/jquery-cookie.js"></script>
-<script type="text/javascript" language="javascript" src="js/funciones.js"></script>
-</head>
-<body>
-<div id="contenedor">
-  <div id="cabecera" class="cont_cabecera"><img src="img/boru_logo2.png" width="120"></div>
-  <div id="cuerpo">
-    <!-- inicio del contenido de la pagina -->
-    <!--inicio de nav bar //-->
-    <div class="navbar">
-      <div class="navbar-inner">
-        <div class="usuario_log_fix">
-          <div class="icon-user"></div>
-          <div class="label label-inverse" id="nombre_usuario">Gaston Mura</div>
-        </div>
-        <ul class="nav">
-          <li><a href="menu_mozo.html">Menu Mozo</a></li>
-          <li><a href="crear_comanda.html">Seleccionar Mesas</a></li>
-          <li class="active"><a href="#">Seleccionar Menu</a></li>
-          <li><a href="#">Finalizar Menu</a></li>
-        </ul>
-        <div class="cerrar_sesion_fix" id="cerrar_sescion_actual">
-          <div class="label label-inverse">&nbsp;&nbsp;Cerrar Sesion&nbsp;&nbsp;</div>
-        </div>
-      </div>
-    </div>
-    <!-- fin de nav bar //-->
-    <div class="contenedor_principal_izq">
-      <div class="mesas_seleccionadas">
-        <div class="label label-inverse mesa_seleccionada_item">Menu Seleccionado</div>
-        <div class="mesas">
-          <!-- inicio menus selecionados //-->
-          <div class="badge badge-inverse menu_producto">Coca cola</div>
-          <div class="badge badge-warning">1</div>
-          <div class="badge badge-success">$15</div>
-          <div class="salto_linea"></div>
-          <div class="badge badge-inverse menu_producto">Sprite</div>
-          <div class="badge badge-warning">2</div>
-          <div class="badge badge-success">$15</div>
-          <div class="salto_linea"></div>
-          <div class="badge badge-inverse menu_producto">Quilmes</div>
-          <div class="badge badge-warning">1</div>
-          <div class="badge badge-success">$35</div>
-          <div class="salto_linea"></div>
-          <div class="badge badge-inverse menu_producto">Pizza Co</div>
-          <div class="badge badge-warning">1</div>
-          <div class="badge badge-success">$45</div>
-          <div class="salto_linea"></div>
-          <div class="badge badge-inverse menu_producto">Pizza Ca</div>
-          <div class="badge badge-warning">1</div>
-          <div class="badge badge-success">$50</div>
-          <!-- fin menus selecionados //-->
-        </div>
-        <div class="label label-inverse mesa_seleccionada_item">Importe Total: <span id="total_comensales">$175</span></div>
-      </div>
-    </div>
-    <div class="contenedor_principal_centro">
+{% extends "base_mozo.html" %}
+{% block titulo %}Boru - Seleccionar Mesas{% endblock %}
+{% block contenido %}
+
       <div class="contenedor_secundario">
         <div class="btn_anterior" id="btn_anterior" alt="Anterior"></div>
         <div class="btn_siguiente" id="btn_siguiente" alt="Siguiente"></div>
@@ -71,108 +10,26 @@
           <br>
           <div class="salto_linea"></div>
           <div id="mesas_libres" class="bloque_mesas">
-            <div id="cat_01" class="cat_item" rel="Tragos">
+            {% for s in seccion %}
+            <div id="cat_01" class="cat_item" rel="{{s.nombre|capfirst}}" id_seccion="{{s.id}}">
               <div class="img_cont"> <img src="img/comida/glyphicons_000_glass.png"> </div>
-              <div class="label label-inverse">Tragos</div>
+              <div class="label label-inverse">{{s.nombre}}</div>
             </div>
-            <div id="cat_02" class="cat_item" rel="Vinos">
-              <div class="img_cont"> <img src="img/comida/glyphicons_291_celebration.png"> </div>
-              <div class="label label-inverse">Vinos</div>
-            </div>
-            <div id="cat_03" class="cat_item" rel="Jugos">
-              <div class="img_cont"> <img src="img/comida/glyphicons_273_drink.png"> </div>
-              <div class="label label-inverse">Jugos</div>
-            </div>
-            <div id="cat_04" class="cat_item" rel="Cerveza">
-              <div class="img_cont"> <img src="img/comida/glyphicons_274_beer.png"> </div>
-              <div class="label label-inverse">Cervezas</div>
-            </div>
-            <div id="cat_05" class="cat_item" rel="Cafe">
-              <div class="img_cont"> <img src="img/comida/glyphicons_294_coffe_cup.png"> </div>
-              <div class="label label-inverse">Cafe</div>
-            </div>
-            <div id="cat_06" class="cat_item" rel="Te">
-              <div class="img_cont"> <img src="img/comida/glyphicons_292_tea_kettle.png"> </div>
-              <div class="label label-inverse">Te</div>
-            </div>
-            <div id="cat_07" class="cat_item" rel="Comida Rapida">
-              <div class="img_cont"> <img src="img/comida/glyphicons_275_fast_food.png"> </div>
-              <div class="label label-inverse">Comida<br>
-                Rapida</div>
-            </div>
-            <div id="cat_08" class="cat_item" rel="Pizzas">
-              <div class="img_cont"> <img src="img/comida/glyphicons_277_pizza.png"> </div>
-              <div class="label label-inverse">Pizzas</div>
-            </div>
-            <div id="cat_09" class="cat_item" rel="Platos Calientes">
-              <div class="img_cont"> <img src="img/comida/glyphicons_295_pot.png"> </div>
-              <div class="label label-inverse">Platos <br>
-                Calientes</div>
-            </div>
-            <div id="cat_10" class="cat_item" rel="Pastas">
-              <div class="img_cont"> <img src="img/comida/glyphicons_276_cutlery.png"> </div>
-              <div class="label label-inverse">Pastas</div>
-            </div>
-            <div id="cat_11" class="cat_item" rel="Pescado">
-              <div class="img_cont"> <img src="img/comida/glyphicons_254_fishes.png"> </div>
-              <div class="label label-inverse">Pescado</div>
-            </div>
-            <div id="cat_12" class="cat_item" rel="Postres">
-              <div class="img_cont"> <img src="img/comida/glyphicons_272_cake.png"> </div>
-              <div class="label label-inverse">Postres</div>
-            </div>
-            <div id="cat_13" class="cat_item" rel="Tortas">
-              <div class="img_cont"> <img src="img/comida/glyphicons_278_birthday_cake.png"> </div>
-              <div class="label label-inverse">Tortas</div>
-            </div>
-            <div id="cat_12" class="cat_item" rel="Postres">
-              <div class="img_cont"> <img src="img/comida/glyphicons_272_cake.png"> </div>
-              <div class="label label-inverse">Postres</div>
-            </div>
-            <div id="cat_13" class="cat_item" rel="Tortas">
-              <div class="img_cont"> <img src="img/comida/glyphicons_278_birthday_cake.png"> </div>
-              <div class="label label-inverse">Tortas</div>
-            </div>
-            <div id="cat_12" class="cat_item" rel="Postres">
-              <div class="img_cont"> <img src="img/comida/glyphicons_272_cake.png"> </div>
-              <div class="label label-inverse">Postres</div>
-            </div>
-            <div id="cat_13" class="cat_item" rel="Tortas">
-              <div class="img_cont"> <img src="img/comida/glyphicons_278_birthday_cake.png"> </div>
-              <div class="label label-inverse">Tortas</div>
-            </div>
-            <div id="cat_12" class="cat_item" rel="Postres">
-              <div class="img_cont"> <img src="img/comida/glyphicons_272_cake.png"> </div>
-              <div class="label label-inverse">Postres</div>
-            </div>
-            <div id="cat_13" class="cat_item" rel="Tortas">
-              <div class="img_cont"> <img src="img/comida/glyphicons_278_birthday_cake.png"> </div>
-              <div class="label label-inverse">Tortas</div>
-            </div>
-            <div id="cat_12" class="cat_item" rel="Postres">
-              <div class="img_cont"> <img src="img/comida/glyphicons_272_cake.png"> </div>
-              <div class="label label-inverse">Postres</div>
-            </div>
-            <div id="cat_13" class="cat_item" rel="Tortas">
-              <div class="img_cont"> <img src="img/comida/glyphicons_278_birthday_cake.png"> </div>
-              <div class="label label-inverse">Tortas</div>
-            </div>
+             {% endfor %}
           </div>
         </div>
       </div>
       <div class="salto_linea"></div>
       <!-- fin del contenido de la pagina -->
-    </div>
-  </div>
-  <div id="pie" class="cont_copy">&nbsp;&nbsp;&nbsp;Boru Resto-Bar - 2013 <span class="icon-tag"> </span> </div>
-</div>
 <!-- Modal -->
 <div id="myModal" class="modal_seleccion_menu modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel" class="modal-titulo"></h3>
   </div>
-  <div class="modal-body"> </div>
+  <div class="modal-body">
+
+  </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Aceptar</button>
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
@@ -180,266 +37,31 @@
 </div>
 <!-- Fin Modal -->
 <!-- contenido de las modals //-->
-<!-- cervezas //-->
-<div class="hide" id="cerveza">
-  <table class="table table-hover" id="tb_cerveza">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Precio</th>
-      <th scope="col">Cantidad</th>
-      <th scope="col">Acciones</th>
-    </tr>
-    <tr class="tr_item_info" activo="false" cantidad="1" precio="40" nombre="Heineken" procesado="false" id="tr_0">
-      <th scope="row">1</th>
-      <td>Heineken</td>
-      <td>40</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2" readonly="true"></td>
-      <td><input name="mas" type="button" value="+" class="btn btn-large">
-        <input name="menos" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Santa Fe</td>
-      <td>45</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Quilmes Cero</td>
-      <td>35</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">4</th>
-      <td>Quilmes Block</td>
-      <td>40</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">5</th>
-      <td>Quilmes Cristal</td>
-      <td>30</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">6</th>
-      <td>Palermo</td>
-      <td>30</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-  </table>
-</div>
-<!-- fin cervezas //-->
-<!-- jugos //-->
-<div class="hide" id="jugos">
-  <table class="table table-hover" id="tb_jugos">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Precio</th>
-      <th scope="col">Cantidad</th>
-      <th scope="col">Acciones</th>
-    </tr>
-    <tr>
-      <th scope="row">1</th>
-      <td>Naranjas Exprimidas</td>
-      <td>25</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Multifruta Baggio</td>
-      <td>30</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Pomelo</td>
-      <td>15</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">4</th>
-      <td>Pera Grande</td>
-      <td>40</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">5</th>
-      <td>Multifruta Cepita</td>
-      <td>25</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">6</th>
-      <td>Mango</td>
-      <td>22</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-  </table>
-</div>
-<!-- fin jugos //-->
-<!-- vinos //-->
-<div class="hide" id="vinos">
-  <table class="table table-hover" id="tb_vinos">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Precio</th>
-      <th scope="col">Cantidad</th>
-      <th scope="col">Acciones</th>
-    </tr>
-    <tr>
-      <th scope="row">1</th>
-      <td>Tinto Norton</td>
-      <td>25</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Blanco Norton</td>
-      <td>30</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Vino Espumante Cosecha 2000</td>
-      <td>50</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">4</th>
-      <td>Tinto Merlot Terminator</td>
-      <td>40</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">5</th>
-      <td>Cavernet Sobita Tinto</td>
-      <td>25</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">6</th>
-      <td>Blanco Bodegas Stornnel 1985</td>
-      <td>250</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-  </table>
-</div>
-<!-- fin vinos //-->
-<!-- pizzas //-->
-<div class="hide" id="pizzas">
-  <table class="table table-hover" id="tb_pizzas">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Precio</th>
-      <th scope="col">Cantidad</th>
-      <th scope="col">Acciones</th>
-    </tr>
-    <tr>
-      <th scope="row">1</th>
-      <td>Completa</td>
-      <td>45</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Calabresa</td>
-      <td>35</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>A los cuatro quesos</td>
-      <td>50</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">4</th>
-      <td>Cebolla, Morron y Huevo</td>
-      <td>40</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr>
-      <th scope="row">5</th>
-      <td>Queso roquefort</td>
-      <td>55</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-    <tr class="tr_item_info" activo="false" cantidad="1" precio="60" nombre="Con Anchoas" procesado="false" id="tr_1">
-      <th scope="row">6</th>
-      <td>Con Anchoas</td>
-      <td>60</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2"></td>
-      <td><input name="" type="button" value="+" class="btn btn-large">
-        <input name="" type="button" value="-" class="btn btn-large"></td>
-    </tr>
-  </table>
-</div>
-<!-- fin pizzas //-->
 <!-- fin conrenido de las modals //-->
+{% endblock %}
+
+{% block script %}
+
 <script>
+function cargar_productos(id_seccion,nombre_seccion){
+
+$.ajax({
+                type: "GET",
+                url: "{% url 'cargarproductosajax' %}",
+                data: "id_seccion="+id_seccion,
+                success: function(platos){
+
+                    $('.modal-titulo').html("Seccion "+nombre_seccion);
+                    $('.modal-body').html(platos);
+                    $('#myModal').modal("show");
+
+                  }
+            });
+}
 $(document).ready(function(){
      
-	//leo lo que guarde
-	$("#nombre_usuario").html($.cookie('usuario'));
-	
-	//le doy funcionalidad al boton cerrar sesion
-	$("#cerrar_sescion_actual").click(function(){
-		delCookies();	
-		document.location.href = 'index.html';
-	});
-	
-
 	$("#btn_anterior").click(function(){
-		document.location.href = 'crear_comanda.html';
+		document.location.href = "{% url 'crearcomanda' %}";
 	});	
 	$("#btn_siguiente").click(function(){
 		document.location.href = 'finalizar_comanda.html';
@@ -449,59 +71,12 @@ $(document).ready(function(){
 	$(".cat_item").each(function(i){
 				 
 		 $(this).click(function(event){
-		 
-		 	var seccion = $(this).attr("rel");
-						
-			var contenido = $("#"+seccion.toLowerCase()).html();
-			
-		    $('.modal-titulo').html("Seccion "+seccion);
-		    $('.modal-body').html(contenido);
-			$('#myModal').modal("show")
-			
-			
-			//le asocio a cada tr de la tabla de productos un accion click
-			$(function(){
-				
-				$(".tr_item_info").click(function(e){
-					
-					 //rescato valores de la row
-					 var activo=$(this).attr("activo");
-					 var cantidad=$(this).attr("cantidad");
-					 var precio=$(this).attr("precio");
-					 var nombre=$(this).attr("nombre");
-					 var procesado=$(this).attr("procesado");
-					 var id=$(this).attr("id");
-			
-					activo= (activo == "false")?"true":"false";
-					
-					$(this).attr("activo",activo);
-					
-					if(activo == "false"){	
-						//remuevo la clase asociada
-						$(this).removeClass("tr_item_info_seleccionado");
-						$(this).removeClass("tr_item_info_hover");
-					}
-					else
-					{					
-						//add la clase asociada
-						$(this).addClass("tr_item_info_seleccionado");
-						$(this).addClass("tr_item_info_hover");
-					}	
-					
-					
-				})
-			})
-			//fin asociacion
-			
-			
-			
-			    
+		    cargar_productos($(this).attr("id_seccion"),$(this).attr("rel"));
 		 });
-     });	
+     });
 	
 	
 	
 });
 </script>
-</body>
-</html>
+{% endblock %}
