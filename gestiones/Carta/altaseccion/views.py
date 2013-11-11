@@ -13,7 +13,8 @@ def altaseccion(request):
                 carta = Carta.objects.get(vigente=True)
                 nombre = formulario.cleaned_data['nombre']
                 categoria = formulario.cleaned_data['categoria']
-                seccion = SeccionCarta.objects.create(nombre=nombre, categoria=categoria, activo=True, cartavigente=carta)
+                imagen = formulario.cleaned_data['imagen']
+                seccion = SeccionCarta.objects.create(nombre=nombre, categoria=categoria, activo=True, cartavigente=carta, imagen=imagen)
                 carta.secciones.add(seccion)
                 carta.save()
                 return render_to_response('Carta/altaseccionExito.html', {},context_instance=RequestContext(request))

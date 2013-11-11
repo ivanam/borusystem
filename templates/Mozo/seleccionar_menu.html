@@ -12,7 +12,7 @@
           <div id="mesas_libres" class="bloque_mesas">
             {% for s in seccion %}
             <div id="cat_01" class="cat_item" rel="{{s.nombre|capfirst}}" id_seccion="{{s.id}}">
-              <div class="img_cont"> <img src="img/comida/glyphicons_000_glass.png"> </div>
+              <div class="img_cont"> <img src="{{STATIC_URL}}img/comida/{{s.imagen}}"> </div>
               <div class="label label-inverse">{{s.nombre}}</div>
             </div>
              {% endfor %}

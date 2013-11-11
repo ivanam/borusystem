@@ -8,6 +8,6 @@ class altaSeccionForm(ModelForm):
     class Meta:
         model = SeccionCarta
         fields = (
-            'nombre', 'categoria')
+            'nombre', 'categoria','imagen')
 
 

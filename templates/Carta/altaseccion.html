@@ -34,6 +34,14 @@
                 </div>
             </div>
 
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Imagen</div>
+                <div class="contenedor_input">
+                    {{ formulario.imagen }}
+                    <div class="form_error_msg">{{ formulario.imagen.errors|striptags }}</div>
+                </div>
+            </div>
+
             {% csrf_token %}
             <div class="salto_linea"></div>
             <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Alta Seccion"
@@ -74,6 +82,16 @@ $(function($){
 });
 
 $(document).ready(function(){
+
+
+    $("#id_imagen option").each(function(i){
+        var imageURL="{{STATIC_URL}}img/comida/"+$(this).val();
+        $(this).css("background", "transparent url('"+imageURL+"') no-repeat right center");
+        $(this).css("height","45px");
+        $(this).css("border-bottom","1px solid #cccccc");
+        $(this).css("padding-right","10px");
+    });
+
     $("#id_fecha_Inicio").attr("readonly",true);
 	$("#id_fecha_Inicio").datepicker();
 	$('.dropdown-toggle').dropdownHover(options);
