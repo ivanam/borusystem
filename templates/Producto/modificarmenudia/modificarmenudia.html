@@ -169,10 +169,10 @@ $(document).ready(function(){
 	 	$(this).css("cursor","pointer");
 
 			$(this).click(function(event){
-				var nombre = $(this).attr("nombre");
+				var mozo = $(this).attr("nombre");
 				var estado = $(this).attr("estado");
 				var msg = (estado == "True")?"Usted desea desactivar el menu ":"Usted desea activar un menu ";
-                if( confirm(msg+mesa+"?") ){
+                if( confirm(msg+mozo+"?") ){
                    $(location).attr('href', $(this).attr("urldel") );
                 }
 			});
