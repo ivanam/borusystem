@@ -32,8 +32,8 @@ class Comanda(models.Model):
     cantidadC = models.IntegerField("CantidadC")
     cerrada = models.BooleanField ("Cerrada", default=False)
     detalles = models.ManyToManyField(DetalleComanda, related_name="tiene", null=True, blank=True)
-    estrategiaC = models.ForeignKey(EstrategiaComanda)
-    estrategiaP = models.ForeignKey(EstrategiaPedido)
+    estrategiaC = models.ForeignKey(EstrategiaComanda, null=True, blank=True)
+    estrategiaP = models.ForeignKey(EstrategiaPedido, null=True, blank=True)
     mesas = models.ManyToManyField(Mesa, related_name="ocupa", null=True, blank=True)
     mozo = models.ForeignKey(Personal)
 

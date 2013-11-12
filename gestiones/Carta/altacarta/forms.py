@@ -14,3 +14,5 @@ class altaCartaForm(ModelForm):
         super(altaCartaForm, self).__init__(*args, **kwargs)
         vigente = ((True, 'vigente'), (False, 'No vigente'))
         self.fields['vigente'].widget = Select(choices=vigente)
+
+
