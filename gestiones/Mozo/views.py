@@ -45,7 +45,7 @@ def seleccionarproductos(request):
     return render_to_response('Mozo/seleccionar_menu.html', {'seccion': seccion, 'panel_seleccionar_mesa':panel_seleccionar_producto.render( Context({}) )}, context_instance=RequestContext(request))
 
 def cargararproductosajax(request):
-    print("Entre en la funcion de vista")
+    print("Entre en la funcion de vista aca")
     if request.method == 'GET':
         id_seccion = request.GET['id_seccion']
         seccion = SeccionCarta.objects.get(pk=id_seccion)
