@@ -64,7 +64,7 @@ $(document).ready(function(){
 		document.location.href = "{% url 'crearcomanda' %}";
 	});	
 	$("#btn_siguiente").click(function(){
-		document.location.href = 'finalizar_comanda.html';
+		document.location.href = "{% url 'finalizar' %}";
 	});
 	
 	//le asocio una funcion a cada miembro d ela clase cat_item

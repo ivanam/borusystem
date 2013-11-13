@@ -7,4 +7,4 @@ class altaEstrategiaComandaForm(ModelForm):
     class Meta:
         model = EstrategiaComanda
         fields = (
-            'nombre', 'hora_inicio', 'hora_fin')
+            'hora_inicio', 'hora_fin')
