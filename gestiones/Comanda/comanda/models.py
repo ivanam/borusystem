@@ -11,6 +11,7 @@ class EstrategiaServicio(models.Model):
     nombre = models.CharField("Nombre", max_length=50)
     hora_inicio = models.TimeField("Inicio", null=True, blank=True)
     hora_fin = models.TimeField("Fin", null=True, blank=True)
+
     class Meta:
         abstract = True
 
