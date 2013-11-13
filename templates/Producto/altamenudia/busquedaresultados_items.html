@@ -1,0 +1,21 @@
+{% for m in plato %}
+        <div class="listado_eliminar_mozo_item {% if not m.activo %}inactivo{% endif %}">
+
+            <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+                <input type="checkbox" name="chkId" class="check_add_plato" value="{{m.id}}">
+            </div>
+
+            <div class="listado_item_campo_base listado_item_campo_06 flotar_iz" title="{{m.nombre|capfirst}}">
+                {{m.nombre|capfirst|truncatechars:20}}
+            </div>
+
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.precio}}">
+                {{m.precio}}
+            </div>
+
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.stock}}">
+                {{m.stock}}
+            </div>
+
+        </div>
+{% endfor %}

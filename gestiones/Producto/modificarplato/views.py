@@ -21,7 +21,7 @@ def modificarplato(request, id_plato = None):
 
         #creo diccionario con los datos del mozo para mostrarlos ne el formulario
         datosPlato = {'nombre': plato_id.nombre, 'precio': plato_id.precio,
-                     'stock': plato_id.stock,
+                     'stock': plato_id.stock,'descripcion':plato_id.descripcion,
                      'enPromocion': plato_id.enPromocion, 'descuento': plato_id.descuento,
                      'seccion': plato_id.seccion}
     except:

@@ -19,23 +19,25 @@ def crearcomanda(request):
 
     #si se envio el formulario
     if request.method == 'POST':
-        print("post")
-        #si lo enviado es un entero
-        #if isinstance(request.POST['cantidadC'], int):
-        print("valid")
-        #lo guardo ne una variable de session
-        cantidad = request.POST['cantidadC']
-        request.session['cantidadC']=request.POST['cantidadC']
-        #recupero las mesas que estan activas
-        mesas=Mesa.objects.filter(activo__exact=1)
-        #recupero el panel que muestra las mesas seleccionadas
-        panel_seleccionar_mesa=get_template('Mozo/panel_mesas_seleccionadas.html')
-        #lo inserto en el resto del template y lo muestro
-        return render_to_response('Mozo/seleccionar_mesas.html', {'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas }, context_instance=RequestContext(request))
 
-        #return HttpResponseRedirect(reverse('mozo'))
+        cantidad=request.POST['cantidadC']
+
+        #si lo enviado es un entero
+        if cantidad.isdigit():
+
+            #lo guardo ne una variable de session
+            request.session['cantidadC']=cantidad
+            #recupero las mesas que estan activas
+            mesas=Mesa.objects.filter(activo__exact=1)
+            #recupero el panel que muestra las mesas seleccionadas
+            panel_seleccionar_mesa=get_template('Mozo/panel_mesas_seleccionadas.html')
+            #lo inserto en el resto del template y lo muestro
+            return render_to_response('Mozo/seleccionar_mesas.html', {'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas }, context_instance=RequestContext(request))
+
+        else:
+            return HttpResponseRedirect(reverse('mozo'))
+
     else:
-        print("else")
         #si trato de entrar sin haber enviado el form,me vuelve a la primera pagina
         return HttpResponseRedirect(reverse('mozo'))
 
@@ -49,7 +51,5 @@ def cargararproductosajax(request):
     if request.method == 'GET':
         id_seccion = request.GET['id_seccion']
         seccion = SeccionCarta.objects.get(pk=id_seccion)
-        #platos = [(secc.key, secc.value) for secc in seccion.platoss]
-        #platos = seccion.platoss
         return render_to_response('Mozo/productos_items.html', {'seccion': seccion}, context_instance=RequestContext(request))
 

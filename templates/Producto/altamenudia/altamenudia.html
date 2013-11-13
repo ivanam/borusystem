@@ -2,8 +2,69 @@
 {% block titulo %}Boru - Alta Menu del Dia {% endblock %}
 {% block contenido %}
 
+<div class="izquierda">
+    <div class="listado_modificar_mozos cont_redondeado">
+        <div class="label label-inverse titulo_menu">Listado de Platos</div>
+        <!-- inicio buscador de platos //-->
 
-<div id="con_menu_mozo" class="cont_redondeado contenedor_principal_big">
+        <!-- inicio buscador platos//-->
+        <!--<form name="fromBuscador" method="get" id="formBuscador" action="{% url 'buscador_producto_ajax_resultados' %}">//-->
+            <div class="input-append">
+                <input class="span2 buscador_productos" id="appendedInputButton" type="text" name="q">
+                <button class="btn" id="buscarresultados" type="submit" name="buscar" value="buscar">Buscar</button>
+            </div>
+            <div class="cont_resultado_busqueda_productos">
+            </div>
+            {% csrf_token %}
+        <!--</form>//-->
+
+        <!-- fin buscador platos//-->
+        <!-- inicio listado de platos //-->
+
+            <div class="listado_eliminar_mozo_item_checkbox label label-inverse">
+                <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+                    <input type="checkbox" class="check_todos" name="checktodos" value="Seleccionar Todo">
+                </div>
+                <div class="listado_item_campo_base listado_item_campo_06 flotar_iz">Nombre</div>
+                <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Precio</div>
+                <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Stock</div>
+
+            </div>
+
+
+        <div class="ajax_resultados">
+         {% for m in plato %}
+        <div class="listado_eliminar_mozo_item {% if not m.activo %}inactivo{% endif %}">
+
+            <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+                <input type="checkbox" name="chkId" class="check_add_plato" value="{{m.id}}">
+            </div>
+
+            <div class="listado_item_campo_base listado_item_campo_06 flotar_iz" title="{{m.nombre|capfirst}}">
+                {{m.nombre|capfirst|truncatechars:20}}
+            </div>
+
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.precio}}">
+                {{m.precio}}
+            </div>
+
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.stock}}">
+                {{m.stock}}
+            </div>
+
+        </div>
+        {% endfor %}
+        </div>
+        <div class="centrar">
+        <input type="button" class="btn btn-primary" value="Agregar Seleccionados">
+        </div>
+        <!-- fin listado de platos //-->
+<!-- fin buscador de platos//-->
+    </div>
+</div>
+
+<div class="centro">
+<div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
     <div class="label label-inverse titulo_menu">Alta Menu del Dia</div>
     <br>
 
@@ -16,7 +77,7 @@
             {{ formulario.non_field_errors }}
 
             <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg">*</span> Nombre</div>
+                <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Nombre</div>
                 <div class="contenedor_input">
 
                     {{ formulario.nombre }}
@@ -26,7 +87,7 @@
 
 
             <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg"></span> Precio</div>
+                <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Precio</div>
                 <div class="contenedor_input">
                     {{ formulario.precio }}
                     <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
@@ -34,14 +95,14 @@
             </div>
 
             <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg"></span> Stock</div>
+                <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Stock</div>
                 <div class="contenedor_input">
                     {{ formulario.stock }}
                     <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
                 </div>
             </div>
             <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg"></span> Descripcion</div>
+                <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Descripcion</div>
                 <div class="contenedor_input">
                     {{ formulario.descripcion}}
                     <div class="form_error_msg">{{ formulario.descripcion.errors|striptags }}</div>
@@ -49,7 +110,7 @@
             </div>
 
             <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg"></span> Fecha Inicio</div>
+                <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Fecha Inicio</div>
                 <div class="contenedor_input">
                     {{ formulario.fecha_Inicio }}
                     <div class="form_error_msg">{{ formulario.fecha_Inicio.errors|striptags }}</div>
@@ -70,6 +131,14 @@
     <div class="salto_linea"></div>
     <span class="form_error_msg">* Campos Obligatorios</span>
 </div><!-- fin contenedor principal//-->
+</div>
+<div class="izquierda">
+    <div class="listado_modificar_mozos cont_redondeado">
+        <div class="label label-inverse titulo_menu">Platos Agregados al Menu</div>
+        <!-- inicio buscador de platos //-->
+        <!-- fin buscador de platos//-->
+    </div>
+</div>
 
 {% endblock %}
 {% block script %}
@@ -96,15 +165,120 @@ $(function($){
     $.datepicker.setDefaults($.datepicker.regional['es']);
 });
 
+function enviarForm(msg){
+    $(".buscador_productos").val(msg);
+    buscarresultados();
+}
+
+function reemplazarCadena(cad, q){
+var re = new RegExp(q,"gi");
+    return cad.replace(re,"<span class='resaltado resaltarBusqueda'>"+q+"</span>");
+}
+
+function buscarresultados(){
+
+    var busqueda=$(".buscador_productos").val();
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'buscador_producto_ajax_resultados' %}",
+        data: "q="+busqueda,
+        success: function(datos){
+
+            if(datos.length > 0){
+                $(".ajax_resultados").html(datos);
+                $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+            }
+          }
+    });
+
+}
+
 $(document).ready(function(){
+
+    $("#buscarresultados").click(function(event){
+        buscarresultados();
+    });
+
+
+    /*$('.buscador_productos').keypress(function(event){
+
+          var keycode = (event.keyCode ? event.keyCode : event.which);
+
+          if(keycode == '13'){
+
+                buscarresultados();
+          }
+    });*/
+
+    //checkbox
+    $("input[name=checktodos]").change(function(){
+        $('input[type=checkbox]').each( function() {
+            if($("input[name=checktodos]:checked").length == 1){
+                this.checked = true;
+            } else {
+                this.checked = false;
+            }
+        });
+    });
+
+    $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+
+    //cuando presiono una tecla en la caja de busqueda
+    $(".buscador_productos").keyup(function(event){
+
+        var busqueda=$(this).val();
+
+        if( busqueda.length >= 2){
+
+            $.ajax({
+                type: "GET",
+                url: "{% url 'buscador_producto_ajax' %}",
+                data: "q="+busqueda,
+                success: function(datos){
+
+                    if(datos.length > 0){
+                        $(".cont_resultado_busqueda_productos").html(datos);
+                        $(".cont_resultado_busqueda_productos").css("visibility","visible");
+
+                        $(".busqueda_item").each(function(i){
+                            var cad=$(this).text();
+                            $(this).html(reemplazarCadena(cad, busqueda));
+                            $(".resaltado").addClass("resaltarBusqueda");
+                        });
+
+                    }
+                    else{
+                        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                    }
+
+                  }
+            });
+        }
+        else
+        {
+            $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+        }
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+          if(keycode == '13'){
+
+                buscarresultados();
+          }
+
+
+    });
+
     $("#id_fecha_Inicio").attr("readonly",true);
-	$("#id_fecha_Inicio").datepicker();
+    $("#id_fecha_Inicio").datepicker();
 
-	$("#id_fecha_fin").attr("readonly",true);
-	$("#id_fecha_fin").datepicker();
+    $("#id_fecha_fin").attr("readonly",true);
+    $("#id_fecha_fin").datepicker();
 
+    $('.dropdown-toggle').dropdownHover(options);
 
-	$('.dropdown-toggle').dropdownHover(options);
 });
+
 </script>
 {% endblock %}

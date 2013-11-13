@@ -4,5 +4,9 @@ from django.conf.urls.static import static
 
 urlpatterns = patterns('',
                        url(r'^$', 'gestiones.Producto.altamenudia.views.altamenudia', name="altamenudia"),
+                       url(r'^buscar$', 'gestiones.Producto.altamenudia.views.buscarproductoajax',
+                           name="buscador_producto_ajax"),
+                       url(r'^buscarresultados$', 'gestiones.Producto.altamenudia.views.buscarproductoajaxResultados',
+                           name="buscador_producto_ajax_resultados"),
 
 )

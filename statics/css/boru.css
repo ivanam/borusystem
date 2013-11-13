@@ -9,7 +9,7 @@ position:absolute;
 }
 
 .listado_item_campo_header{
-width:250;
+width:250px;
 padding:5px;
 height:auto;
 }
@@ -23,7 +23,7 @@ text-align:center;
 }
 .listado_item_campo_00{
 height:auto;
-width:45px;
+width:auto;
 }
 .listado_item_campo_01{
 height:auto;
@@ -206,18 +206,21 @@ font-size:11px;
 font-weight:bold;
 }
 .comanda_numero2{
-padding-bottom:10px;
-height:15px;
+
+/*padding-bottom:10px;*/
+margin:5px auto;
+height:20px;
 width:250px;
+/*
 -webkit-border-radius: 7px 7px 0px 0px;
 -moz-border-radius:  7px 7px 0px 0px;
 border-radius:  7px 7px 0px 0px;
-margin:00px;
+margin:00px;*/
 display:block;
 clear:both;
-border-top:1px solid #CCCCCC;
+/*border-top:1px solid #CCCCCC;
 border-left:1px solid #CCCCCC;
-border-right:1px solid #CCCCCC;
+border-right:1px solid #CCCCCC;*/
 font-size:11px;
 font-weight:bold;
 }
@@ -238,10 +241,10 @@ border-radius:  0px 7px 7px 7px;
 }
 .contenedor_comanda_data2{
 background-image:linear-gradient(to bottom, rgb(130, 130, 130), rgb(255,255,255));
-margin:00px 50px;
+margin:0px auto;
 display:block;
 clear:both;
-height:100;
+height:auto;
 width:250px;
 border-top:1px solid #CCCCCC;
 border-left:1px solid #CCCCCC;
@@ -262,9 +265,10 @@ font-size:12px;
 overflow:visible;
 }
 .contenedor_cantidad{
-height:100px;
-width:250px;
-margin:00px;
+font-size:18px!important;
+height:35px !important;
+width:150px;
+margin:5px auto;
 }
 .contenedor_comanda_item2{
 height:150px;
@@ -363,6 +367,30 @@ height:auto;
 width:250px !important;
 }
 
+.buscador_productos{
+width:180px !important;
+margin:0px auto;
+}
+
+
+.cont_resultado_busqueda_productos{
+background:#FFFFFF;
+position:absolute;
+top:78px;
+left:11px;
+width:244px;
+height:auto;
+overflow:hidden;
+opacity:0.85;
+filter: alpha(opacity = 85);
+-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+padding:2px 2px;
+}
+
+
+
 .cont_resultado_busqueda{
 background:#FFFFFF;
 position:absolute;
@@ -425,6 +453,13 @@ float:left !important;
 float:right !important;
 }
 
+.centrar{
+margin:5px auto !important;
+text-align:center !important;
+vertical-align:middle !important;
+width:auto;
+height:auto;
+}
 
 .listado_eliminar_mozo_item_checkbox{
 width:95%;
@@ -433,6 +468,22 @@ display:block;
 clear:both;
 margin:3px auto 10px auto; 
 }
+
+.listado_item_base{
+width:95%;
+height:35px;
+display:block;
+clear:both;
+margin:3px auto;
+border-bottom: 1px solid #CCCCCC;
+font-size:11px !important;
+}
+
+
+.listado_item_base:hover{
+background-image:linear-gradient(to bottom, rgb(0, 136, 204), rgb(0, 119, 179));
+}
+
 
 .listado_eliminar_mozo_item{
 width:95%;
@@ -448,16 +499,21 @@ border-bottom: 1px solid #CCCCCC;
 background-image:linear-gradient(to bottom, rgb(0, 136, 204), rgb(0, 119, 179));
 }
 .derecha{
-/*background-color:#FFCC00;
-*/height:auto;
+height:auto;
 width:60%;
 display:inline;
 float:left;
 }
+.centro{
+height:auto;
+width: auto;
+display:inline;
+float:left;
+margin:0px 5px
+}
 .izquierda{
-/*background-color:#003366;
-*/height:auto;
-width:30%;
+height:auto;
+width:auto;
 display:inline;
 float:left;
 }
@@ -487,7 +543,7 @@ height:auto;
 width:260px;
 overflow: hidden;
 padding: 10px 10px;
-
+position:relative;
 margin-top:10px;
 float:left;
 }
@@ -549,6 +605,16 @@ background-image: linear-gradient(to bottom, rgb(200, 156, 239), rgb(150, 67, 22
 .mesa_seleccionada_item_mozo{
 background-image: linear-gradient(to bottom, rgb(91, 192, 222), rgb(47, 150, 180));
 }
+
+.contenedor_texto_small{
+width:100px;
+height:auto;
+margin:5px auto 5px auto;
+float:left;
+text-align:right;
+padding-right:5px;
+}
+
 
 .contenedor_texto{
 width:200px;
