@@ -1,9 +1,9 @@
-{% for m in plato %}
-<div class="item">
+{% for m in platos %}
+<div class="items_seleccionados">
     <div class="listado_eliminar_mozo_item {% if not m.activo %}inactivo{% endif %}">
 
 
-            <input type="checkbox" name="chkId" class="check_add_plato hide" value="{{m.id}}">
+            <input type="checkbox" name="chkId" class="check_add_plato" value="{{m.id}}" checked>
 
 
         <div class="listado_item_campo_base listado_item_campo_06 flotar_iz" title="{{m.nombre|capfirst}}">

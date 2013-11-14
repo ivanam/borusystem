@@ -368,7 +368,7 @@ width:250px !important;
 }
 
 .buscador_productos{
-width:180px !important;
+width:188px !important;
 margin:0px auto;
 }
 
@@ -468,22 +468,6 @@ display:block;
 clear:both;
 margin:3px auto 10px auto; 
 }
-
-.listado_item_base{
-width:95%;
-height:35px;
-display:block;
-clear:both;
-margin:3px auto;
-border-bottom: 1px solid #CCCCCC;
-font-size:11px !important;
-}
-
-
-.listado_item_base:hover{
-background-image:linear-gradient(to bottom, rgb(0, 136, 204), rgb(0, 119, 179));
-}
-
 
 .listado_eliminar_mozo_item{
 width:95%;

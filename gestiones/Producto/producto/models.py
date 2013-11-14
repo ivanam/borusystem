@@ -22,7 +22,7 @@ class Bebida(Producto):
 class Menu(Producto):
     descripcion = models.CharField("Descripcion", max_length=100, null=True, blank=True)
     fecha_Inicio = models.DateField("Fecha_Inicio")
-    platos = models.ManyToManyField(Plato, null=True, blank=True)
+    platos = models.ManyToManyField(Plato, null=False, blank=False)
 
     class Meta:
         abstract = True

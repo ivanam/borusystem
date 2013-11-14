@@ -8,5 +8,9 @@ urlpatterns = patterns('',
                            name="buscador_producto_ajax"),
                        url(r'^buscarresultados$', 'gestiones.Producto.altamenudia.views.buscarproductoajaxResultados',
                            name="buscador_producto_ajax_resultados"),
+                       url(r'^agregar', 'gestiones.Producto.altamenudia.views.agregarProductoListaAjax',
+                           name="agregar_producto_lista_ajax"),
+
+
 
 )
