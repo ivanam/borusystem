@@ -8,6 +8,14 @@ color:#000000;
 position:absolute;
 }
 
+.menu_cajero{
+display: block;
+clear:both;
+margin:2px auto;
+width:200px;
+position: relative;
+
+}
 .listado_item_campo_header{
 width:250px;
 padding:5px;
@@ -134,9 +142,9 @@ border-radius:  7px 7px 7px 7px;
 -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px rgba(255, 0, 0, 0.8);
 box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px rgba(255, 0, 0, 0.8);
 font-size:10px;
-position:relative;
-top:-40px;
-left:600px;
+position:absolute;
+top:-10px;
+left:180px;
 }
 .comanda_detalle_modal{
 width:450px;
@@ -487,6 +495,7 @@ height:auto;
 width:60%;
 display:inline;
 float:left;
+/*background-color: #FF0000;*/
 }
 .centro{
 height:auto;
@@ -500,6 +509,8 @@ height:auto;
 width:auto;
 display:inline;
 float:left;
+/*background-color: #CC0066;*/
+/*background-color: #CC0066;*/
 }
 .bloque_form{
 /*background-color: #CC0066;*/
