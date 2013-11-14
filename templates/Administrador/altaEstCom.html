@@ -1,28 +1,28 @@
 {% extends "base_administrador.html" %}
-{% block titulo %}Boru - Modificar Menu - Modificacion Exitosa{% endblock %}
+{% block titulo %}Boru - Alta Estrategia Comanda - Registro Exitoso{% endblock %}
 {% block contenido %}
 
 	  <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
-        <div class="label label-inverse titulo_menu">Modificar Mesas</div>
+        <div class="label label-inverse titulo_menu">Alta Estrategia Comanda</div>
         <br>
         <div class="salto_linea"></div>
         <div id="mesas_libres" class="bloque_mesas">
         <div class="salto_linea"></div>
-		
+
 		<!--Aca inicio contenido//-->
-		<h4>Menu modificado con exito!!!</h4>
+		<h4>Nueva Estrategia registrada con exito!!!</h4>
 		<br>
-		<a href="{% url 'modificarmenudia' %}"><div class="label label-inverse pull-right">Volver</div></a>
+		<a href="{% url 'estrategias' %}"><div class="label label-inverse pull-right">Volver</div></a>
 		<!-- Aca fin de contenido//-->
-				
+
 		</div><!-- fin bloke de mesas//-->
       </div><!-- fin contenedor principal//-->
-	  
+
 {% endblock %}
 {% block script %}
 <script>
 $(document).ready(function(){
-	
+
 	$('.dropdown-toggle').dropdownHover(options);
 });
 </script>
