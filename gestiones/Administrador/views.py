@@ -20,7 +20,8 @@ def Administrador(request):
     except Exception:
         print("estrategia")
         estrategiaco = EstrategiaComanda.objects.create(nombre="comanda", hora_inicio=datetime.time(0, 0, 0), hora_fin=datetime.time(6, 59, 59))
-	return render_to_response('Administrador/administrador.html', {'user': request.user}, context_instance=RequestContext(request))
+    finally:
+	    return render_to_response('Administrador/administrador.html', {'user': request.user}, context_instance=RequestContext(request))
 
 
 @permission_required('Administrador.is_admin', login_url="logout")
