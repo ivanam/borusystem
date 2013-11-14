@@ -10,6 +10,7 @@
           <br>
           <div class="salto_linea"></div>
           <div id="mesas_libres" class="bloque_mesas">
+          <input type="hidden" class="contenedor_cantidad" name="id_comanda">
             {% for s in seccion %}
             <div id="cat_01" class="cat_item" rel="{{s.nombre|capfirst}}" id_seccion="{{s.id}}">
               <div class="img_cont"> <img src="{{STATIC_URL}}img/comida/{{s.imagen}}"> </div>

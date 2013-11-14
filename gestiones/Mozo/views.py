@@ -82,4 +82,24 @@ def cargararmesasjax(request):
         print(idcomanda)
         comanda = Comanda.objects.get(pk=idcomanda)
         comanda.mesas.add(mesa)
+        mesa.ocupada = True
+        mesa.save()
+        comanda.save()
+        return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def sacarmesasjax(request):
+    print("aca llegue para sacar")
+    if request.method == 'GET':
+        id_mesa = request.GET['id_mesa']
+        mesa = Mesa.objects.get(pk=id_mesa)
+        print("pase")
+        idcomanda =request.session["id_comanda"]
+        print(idcomanda)
+        comanda = Comanda.objects.get(pk=idcomanda)
+        comanda.mesas.remove(mesa)
+        mesa.ocupada = False
+        mesa.save()
+        comanda.save()
         return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))

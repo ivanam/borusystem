@@ -55,6 +55,17 @@ $.ajax({
                   }
             });
 }
+function sacar_mesa(id_mesa, id_comanda){
+
+$.ajax({
+                type: "GET",
+                url: "{% url 'sacarmesasjax' %}",
+                data: "id_mesa="+id_mesa,
+                success: function(platos){
+
+                  }
+            });
+}
 $(document).ready(function(){
 
 $("#btn_anterior").click(function(){
@@ -109,6 +120,7 @@ $("#btn_siguiente").click(function(){
 					$(".mesas").html(cad3);
 
 					total_comensales = parseInt(total_comensales)-parseInt(capacidad);
+					sacar_mesa($(this).attr("numero_mesa"), $(this).attr("id_comanda"));
 
 					$("#total_comensales").html(total_comensales);
 
