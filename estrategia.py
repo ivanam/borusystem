@@ -20,6 +20,8 @@ ESTRATEGIAS = []
 
 
 class EstrategiaServicio(object):
+
+
     def __init__(self, nombre, inicio, fin):
         self.inicio = inicio
         self.fin = fin

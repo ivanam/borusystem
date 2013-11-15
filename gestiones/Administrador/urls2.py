@@ -3,8 +3,3 @@ from .views import Administrador
 from django.conf import settings
 from django.conf.urls.static import static
 
-urlpatterns = patterns('',
-
-url(r'^$', 'gestiones.Administrador.views.estrategias', name="estrategias"),
-
-)

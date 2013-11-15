@@ -28,7 +28,6 @@ urlpatterns = patterns('',
     url(r'^cajero/', include('gestiones.Cajero.urls')),
 
     url(r'^administrador/', include('gestiones.Administrador.urls')),
-    url(r'^administrador/altaestrategiacomanda/', include('gestiones.Administrador.urls2')),
 
     url(r'^administrador/altabebida/', include('gestiones.Producto.altabebida.urls')),
     url(r'^administrador/modificarbebida/', include('gestiones.Producto.modificarbebida.urls')),
