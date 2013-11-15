@@ -41,6 +41,7 @@ def crearcomanda(request):
             now = datetime.datetime.now()
             hora = datetime.time(now.hour, now.minute, now.second)
             comanda = Comanda.objects.create(fecha=fecha, hora=hora, cantidadC=cantidad)
+            print(comanda.estrategia.nombre)
 
             #guardo en la sesion el id de la comanda
             request.session['id_comanda']= comanda.id
@@ -86,7 +87,7 @@ def cargararmesasjax(request):
         comanda.mesas.add(mesa)
         mesa.ocupada = True
         mesa.save()
-        comanda.save()
+        #comanda.save()
         return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))
 
 
