@@ -20,9 +20,11 @@ def altamenuejecutivo(request):
             descripcion = formulario.cleaned_data['descripcion']
             fecha = formulario.cleaned_data['fecha_Inicio']
             fechaFin = formulario.cleaned_data['fecha_fin']
-            menu = Ejecutivo.objects.create(nombre=nombre,precio= precio,stock= stock, descripcion=descripcion,fecha_Inicio= fecha,fecha_fin= fechaFin)
+            seccion = formulario.cleaned_data['seccion']
+            menu = Ejecutivo.objects.create(nombre=nombre,precio= precio,stock= stock, descripcion=descripcion,fecha_Inicio= fecha,fecha_fin= fechaFin, seccion=seccion)
             #menu.save()
-
+            seccion.menuesE.add(menu)
+            seccion.save()
 
                # formulario = altaMenuEjecutivoForm()
                 #return render_to_response('Producto/altamenuejecutivo/altamenuejecutivo.html', {'formulario': formulario, 'Plato': platos},

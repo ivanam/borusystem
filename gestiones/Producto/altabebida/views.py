@@ -21,9 +21,12 @@ def altabebida(request):
             enPromocion = formulario.cleaned_data['enPromocion']
             marca = formulario.cleaned_data['marca']
             descuento = formulario.cleaned_data['descuento']
+            seccion = formulario.cleaned_data['seccion']
 
             bebida = Bebida.objects.create(nombre=nombre, precio=precio, stock=stock, activo=activo,
-                                           enPromocion=enPromocion, marca=marca, descuento=descuento)
+                                           enPromocion=enPromocion, marca=marca, descuento=descuento, seccion=seccion)
+            seccion.bebidas.add(bebida)
+            seccion.save()
 
             #mostramos que la operacion fue exitosa
             return render_to_response('Producto/altabebida/altabebidaexito.html', {},

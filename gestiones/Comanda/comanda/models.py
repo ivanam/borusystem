@@ -103,10 +103,22 @@ class Comanda(models.Model):
     mesas = models.ManyToManyField(Mesa, related_name="ocupa", null=True, blank=True)
     mozo = models.ForeignKey(Personal,null=True, blank=True)
 
-    def __init__(self, fecha, hora, cantidadC, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         models.Model.__init__(self, *args, **kwargs)
-        self.fecha=fecha
-        self.hora=hora
-        self.cantidadC=cantidadC
         self.estrategia = EstrategiaServicio.obtenerEstrategia(self)
         print ("seteadas estrategias")
+
+    def filtrar_secciones(self):
+        return self.estrategia.filtrar_secciones()
+
+    def cargar_mesas (self, mesa):
+        self.mesas.add(mesa)
+        mesa.ocupada = True
+        mesa.save()
+        self.save()
+
+    def sacar_mesas (self, mesa):
+        self.mesas.remove(mesa)
+        mesa.ocupada = False
+        mesa.save()
+        self.save()

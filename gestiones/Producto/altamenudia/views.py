@@ -22,7 +22,12 @@ def altamenudia(request):
             stock = formulario.cleaned_data['stock']
             descripcion = formulario.cleaned_data['descripcion']
             fecha = formulario.cleaned_data['fecha_Inicio']
-            menu = DelDia.objects.create(nombre=nombre,precio= precio,stock= stock, descripcion=descripcion,fecha_Inicio= fecha)
+            seccion = formulario.cleaned_data['seccion']
+            menu = DelDia.objects.create(nombre=nombre, precio=precio, stock=stock, descripcion=descripcion,
+                                         fecha_Inicio=fecha, seccion=seccion)
+
+            seccion.menuesD.add(menu)
+            seccion.save()
 
             #recupero las ids de los platos que quiero agregar al menu
             lista_platos_seleccionado = request.POST.getlist('chkId')

@@ -58,7 +58,7 @@ def seleccionarproductos(request):
     idcomanda = request.session["id_comanda"]
     print(idcomanda)
     comanda = Comanda.objects.get(pk=idcomanda)
-    seccion = comanda.estrategia.filtrar_secciones()
+    seccion = comanda.filtrar_secciones()
     #seccion = SeccionCarta.objects.filter(activo__exact=1)
     panel_seleccionar_producto=get_template('Mozo/panel_menu_seleccionado.html')
     return render_to_response('Mozo/seleccionar_menu.html', {'seccion': seccion, 'panel_seleccionar_mesa':panel_seleccionar_producto.render( Context({}) )}, context_instance=RequestContext(request))
@@ -68,7 +68,8 @@ def cargararproductosajax(request):
     if request.method == 'GET':
         id_seccion = request.GET['id_seccion']
         seccion = SeccionCarta.objects.get(pk=id_seccion)
-        return render_to_response('Mozo/productos_items.html', {'seccion': seccion}, context_instance=RequestContext(request))
+        producto = seccion.dame_productos()
+        return render_to_response('Mozo/productos_items.html', {'producto': producto}, context_instance=RequestContext(request))
 
 @permission_required('Administrador.is_mozo', login_url="login")
 def finalizar(request):
@@ -84,10 +85,7 @@ def cargararmesasjax(request):
         idcomanda =request.session["id_comanda"]
         print(idcomanda)
         comanda = Comanda.objects.get(pk=idcomanda)
-        comanda.mesas.add(mesa)
-        mesa.ocupada = True
-        mesa.save()
-        #comanda.save()
+        comanda.cargar_mesas(mesa)
         return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))
 
 
@@ -101,8 +99,5 @@ def sacarmesasjax(request):
         idcomanda =request.session["id_comanda"]
         print(idcomanda)
         comanda = Comanda.objects.get(pk=idcomanda)
-        comanda.mesas.remove(mesa)
-        mesa.ocupada = False
-        mesa.save()
-        comanda.save()
+        comanda.sacar_mesas(mesa)
         return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))

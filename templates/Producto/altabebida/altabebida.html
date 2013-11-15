@@ -71,6 +71,14 @@
                 </div>
             </div>
 
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto">Seccion</div>
+                <div class="contenedor_input">
+                    {{ formulario.seccion }}
+                    <div class="form_error_msg">{{ formulario.seccion.errors|striptags }}</div>
+                </div>
+            </div>
+
             {% csrf_token %}
             <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Alta Bebida"
                    class="btn btn-large btn-primary">

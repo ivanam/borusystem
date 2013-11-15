@@ -4,7 +4,8 @@ from gestiones.Producto.producto.models import Plato, Bebida, DelDia, Ejecutivo
 CATEGORIA = (
     ('P', 'Plato'),
     ('B', 'Bebida'),
-    ('M', 'Menu'),
+    ('D', 'Menu del Dia'),
+    ('E', 'Menu Ejecutivo'),
 )
 
 IMAGENES = (
@@ -39,6 +40,18 @@ class SeccionCarta(models.Model):
     imagen = models.CharField("Imagen",max_length=35, choices=IMAGENES, default="default.png", null=False,blank=False)
     def __str__(self):
         return self.nombre
+
+    def dame_productos(self):
+        if self.categoria == 'P':
+            return Plato.objects.filter(seccion_id__exact=self.id)
+        else:
+            if self.categoria == 'B':
+                return Bebida.objects.filter(seccion_id__exact=self.id)
+            else:
+                if self.categoria == 'D':
+                    return DelDia.objects.filter(seccion_id__exact=self.id)
+                else:
+                    return Ejecutivo.objects.filter(seccion_id__exact=self.id)
 
 class Carta(models.Model):
     nombre = models.CharField('Nombre', max_length=30)
