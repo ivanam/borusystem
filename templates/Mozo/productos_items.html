@@ -10,8 +10,8 @@
       <th scope="col">Acciones</th>
     </tr>
     {% for p in producto %}
-    <tr class="tr_item_info" activo="false" cantidad="1" precio="40" nombre="Heineken" procesado="false" id="tr_0">
-      <th scope="row">1</th>
+    <tr class="tr_item_info" id_prod="{{p.id}}" activo="false" cantidad="1" precio="40" nombre="{{p.nombre}}" procesado="false" id="{{p.id}}" precio="{{p.precio}}">
+      <th scope="row">{{p.id}}</th>
       <td>{{p.nombre}}</td>
       <td>{{p.precio}}</td>
       <td>{{p.stock}}</td>

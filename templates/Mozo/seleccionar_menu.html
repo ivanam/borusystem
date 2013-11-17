@@ -32,8 +32,8 @@
 
   </div>
   <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Aceptar</button>
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    <button class="btn btn_aceptar" id="btn_aceptar" data-dismiss="modal" aria-hidden="true"id_prod="{{p.id}}">Aceptar</button>
+    <button class="btn btn_cancelar" data-dismiss="modal" aria-hidden="true">Cerrar</button>
   </div>
 </div>
 <!-- Fin Modal -->
@@ -44,6 +44,30 @@
 {% block script %}
 
 <script>
+function guardar_producto(prod){
+
+$.ajax({
+        type: "GET",
+        url: "{% url 'guardarproductosajax' %}",
+        data: "id_prod="+prod,
+        success: function(platos){
+            $(".platos").html(platos);
+        }
+})
+
+}
+function cargar_panel(){
+
+$.ajax({
+        type: "GET",
+        url: "{% url 'cargarpanelajax' %}",
+        data: "id_prod=",
+        success: function(platos){
+            $(".platos").html(platos);
+        }
+})
+
+}
 function cargar_productos(id_seccion,nombre_seccion){
 
 $.ajax({
@@ -55,6 +79,7 @@ $.ajax({
                     $('.modal-titulo').html("Seccion "+nombre_seccion);
                     $('.modal-body').html(platos);
                     $('#myModal').modal("show");
+
 
                     $(".btn_mas").each(function(i){
 
@@ -87,11 +112,28 @@ $.ajax({
 
                         if (decremento >= 0)
                             $("#"+id_prod).val(decremento);
-                     
+
 
 
                      });
                });
+
+               	$(".btn_aceptar").click(function(){
+                    //var id_prod=$(this).attr('id_prod');
+                    //alert(id_prod);
+                    $(".tr_item_info").each(function(i){
+                        var prod =$(this).attr("id_prod");
+                        var nombre =$(this).attr("nombre");
+                        var precio =$(this).attr("precio");
+                        alert (precio);
+                        var menues = $(".menu").html();
+			            var cad = '<div class="badge badge-inverse menu_producto">'+nombre+'</div> <div class="badge badge-success">'+precio+'<br> </div>';
+			            menues = menues + cad;
+					    $(".menu").html(menues);})
+                        //if ($("#"+id_prod).val()>0)
+                        //guardar_producto(prod);})
+                    //cargar_panel();
+                });
 
                 }
             });
@@ -104,6 +146,8 @@ $(document).ready(function(){
 	$("#btn_siguiente").click(function(){
 		document.location.href = "{% url 'finalizar' %}";
 	});
+
+
 	
 	//le asocio una funcion a cada miembro d ela clase cat_item
 	$(".cat_item").each(function(i){

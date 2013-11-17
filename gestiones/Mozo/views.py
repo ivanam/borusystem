@@ -6,6 +6,7 @@ from django.template import RequestContext, Context
 from django.template.loader import get_template
 from gestiones.Carta.altacarta.models import SeccionCarta
 from gestiones.Comanda.comanda.models import Comanda
+from gestiones.Producto.producto.models import Bebida
 from gestiones.Salon.altamesa.models import Mesa
 import datetime
 from datetime import date
@@ -59,7 +60,10 @@ def seleccionarproductos(request):
     print(idcomanda)
     comanda = Comanda.objects.get(pk=idcomanda)
     seccion = comanda.filtrar_secciones()
-    #seccion = SeccionCarta.objects.filter(activo__exact=1)
+    try:
+        request.session['listaProductosComanda']=[]
+    except:
+        print("Excepcion en seleccionar productos")
     panel_seleccionar_producto=get_template('Mozo/panel_menu_seleccionado.html')
     return render_to_response('Mozo/seleccionar_menu.html', {'seccion': seccion, 'panel_seleccionar_mesa':panel_seleccionar_producto.render( Context({}) )}, context_instance=RequestContext(request))
 
@@ -116,3 +120,35 @@ def cancelarComandajax(request):
     #comanda.remove()
     #return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))
     #return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))
+
+
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def guardarproductosajax(request):
+    print("voy a guardar")
+    if request.method == 'GET':
+        id_prod = request.GET['id_prod']
+        print(id_prod)
+        #producto = Bebida.objects.get(pk=id_prod)
+        print("pase a guardar")
+        lista = request.session['listaProductosComanda']
+        lista.append(id_prod)
+        listaPlatos = []
+        for producto in lista:
+            print(producto)
+            listaPlatos.append(Bebida.objects.get(pk=producto))
+        request.session['listaProductosComanda']=lista
+        return render_to_response('Mozo/panel_menu_seleccionado.html', {'producto': listaPlatos},
+                              context_instance=RequestContext(request))
+
+
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def cargarpanelajax(request):
+    print("voy a cargar el panel")
+    lista = request.session['listaProductosComanda']
+    listaPlatos = []
+    for producto in lista:
+        listaPlatos.append(Bebida.objects.get(pk=producto))
+    return render_to_response('Mozo/panel_menu_seleccionado.html', {'producto': listaPlatos},
+                              context_instance=RequestContext(request))
