@@ -5,6 +5,7 @@
       <th scope="col">#</th>
       <th scope="col">Nombre</th>
       <th scope="col">Precio</th>
+      <th scope="col">Stock</th>
       <th scope="col">Cantidad</th>
       <th scope="col">Acciones</th>
     </tr>
@@ -13,9 +14,10 @@
       <th scope="row">1</th>
       <td>{{p.nombre}}</td>
       <td>{{p.precio}}</td>
-      <td><input type="text" name="cantidad" value="1" id="cantidad" class="input-mini" size="2" readonly="true"></td>
-      <td><input name="mas" type="button" value="+" class="btn btn-large">
-        <input name="menos" type="button" value="-" class="btn btn-large"></td>
+      <td>{{p.stock}}</td>
+      <td><input type="text" name="cantidad" value="0" id="{{p.id}}_cantidad" class="input-mini" size="2" readonly="true"></td>
+      <td><input stock= "{{p.stock}}" id_prod="{{p.id}}_cantidad" name="mas" type="button" value="+" class="btn btn-large btn_mas">
+        <input name="menos" id_prod="{{p.id}}_cantidad" type="button" value="-" class="btn btn-large btn_menos"></td>
     </tr>
     {% endfor %}
   </table>

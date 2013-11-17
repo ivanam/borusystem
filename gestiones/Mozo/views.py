@@ -101,3 +101,18 @@ def sacarmesasjax(request):
         comanda = Comanda.objects.get(pk=idcomanda)
         comanda.sacar_mesas(mesa)
         return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def cancelarComandajax(request):
+    print("Estoy por entrar para cancelar")
+    #if request.method == 'GET':
+    print("Entre lo que sigue es el id de cancelar")
+    idcomanda =request.session["id_comanda"]
+    comanda = Comanda.objects.get(pk=idcomanda)
+    print(idcomanda)
+    comanda.delete()
+    return HttpResponseRedirect(reverse('mozo'))
+    #comanda.remove()
+    #return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))
+    #return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))

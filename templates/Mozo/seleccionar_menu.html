@@ -56,6 +56,43 @@ $.ajax({
                     $('.modal-body').html(platos);
                     $('#myModal').modal("show");
 
+                    $(".btn_mas").each(function(i){
+
+                     $(this).click(function(event){
+
+                        var id_prod=$(this).attr('id_prod');
+
+
+                    var incremento = parseInt($("#"+id_prod).val())+1;
+
+                        //alert(incremento+"  "+$(this).attr('stock')+"   "+$("#"+id_prod).val());
+
+                        if (incremento <= $(this).attr('stock'))
+                            $("#"+id_prod).val(incremento);
+
+
+
+                     });
+               });
+               $(".btn_menos").each(function(i){
+
+                     $(this).click(function(event){
+
+                        var id_prod=$(this).attr('id_prod');
+
+
+                    var decremento = parseInt($("#"+id_prod).val())-1;
+
+                        //alert(incremento+"  "+$(this).attr('stock')+"   "+$("#"+id_prod).val());
+
+                        if (decremento >= 0)
+                            $("#"+id_prod).val(decremento);
+                     
+
+
+                     });
+               });
+
                 }
             });
 }

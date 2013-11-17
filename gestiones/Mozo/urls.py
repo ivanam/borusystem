@@ -7,5 +7,6 @@ urlpatterns = patterns('',
                        url(r'^cargarproductos$', 'gestiones.Mozo.views.cargararproductosajax', name="cargarproductosajax"),
                        url(r'^cargarmesas$', 'gestiones.Mozo.views.cargararmesasjax', name="cargararmesasjax"),
                        url(r'^sacarmesas$', 'gestiones.Mozo.views.sacarmesasjax', name="sacarmesasjax"),
+                       url(r'^cancelarComanda$', 'gestiones.Mozo.views.cancelarComandajax', name="cancelarComandajax"),
                        url(r'^finalizar$', 'gestiones.Mozo.views.finalizar', name="finalizar"),
 )

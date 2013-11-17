@@ -66,11 +66,24 @@ $.ajax({
                   }
             });
 }
+function cancelar_comanda(){
+
+$.ajax({
+                type: "GET",
+                url: "{% url 'cancelarComandajax' %}",
+                //data: "id_mesa="+id_mesa,
+                success: function(platos){
+
+                  }
+            });
+}
 $(document).ready(function(){
 
 $("#btn_anterior").click(function(){
+        //cancelar_comanda();
 		document.location.href = "{% url 'mozo' %}";
 	});
+
 
 $("#btn_siguiente").click(function(){
 		document.location.href = "{% url 'seleccionarproductos' %}";
