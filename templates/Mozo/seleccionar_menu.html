@@ -49,6 +49,7 @@ function guardar_producto(id_prod, cantidad, categoria){
 $.ajax({
         type: "GET",
         url: "{% url 'guardarproductosajax' %}",
+        async: false,
         data: "datos_producto="+id_prod+"_"+cantidad+"_"+categoria,
         success: function(platos){
             $(".platos").html(platos);
