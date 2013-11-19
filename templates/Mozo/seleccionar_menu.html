@@ -32,7 +32,7 @@
 
   </div>
   <div class="modal-footer">
-    <button class="btn btn_aceptar" id="btn_aceptar" data-dismiss="modal" aria-hidden="true"id_prod="{{p.id}}">Aceptar</button>
+    <button class="btn btn_aceptar" id="btn_aceptar" data-dismiss="modal" aria-hidden="true" onclick="btn_aceptar();">Aceptar</button>
     <button class="btn btn_cancelar" data-dismiss="modal" aria-hidden="true">Cerrar</button>
   </div>
 </div>
@@ -44,12 +44,12 @@
 {% block script %}
 
 <script>
-function guardar_producto(prod){
+function guardar_producto(id_prod, cantidad, categoria){
 
 $.ajax({
         type: "GET",
         url: "{% url 'guardarproductosajax' %}",
-        data: "id_prod="+prod,
+        data: "datos_producto="+id_prod+"_"+cantidad+"_"+categoria,
         success: function(platos){
             $(".platos").html(platos);
         }
@@ -77,25 +77,23 @@ $.ajax({
                 success: function(platos){
 
                     $('.modal-titulo').html("Seccion "+nombre_seccion);
+                    $('.modal-body').html(" ");
                     $('.modal-body').html(platos);
                     $('#myModal').modal("show");
 
 
                     $(".btn_mas").each(function(i){
 
-                     $(this).click(function(event){
-
-                        var id_prod=$(this).attr('id_prod');
-
-
-                    var incremento = parseInt($("#"+id_prod).val())+1;
-
-                        //alert(incremento+"  "+$(this).attr('stock')+"   "+$("#"+id_prod).val());
-
-                        if (incremento <= $(this).attr('stock'))
-                            $("#"+id_prod).val(incremento);
+                         $(this).click(function(event){
+                            var id_prod=$(this).attr('id_prod');
 
 
+                        var incremento = parseInt($("#"+id_prod).val())+1;
+
+                            //alert(incremento+"  "+$(this).attr('stock')+"   "+$("#"+id_prod).val());
+
+                            if (incremento <= $(this).attr('stock'))
+                                $("#"+id_prod).val(incremento)
 
                      });
                });
@@ -118,26 +116,24 @@ $.ajax({
                      });
                });
 
-               	$(".btn_aceptar").click(function(){
-                    //var id_prod=$(this).attr('id_prod');
-                    //alert(id_prod);
-                    $(".tr_item_info").each(function(i){
-                        var prod =$(this).attr("id_prod");
-                        var nombre =$(this).attr("nombre");
-                        var precio =$(this).attr("precio");
-                        alert (precio);
-                        var menues = $(".menu").html();
-			            var cad = '<div class="badge badge-inverse menu_producto">'+nombre+'</div> <div class="badge badge-success">'+precio+'<br> </div>';
-			            menues = menues + cad;
-					    $(".menu").html(menues);})
-                        //if ($("#"+id_prod).val()>0)
-                        //guardar_producto(prod);})
-                    //cargar_panel();
-                });
-
                 }
             });
 }
+
+function btn_aceptar(){
+
+        $(".producto_cantidad").each(function(i){
+
+            var id_prod =$(this).attr("id_prod");
+            var cantidad =$(this).val();
+            var categoria=$(this).attr("seccion_cat");
+
+            if (cantidad >0){
+                guardar_producto(id_prod, cantidad, categoria);
+            }
+        });
+}
+
 $(document).ready(function(){
      
 	$("#btn_anterior").click(function(){

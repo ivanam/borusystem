@@ -10,6 +10,8 @@ urlpatterns = patterns('',
                            name="buscador_producto_ajax_resultados"),
                        url(r'^agregar', 'gestiones.Producto.altamenudia.views.agregarProductoListaAjax',
                            name="agregar_producto_lista_ajax"),
+                       url(r'^paginar', 'gestiones.Producto.altamenudia.views.paginadorajaxResultados',
+                           name="paginador_ajax_resultados"),
 
 
 

@@ -5,7 +5,7 @@ class Producto(models.Model):
     precio = models.FloatField("Precio")
     stock = models.IntegerField("Stock")
     activo = models.BooleanField("Activo", default=True)
-    seccion = models.ForeignKey("altacarta.SeccionCarta", null=True, blank=True)
+    seccion = models.ForeignKey("altacarta.SeccionCarta", null=False, blank=False)
     class Meta:
         abstract = True
 

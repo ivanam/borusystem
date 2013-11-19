@@ -4,7 +4,7 @@
 
         <input type="hidden" name="id_plato" class="id_plato" value="{{m.id}}">
 
-        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz" title="{{m.nombre|capfirst}}">
+        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz" title="{{m.nombre|capfirst}}: {{m.descripcion}}">
             {{m.nombre|capfirst|truncatechars:20}}
         </div>
 
@@ -19,3 +19,20 @@
     </div>
 </div>
 {% endfor %}
+<!-- inicio paginador //-->
+<div class="pagination">
+    <span class="step-links">
+        {% if plato.has_previous %}
+            <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png" onclick="paginarProductos({{ plato.previous_page_number }});"></a>
+        {% endif %}
+
+        <span class="current">
+            {{ plato.number }}
+        </span>
+
+        {% if plato.has_next %}
+            <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png" onclick="paginarProductos({{ plato.next_page_number }});"></a>
+        {% endif %}
+    </span>
+</div>
+<!-- fin paginador //-->

@@ -197,3 +197,5 @@ LOGGING = {
 LOGIN_REDIRECT_URL = "administrador/"
 # Redirect when login is not correct.
 LOGIN_URL = '/'
+
+PAGINADO_PRODUCTOS = 5

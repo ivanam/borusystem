@@ -6,7 +6,7 @@ from django.template import RequestContext, Context
 from django.template.loader import get_template
 from gestiones.Carta.altacarta.models import SeccionCarta
 from gestiones.Comanda.comanda.models import Comanda
-from gestiones.Producto.producto.models import Bebida
+from gestiones.Producto.producto.models import Bebida, Plato, DelDia, Ejecutivo
 from gestiones.Salon.altamesa.models import Mesa
 import datetime
 from datetime import date
@@ -15,6 +15,7 @@ from time import time
 
 @permission_required('Administrador.is_mozo', login_url="login")
 def inicio(request):
+    request.session['listaProductosComanda']=[]
     return render_to_response('Mozo/mozo.html', {}, context_instance=RequestContext(request))
 
 
@@ -60,8 +61,9 @@ def seleccionarproductos(request):
     print(idcomanda)
     comanda = Comanda.objects.get(pk=idcomanda)
     seccion = comanda.filtrar_secciones()
+
     try:
-        request.session['listaProductosComanda']=[]
+        pass#request.session['listaProductosComanda']=[]
     except:
         print("Excepcion en seleccionar productos")
     panel_seleccionar_producto=get_template('Mozo/panel_menu_seleccionado.html')
@@ -127,17 +129,32 @@ def cancelarComandajax(request):
 def guardarproductosajax(request):
     print("voy a guardar")
     if request.method == 'GET':
-        id_prod = request.GET['id_prod']
-        print(id_prod)
+        datos_producto = request.GET['datos_producto']
         #producto = Bebida.objects.get(pk=id_prod)
         print("pase a guardar")
         lista = request.session['listaProductosComanda']
-        lista.append(id_prod)
+        lista.append(datos_producto)
+        request.session['listaProductosComanda'] = lista
+        #print (lista)
         listaPlatos = []
         for producto in lista:
             print(producto)
-            listaPlatos.append(Bebida.objects.get(pk=producto))
-        request.session['listaProductosComanda']=lista
+            datos = producto.split('_')
+            id_prod = datos[0]
+            cantidad = datos[1]
+            categoria = datos[2]
+            print(id_prod)
+            print (cantidad)
+            print(categoria)
+            if categoria == 'P':
+                listaPlatos.append(Plato.objects.get(pk=id_prod))
+            if categoria == 'B':
+                listaPlatos.append(Bebida.objects.get(pk=id_prod))
+            if categoria == 'D':
+                listaPlatos.append(DelDia.objects.get(pk=id_prod))
+            if categoria == 'E':
+                listaPlatos.append(Ejecutivo.objects.get(pk=id_prod))
+
         return render_to_response('Mozo/panel_menu_seleccionado.html', {'producto': listaPlatos},
                               context_instance=RequestContext(request))
 

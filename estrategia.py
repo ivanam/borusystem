@@ -30,6 +30,8 @@ class EstrategiaServicio(object):
     @classmethod
     def obtenerEstrategia(cls, comanda):
         for estrategia in ESTRATEGIAS:
+            print(type(estrategia.inicio))
+            print(type(comanda.hora))
             if estrategia.inicio < comanda.hora < estrategia.fin:
                 return estrategia
 
