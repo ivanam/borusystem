@@ -11,4 +11,5 @@ urlpatterns = patterns('',
                        url(r'^cargar$', 'gestiones.Mozo.views.cargarpanelajax', name="cargarpanelajax"),
                        url(r'^cancelarComanda$', 'gestiones.Mozo.views.cancelarComandajax', name="cancelarComandajax"),
                        url(r'^finalizar$', 'gestiones.Mozo.views.finalizar', name="finalizar"),
+                       url(r'^guardarComanda$', 'gestiones.Mozo.views.guardarComanda', name="guardarComanda"),
 )

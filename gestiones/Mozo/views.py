@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext, Context
 from django.template.loader import get_template
 from gestiones.Carta.altacarta.models import SeccionCarta
-from gestiones.Comanda.comanda.models import Comanda
+from gestiones.Comanda.comanda.models import Comanda, DetalleComanda
 from gestiones.Producto.producto.models import Bebida, Plato, DelDia, Ejecutivo, MenuS
 from gestiones.Salon.altamesa.models import Mesa
 import datetime
@@ -92,6 +92,7 @@ def cargararmesasjax(request):
         request.session["listaMesasComanda"] = lista
         mesa = Mesa.objects.get(pk=id_mesa)
         mesa.ocupada = True
+        mesa.save()
         print("pase")
         idcomanda =request.session["id_comanda"]
         print(idcomanda)
@@ -111,6 +112,7 @@ def sacarmesasjax(request):
         request.session["listaMesasComanda"] = lista
         mesa = Mesa.objects.get(pk=id_mesa)
         mesa.ocupada= False
+        mesa.save()
         print("pase")
         idcomanda =request.session["id_comanda"]
         print(idcomanda)
@@ -221,3 +223,48 @@ def finalizar(request):
 
     return render_to_response('Mozo/finalizar_comanda.html', {'cantidad': cantidadComensales, 'mesas': mesas, 'menuS':menuS},
                               context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def guardarComanda(request):
+    print("voy a guardar la comanda")
+    lista = request.session['listaProductosComanda']
+    cantidadComensales = request.session['cantidadC']
+    mesas = request.session['listaMesasComanda']
+    #Creamos la comanda
+    fecha = datetime.date.today()
+    now = datetime.datetime.now()
+    hora = datetime.time(now.hour, now.minute, now.second)
+    comanda = Comanda.objects.create(fecha=fecha, hora=hora, cantidadC=cantidadComensales)
+    for id_mesa in mesas:
+        mesa = Mesa.objects.get(pk=id_mesa)
+        comanda.mesas.add(mesa)
+        comanda.save()
+    for producto in lista:
+            print(producto)
+            datos = producto.split('_')
+            id_prod = datos[0]
+            cantidad = datos[1]
+            categoria = datos[2]
+            if categoria == 'P':
+                plato = Plato.objects.get(pk=id_prod)
+                detalle = DetalleComanda.objects.create(cantidadP=cantidad, platos= plato)
+            if categoria == 'B':
+                bebida = Bebida.objects.get(pk=id_prod)
+                detalle = DetalleComanda.objects.create(cantidadP=cantidad, bebidas= bebida)
+            if categoria == 'D':
+                dia = DelDia.objects.get(pk=id_prod)
+                detalle = DetalleComanda.objects.create(cantidadP=cantidad, menuD= dia)
+            if categoria == 'E':
+                ejecutivo = Ejecutivo.objects.get(pk=id_prod)
+                detalle = DetalleComanda.objects.create(cantidadP=cantidad, menuE= ejecutivo)
+            comanda.detalles.add(detalle)
+            comanda.save()
+
+    return render_to_response('Mozo/mozo.html', {}, context_instance=RequestContext(request))
+
+
+
+
+
+

@@ -52,7 +52,7 @@ $(document).ready(function(){
 	});
 	
 	$("#finalizar_menu").click(function(){
-		document.location.href = 'menu_mozo.html';
+		document.location.href = "{% url 'guardarComanda' %}";
 	});	
 	
 });
