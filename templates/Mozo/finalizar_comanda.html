@@ -14,31 +14,23 @@
 			<div class="salto_linea"></div>
 			<div class="label label-info titulo_menu">Comensales</div>
 			<div class="salto_linea"></div>
-			<div class="comanda_info">Cantidad de comensales: 5</div>
+			<div class="comanda_info">{{cantidad}}</div>
 			<div class="salto_linea"></div>
 	
 			<div class="salto_linea"></div>
 			<div class="label label-info titulo_menu">Mesas Seleccionadas</div>
 			<div class="salto_linea"></div>
-			<div class="comanda_info">Mesas: 1 3 5</div>
+			<div class="comanda_info">Mesas: {{mesas}}</div>
 			<div class="salto_linea"></div>
 			
 			<div class="salto_linea"></div>
 			<div class="label label-info titulo_menu">Menu</div>
 			<div class="salto_linea"></div>
-					<div class="comanda_info">Coca cola 1 $15</div>
+                {% for m in menuS %}
+					<div class="comanda_info">Pedido:{{m.nombre}} Cantidad:{{m.cantidad}} Total:{{m.total}}</div>
 					<div class="salto_linea"></div>
-					<div class="comanda_info">Sprite 2 $15</div>
-					<div class="salto_linea"></div>
-					<div class="comanda_info">Quilmes 1 $35</div>
-					<div class="salto_linea"></div>
-					<div class="comanda_info">Pizza Completa 1 $45</div>
-					<div class="salto_linea"></div>
-					<div class="comanda_info">Pizza Calabresa 1 $50</div>
-					<div class="salto_linea"></div>
-					<div class="comanda_info">Importe Total: <span id="total_comensales">$175</span></div>
-					<div class="salto_linea"></div>
-		</div>	
+                {% endfor %}
+		    </div>
 		<br>
 		<input type="button" name="finaliza" id="finalizar_menu" class="btn btn-large btn-primary" value="Finalizar Menu">
 	  <br>

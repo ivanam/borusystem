@@ -32,3 +32,11 @@ class DelDia(Menu):
 
 class Ejecutivo(Menu):
     fecha_fin = models.DateField("Fecha_Fin")
+
+class MenuS(object):
+
+    def __init__(self, nombre, cantidad, precio):
+        self.nombre = nombre
+        self.cantidad = cantidad
+        self.precio = precio
+        self.total = (precio*float(cantidad))
