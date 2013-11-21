@@ -18,6 +18,12 @@ TIPO = (
     ('C', 'C'),
 )
 
+TIPO_PAGO = (
+    ('E', 'Efectivo'),
+    ('TD', 'Tarjeta_debito'),
+    ('TC', 'Tarjeta_credito'),
+)
+
 
 class EstrategiaServicio(object):
 
@@ -157,3 +163,11 @@ class Factura(models.Model):
     detalle = models.ManyToManyField(DetalleFactura, related_name="contiene", null=True, blank=True)
     comanda = models.ForeignKey(Comanda, null=True, blank=True)
     preticket = models.ForeignKey(Preticket, null=True, blank=True)
+
+class DetallePago(models.Model):
+    importe = models.FloatField("importe")
+    tipoPago = models.CharField("Tipo", choices=TIPO_PAGO, max_length=2)
+
+class Pago(models.Model):
+    fecha = models.DateField("Fecha")
+    factura = models.ForeignKey(Factura)
