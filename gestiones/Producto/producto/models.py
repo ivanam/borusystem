@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 
 
@@ -5,8 +6,8 @@ class Producto(models.Model):
     ACTIVO_CHOICES = ((True, 'Activo'), (False, 'Inactivo'))
 
     nombre = models.CharField("Nombre", max_length=50)
-    precio = models.FloatField("Precio")
-    stock = models.IntegerField("Stock")
+    precio = models.DecimalField("Precio", max_digits=11, decimal_places=2)
+    stock = models.DecimalField("Stock", max_digits=11, decimal_places=0)
     activo = models.BooleanField("Activo", default=True, choices=ACTIVO_CHOICES)
     seccion = models.ForeignKey("altacarta.SeccionCarta", null=False, blank=False)
 
@@ -28,11 +29,18 @@ class Plato(Producto):
         (80, "80%"), (85, "85%"), (90, "90%"), (95, "95%"), (100, "100%"))
 
     descripcion = models.CharField("Descripcion", max_length=100, null=True, blank=True)
-    enPromocion = models.BooleanField("En_Promocion", default=False,null=False, blank=True, choices=PROMOCION_CHOICES)
-    descuento = models.IntegerField("Descuento", null=True, blank=True, choices=DESCUENTO_CHOICES,default=0)
+    enPromocion = models.BooleanField("En_Promocion", default=False, null=False, blank=True, choices=PROMOCION_CHOICES)
+    descuento = models.DecimalField("Descuento", null=True, blank=True, choices=DESCUENTO_CHOICES, default=0,
+                                    max_digits=11, decimal_places=0)
 
     def importe(self):
-        return self.precio - ((self.precio*self.descuento)/100)
+
+        if self.enPromocion:
+            importe_descontado = ((self.precio * self.descuento) / 100)
+        else:
+            importe_descontado = 0
+
+        return self.precio - importe_descontado
 
 
 class Bebida(Producto):
@@ -43,11 +51,19 @@ class Bebida(Producto):
         (80, "80%"), (85, "85%"), (90, "90%"), (95, "95%"), (100, "100%"))
 
     marca = models.CharField("Marca", max_length=20, null=True, blank=True)
-    enPromocion = models.BooleanField("En_Promocion", default=False,null=False, blank=True, choices=PROMOCION_CHOICES)
-    descuento = models.IntegerField("Descuento", null=True, blank=True, choices=DESCUENTO_CHOICES,default=0)
+    enPromocion = models.BooleanField("En_Promocion", default=False, null=False, blank=True, choices=PROMOCION_CHOICES)
+    descuento = models.DecimalField("Descuento", null=True, blank=True, choices=DESCUENTO_CHOICES, default=0,
+                                    max_digits=11, decimal_places=0)
 
     def importe(self):
-        return self.precio - ((self.precio * self.descuento) / 100)
+
+        if self.enPromocion:
+            importe_descontado = ((self.precio * self.descuento) / 100)
+        else:
+            importe_descontado = 0
+
+        return self.precio - importe_descontado
+
 
 class Menu(Producto):
     descripcion = models.CharField("Descripcion", max_length=100, null=True, blank=True)
@@ -56,7 +72,6 @@ class Menu(Producto):
 
     class Meta:
         abstract = True
-
 
 
 class DelDia(Menu):
@@ -72,4 +87,4 @@ class MenuS(object):
         self.nombre = nombre
         self.cantidad = cantidad
         self.precio = precio
-        self.total = (precio * float(cantidad))
+        self.total = (precio * int(cantidad))

@@ -9,8 +9,6 @@ from gestiones.Comanda.comanda.models import Comanda, DetalleComanda
 from gestiones.Producto.producto.models import Bebida, Plato, DelDia, Ejecutivo, MenuS
 from gestiones.Salon.altamesa.models import Mesa
 import datetime
-from datetime import date
-from time import time
 
 
 @permission_required('Administrador.is_mozo', login_url="login")
@@ -44,7 +42,6 @@ def crearcomanda(request):
             now = datetime.datetime.now()
             hora = datetime.time(now.hour, now.minute, now.second)
             comanda = Comanda.objects.create(fecha=fecha, hora=hora, cantidadC=cantidad)
-            print(comanda.estrategia.nombre)
 
             #guardo en la sesion el id de la comanda
             request.session['id_comanda']= comanda.id
@@ -57,19 +54,21 @@ def crearcomanda(request):
         #si trato de entrar sin haber enviado el form,me vuelve a la primera pagina
         return HttpResponseRedirect(reverse('mozo'))
 
+@permission_required('Administrador.is_mozo', login_url="login")
 def seleccionarproductos(request):
     idcomanda = request.session["id_comanda"]
-    print(idcomanda)
     comanda = Comanda.objects.get(pk=idcomanda)
     seccion = comanda.filtrar_secciones()
 
     try:
-        pass#request.session['listaProductosComanda']=[]
+        pass
     except:
         print("Excepcion en seleccionar productos")
+
     panel_seleccionar_producto=get_template('Mozo/panel_menu_seleccionado.html')
     return render_to_response('Mozo/seleccionar_menu.html', {'seccion': seccion, 'panel_seleccionar_mesa':panel_seleccionar_producto.render( Context({}) )}, context_instance=RequestContext(request))
 
+@permission_required('Administrador.is_mozo', login_url="login")
 def cargararproductosajax(request):
     print("Entre en la funcion de vista aca")
     if request.method == 'GET':
@@ -258,8 +257,8 @@ def guardarComanda(request):
                 detalle = DetalleComanda.objects.create(cantidadP=cantidad, menuE= ejecutivo)
             comanda.detalles.add(detalle)
             comanda.save()
-
-    return render_to_response('Mozo/mozo.html', {}, context_instance=RequestContext(request))
+    comanda.finalizar()
+    return HttpResponseRedirect(reverse('mozo'))
 
 
 

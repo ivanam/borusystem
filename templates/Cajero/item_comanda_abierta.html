@@ -1,0 +1,22 @@
+{% for c in comandas %}
+                    <!--inicio comanda abierta item //-->
+                        <div class="contenedor_comanda_item">
+                            <div class="comanda_numero">Comanda Nº {{ c.id }}</div>
+                            <div class="contenedor_comanda_data">
+                                <div class="comanda_fecha">Fecha: {{ c.fecha }} {{ c.hora }}</div>
+                                <div class="comanda_mesas">
+                                    Mesas:
+                                    {% for m in c.mesas.all %}
+                                    <span class="badge badge-warning">{{ m.id }}</span>
+                                    {% endfor %}
+                                </div>
+                                <div class="linea"></div>
+                                <div class="comanda_btn">
+                                    <input type="button" class="btn btn-small" value="Cerrar Comanda"
+                                           onClick="confirm('Usted Desea Cerrar la Comanda Nº {{c.id}}?');">
+                                    <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda({{c.id}});">
+                                </div>
+                            </div>
+                        </div>
+                    <!--fin comanda abierta item //-->
+{% endfor %}

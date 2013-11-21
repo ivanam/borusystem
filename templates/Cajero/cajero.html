@@ -3,7 +3,7 @@
 {% block contenido %}
 <div class="izquierda">
 
-    <button class="btn btn-inverse menu_cajero">
+    <button class="btn btn-inverse menu_cajero" id="comandas_abiertas">
         Comandas Abiertas
         <div class="comanda_nueva">2</div>
     </button>
@@ -14,12 +14,16 @@
         Pretickets
     </button>
 
+     <button class="btn btn-inverse menu_cajero" id="pedidos">
+        Pedidos
+    </button>
+
 </div>
 <div class="derecha">
     <div class="contenedor_secundario_cajero">
 
         <div id="con_menu_mozo" class="cont_redondeado contenedor_principal_cajero">
-            <div class="label label-inverse titulo_menu">Comandas Abiertas</div>
+            <div class="label label-inverse titulo_menu">{{titulo}}</div>
             <br>
 
             <div class="salto_linea"></div>
@@ -28,28 +32,12 @@
                     <!-- ACA inicio codigo //-->
                     <div class="salto_linea"></div>
 
-                    {% for c in comandas %}
-                    <!--inicio comanda abierta item //-->
-                        <div class="contenedor_comanda_item">
-                            <div class="comanda_numero">Comanda Nº {{ c.id }}</div>
-                            <div class="contenedor_comanda_data">
-                                <div class="comanda_fecha">Fecha: {{ c.fecha }} {{ c.hora }}</div>
-                                <div class="comanda_mesas">
-                                    Mesas:
-                                    {% for m in c.mesas.all %}
-                                    <span class="badge badge-warning">{{ m.id }}</span>
-                                    {% endfor %}
-                                </div>
-                                <div class="linea"></div>
-                                <div class="comanda_btn">
-                                    <input type="button" class="btn btn-small" value="Cerrar Comanda"
-                                           onClick="confirm('Usted Desea Cerrar la Comanda Nº {{c.id}}?');">
-                                    <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda({{c.id}});">
-                                </div>
-                            </div>
-                        </div>
-                    <!--fin comanda abierta item //-->
-                    {% endfor %}
+
+                    {{item_comandas_abiertas}}
+
+                    {{item_comandas_cerradas}}
+
+                    {{item_pedidos_pub}}
                     <!-- ACA fin codigo //-->
                 </div><!-- fin bloke de mesas//-->
         </div><!-- fin contenedor principal//-->
@@ -86,15 +74,15 @@ function mostrarDetallePedido(){
 
 $(document).ready(function(){
 
-  //leo lo que guarde
-  $("#nombre_usuario").html($.cookie('usuario'));
-  
-  //le doy funcionalidad al boton cerrar sesion
-  $("#cerrar_sescion_actual").click(function(){
-    delCookies(); 
-    document.location.href = 'index.html';
-  });
-  
+    $("#comandas_abiertas").click(function(event){
+      		document.location.href = "{% url 'cajero' %}";
+    });
+
+    $("#pedidos").click(function(event){
+      		document.location.href = "{% url 'pedidos_pub' %}";
+    });
+
+
   $('.dropdown-toggle').dropdownHover(options);
 });
 

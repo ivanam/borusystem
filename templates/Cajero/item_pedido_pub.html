@@ -1,0 +1,24 @@
+             {% for p in pedidos %}
+                        <!--inicio comanda abierta item //-->
+                        <div class="contenedor_comanda_item">
+                            <div class="comanda_numero">Pedido Nº {{p.id}}</div>
+                            <div class="contenedor_comanda_data">
+                                <div class="comanda_fecha">Fecha:  {{ p.fecha }} {{ p.hora }}</div>
+                                <div class="comanda_mesas">
+                                    Mesas:
+                                    {% for mp in p.mesas.all %}
+                                    <span class="badge badge-important">{{mp.id}}</span>
+                                    {% endfor %}
+                                </div>
+                                <div class="comanda_total">Importe Adeudado: {{importe}}</div>
+
+                                <div class="linea"></div>
+                                <div class="comanda_btn">
+                                    <input type="button" class="btn btn-small" value="Generar Factura"
+                                           onClick="confirm('Usted Desea generar la Factura del Pedido Nº XXXXXX?');">
+                                    <input type="button" class="btn btn-small" value=" Detalle Pedido" onClick="mostrarDetallePedido();">
+                                </div>
+                            </div>
+                        </div>
+                        <!--fin comanda abierta item //-->
+                    {% endfor %}
