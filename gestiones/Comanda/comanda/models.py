@@ -12,6 +12,12 @@ from time import time
 
 ESTRATEGIAS = []
 
+TIPO = (
+    ('A', 'A'),
+    ('B', 'B'),
+    ('C', 'C'),
+)
+
 
 class EstrategiaServicio(object):
 
@@ -122,3 +128,32 @@ class Comanda(models.Model):
         mesa.ocupada = False
         mesa.save()
         self.save()
+
+
+class DetallePreticket(models.Model):
+    cantidad = models.IntegerField("CantidadP")
+    precioXunidad = models.FloatField("Precio")
+    detalleComanda = models.ForeignKey(DetalleComanda)
+
+class Preticket(models.Model):
+    fecha = models.DateField("Fecha")
+    hora = models.TimeField("Hora")
+    total = models.FloatField("Total")
+    comanda = models.ForeignKey(Comanda)
+    detalles = models.ManyToManyField(DetallePreticket, related_name="compuesto", null=True, blank=True)
+
+class DetalleFactura(models.Model):
+    cantidad = models.IntegerField("CantidadP")
+    precioXunidad = models.FloatField("Precio")
+    detalleComanda = models.ForeignKey(DetalleComanda, null=True, blank=True)
+    detallePreticket = models.ForeignKey(DetallePreticket, null=True, blank=True)
+
+
+class Factura(models.Model):
+    fecha = models.DateField("Fecha")
+    hora = models.TimeField("Hora")
+    tipo = models.CharField("Tipo", choices=TIPO, max_length=1)
+    total = models.FloatField("Total")
+    detalle = models.ManyToManyField(DetalleFactura, related_name="contiene", null=True, blank=True)
+    comanda = models.ForeignKey(Comanda, null=True, blank=True)
+    preticket = models.ForeignKey(Preticket, null=True, blank=True)
