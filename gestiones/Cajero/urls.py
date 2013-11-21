@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = patterns('',
     
-url(r'^$', 'gestiones.Cajero.views.Cajero', name="cajero"),
+    url(r'^$', 'gestiones.Cajero.views.Cajero', name="cajero"),
+    url(r'^detalle$', 'gestiones.Cajero.views.detalle_comanda_ajax', name="detalle_comanda_ajax"),
 
 )

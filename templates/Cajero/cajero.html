@@ -44,7 +44,7 @@
                                 <div class="comanda_btn">
                                     <input type="button" class="btn btn-small" value="Cerrar Comanda"
                                            onClick="confirm('Usted Desea Cerrar la Comanda Nº {{c.id}}?');">
-                                    <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda();">
+                                    <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda({{c.id}});">
                                 </div>
                             </div>
                         </div>
@@ -59,12 +59,20 @@
 
 {% block script %}
 <script>
-function mostrarDetalleComanda(){
-    
-    $('.modal-titulo').html("Comanda Nº 15236548");
-    $('.modal-body').html($("#15236548").html());
-  $('#myModal').modal("show")
+function mostrarDetalleComanda(id_comanda){
 
+    $.ajax({
+        type: "GET",
+        url: "{% url 'detalle_comanda_ajax' %}",
+        data: "id_comanda="+id_comanda,
+        success: function(datos){
+
+
+            $('.modal-titulo').html("Comanda Nº "+id_comanda);
+            $('.modal-body').html(datos);
+            $('#myModal').modal("show")
+          }
+    });
 }
 
 

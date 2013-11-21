@@ -111,7 +111,6 @@ class EstrategiaPedido(EstrategiaServicio):
 
 
 
-
 ESTRATEGIAS.append(EstrategiaPedido("Pub", datetime.time(0, 0, 0), datetime.time(6, 59, 59)))
 ESTRATEGIAS.append(EstrategiaComanda("Resto", datetime.time(7, 0, 0), datetime.time(23, 59, 59)))
 

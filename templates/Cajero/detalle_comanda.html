@@ -1,0 +1,40 @@
+<!-- Modal cuerpo comanda //-->
+<div class="bloque_final" id="{{ comanda.id }}">
+      <div class="salto_linea"></div>
+      <div class="label label-inverse titulo_menu">Comensales</div>
+      <div class="salto_linea"></div>
+      <div class="comanda_info">Cantidad de comensales: {{ comanda.cantidadC }}</div>
+      <div class="salto_linea"></div>
+  
+      <div class="salto_linea"></div>
+      <div class="label label-inverse titulo_menu">Mesas Seleccionadas</div>
+      <div class="salto_linea"></div>
+      <div class="comanda_info">Mesas: {% for m in comanda.mesas.all %} {{ m.id }} {% endfor %}</div>
+      <div class="salto_linea"></div>
+      
+      <div class="salto_linea"></div>
+      <div class="label label-inverse titulo_menu">Menu</div>
+      <div class="salto_linea"></div>
+          {% for p in comanda.detalles.all %}
+            {% if p.platos %}
+          <div class="comanda_info">{{ p.platos.nombre }} {{ p.platos.precio }} {{ p.cantidadP }}</div>
+          <div class="salto_linea"></div>
+            {% endif %}
+            {% if p.bebidas %}
+          <div class="comanda_info">{{ p.bebidas.nombre }} {{ p.bebidas.precio }} {{ p.cantidadP }}</div>
+          <div class="salto_linea"></div>
+            {% endif %}
+            {% if p.menuD %}
+          <div class="comanda_info">{{ p.menuD.nombre }} {{ p.menuD.precio }} {{ p.cantidadP }}</div>
+          <div class="salto_linea"></div>
+            {% endif %}
+            {% if p.menuE %}
+          <div class="comanda_info">{{ p.menuE.nombre }} {{ p.menuE.precio }} {{ p.cantidadP }}</div>
+          <div class="salto_linea"></div>
+            {% endif %}
+          {% endfor %}
+          <br>
+          <div class="label label-inverse">Importe Total: <span id="total_comensales">{{ total }}</span></div>
+          <div class="salto_linea"></div>
+</div>  
+<!-- Fin Modal cuerpo //-->
