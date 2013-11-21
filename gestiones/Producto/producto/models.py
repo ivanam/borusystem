@@ -31,6 +31,9 @@ class Plato(Producto):
     enPromocion = models.BooleanField("En_Promocion", default=False,null=False, blank=True, choices=PROMOCION_CHOICES)
     descuento = models.IntegerField("Descuento", null=True, blank=True, choices=DESCUENTO_CHOICES,default=0)
 
+    def importe(self):
+        return self.precio - ((self.precio*self.descuento)/100)
+
 
 class Bebida(Producto):
     PROMOCION_CHOICES = ((True, 'Si'), (False, 'No'))
@@ -43,6 +46,8 @@ class Bebida(Producto):
     enPromocion = models.BooleanField("En_Promocion", default=False,null=False, blank=True, choices=PROMOCION_CHOICES)
     descuento = models.IntegerField("Descuento", null=True, blank=True, choices=DESCUENTO_CHOICES,default=0)
 
+    def importe(self):
+        return self.precio - ((self.precio * self.descuento) / 100)
 
 class Menu(Producto):
     descripcion = models.CharField("Descripcion", max_length=100, null=True, blank=True)
@@ -51,6 +56,7 @@ class Menu(Producto):
 
     class Meta:
         abstract = True
+
 
 
 class DelDia(Menu):

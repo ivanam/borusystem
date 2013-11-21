@@ -2,290 +2,57 @@
 {% block titulo %}Boru - Cajero{% endblock %}
 {% block contenido %}
 <div class="izquierda">
-    <button class="btn btn-inverse menu_cajero" >
-    Comandas Abiertas
-    <div class="comanda_nueva">2</div>
-    </button>
-    <button class="btn btn-inverse menu_cajero">
-    Comandas Cerradas
-    </button>
-    <button class="btn btn-inverse menu_cajero">
-    Pretickets
-    </button>
 
+    <button class="btn btn-inverse menu_cajero">
+        Comandas Abiertas
+        <div class="comanda_nueva">2</div>
+    </button>
+    <button class="btn btn-inverse menu_cajero">
+        Comandas Cerradas
+    </button>
+    <button class="btn btn-inverse menu_cajero">
+        Pretickets
+    </button>
 
 </div>
 <div class="derecha">
-<div class="contenedor_secundario_cajero">
-    
-    <div id="con_menu_mozo" class="cont_redondeado contenedor_principal_cajero">
-        <div class="label label-inverse titulo_menu">Comandas Abiertas</div>
-        <br>
-        <div class="salto_linea"></div>
-        <div id="mesas_libres" class="bloque_comandas">
-    
-    <!-- ACA inicio codigo //-->
-    <div class="salto_linea"></div>
-    
+    <div class="contenedor_secundario_cajero">
 
-        
-        <!--inicio comanda abierta item //-->
-        <div class="contenedor_comanda_item">
-          <div class="comanda_numero">Comanda Nº 15425489</div>
-          <div class="contenedor_comanda_data">
-            <div class="comanda_fecha">Fecha: 27-09-2013 11:42:55</div>
-            <div class="comanda_mesas">
-              Mesas: 
-              <span class="badge badge-warning">1</span> 
-              <span class="badge badge-warning">3</span>
-              <span class="badge badge-warning">5</span>
-              <span class="badge badge-warning">6</span>
-            </div>
-            <div class="comanda_total">Importe Adeudado: $1000</div>
-            
-            <div class="linea"></div>
-            <div class="comanda_btn">
-            <input type="button" class="btn btn-small" value="Cerrar Comanda" onClick="confirm('Usted Desea Cerrar la Comanda Nº XXXXXX?');">
-            <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda();">
-            </div>
-          </div>
-        </div>
-        <!--fin comanda abierta item //-->
-        
-        
-        <!--inicio comanda abierta item //-->
-        <div class="contenedor_comanda_item">
-          <div class="comanda_numero">Comanda Nº 15425489</div>
-          <div class="contenedor_comanda_data">
-            <div class="comanda_fecha">Fecha: 27-09-2013 11:42:55</div>
-            <div class="comanda_mesas">
-              Mesas: 
-              <span class="badge badge-warning">1</span> 
-              <span class="badge badge-warning">3</span>
-              <span class="badge badge-warning">5</span>
-              <span class="badge badge-warning">6</span>
-            </div>
-            <div class="comanda_total">Importe Adeudado: $1000</div>
-            
-            <div class="linea"></div>
-            <div class="comanda_btn">
-            <input type="button" class="btn btn-small" value="Cerrar Comanda" onClick="confirm('Usted Desea Cerrar la Comanda Nº XXXXXX?');">
-            <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda();">
-            </div>
-          </div>
-        </div>
-        <!--fin comanda abierta item //-->
-        
-        
-        <!--inicio comanda abierta item //-->
-        <div class="contenedor_comanda_item">
-          <div class="comanda_numero">Comanda Nº 15425489</div>
-          <div class="contenedor_comanda_data">
-            <div class="comanda_fecha">Fecha: 27-09-2013 11:42:55</div>
-            <div class="comanda_mesas">
-              Mesas: 
-              <span class="badge badge-warning">1</span> 
-              <span class="badge badge-warning">3</span>
-              <span class="badge badge-warning">5</span>
-              <span class="badge badge-warning">6</span>
-            </div>
-            <div class="comanda_total">Importe Adeudado: $1000</div>
-            
-            <div class="linea"></div>
-            <div class="comanda_btn">
-            <input type="button" class="btn btn-small" value="Cerrar Comanda" onClick="confirm('Usted Desea Cerrar la Comanda Nº XXXXXX?');">
-            <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda();">
-            </div>
-          </div>
-        </div>
-        <!--fin comanda abierta item //-->
-        
-        
-        <!--inicio comanda abierta item //-->
-        <div class="contenedor_comanda_item">
-          <div class="comanda_numero">Comanda Nº 15425489</div>
-          <div class="contenedor_comanda_data">
-            <div class="comanda_fecha">Fecha: 27-09-2013 11:42:55</div>
-            <div class="comanda_mesas">
-              Mesas: 
-              <span class="badge badge-warning">1</span> 
-              <span class="badge badge-warning">3</span>
-              <span class="badge badge-warning">5</span>
-              <span class="badge badge-warning">6</span>
-            </div>
-            <div class="comanda_total">Importe Adeudado: $1000</div>
-            
-            <div class="linea"></div>
-            <div class="comanda_btn">
-            <input type="button" class="btn btn-small" value="Cerrar Comanda" onClick="confirm('Usted Desea Cerrar la Comanda Nº XXXXXX?');">
-            <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda();">
-            </div>
-          </div>
-        </div>
-        <!--fin comanda abierta item //-->
-        
-        
-        <!--inicio comanda abierta item //-->
-        <div class="contenedor_comanda_item">
-          <div class="comanda_numero">Comanda Nº 15425489</div>
-          <div class="contenedor_comanda_data">
-            <div class="comanda_fecha">Fecha: 27-09-2013 11:42:55</div>
-            <div class="comanda_mesas">
-              Mesas: 
-              <span class="badge badge-warning">1</span> 
-              <span class="badge badge-warning">3</span>
-              <span class="badge badge-warning">5</span>
-              <span class="badge badge-warning">6</span>
-            </div>
-            <div class="comanda_total">Importe Adeudado: $1000</div>
-            
-            <div class="linea"></div>
-            <div class="comanda_btn">
-            <input type="button" class="btn btn-small" value="Cerrar Comanda" onClick="confirm('Usted Desea Cerrar la Comanda Nº XXXXXX?');">
-            <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda();">
-            </div>
-          </div>
-        <!--fin comanda abierta item //-->
-        
+        <div id="con_menu_mozo" class="cont_redondeado contenedor_principal_cajero">
+            <div class="label label-inverse titulo_menu">Comandas Abiertas</div>
+            <br>
 
+            <div class="salto_linea"></div>
+                <div id="mesas_libres" class="bloque_comandas">
 
-        <!--inicio comanda abierta item //-->
-        <div class="contenedor_comanda_item">
-          <div class="comanda_numero">Comanda Nº 15425489</div>
-          <div class="contenedor_comanda_data">
-            <div class="comanda_fecha">Fecha: 27-09-2013 09:22:23</div>
-            <div class="comanda_mesas">
-              Mesas: 
-              <span class="badge badge-important">7</span> 
-              <span class="badge badge-important">9</span>
-              <span class="badge badge-important">11</span>
-              <span class="badge badge-important">12</span>
-            </div>
-            <div class="comanda_total">Importe Adeudado: $1250</div>
-            
-            <div class="linea"></div>
-            <div class="comanda_btn">
-            <input type="button" class="btn btn-small" value="Generar Preticket" onClick="confirm('Usted Desea generar el Preticket de la  Comanda Nº XXXXXX?');">
-            <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda();">
-            </div>
-          </div>
-        </div>
-        <!--fin comanda abierta item //-->
-        
-        
-        <!--inicio comanda abierta item //-->
-        <div class="contenedor_comanda_item">
-          <div class="comanda_numero">Comanda Nº 15425489</div>
-          <div class="contenedor_comanda_data">
-            <div class="comanda_fecha">Fecha: 27-09-2013 09:22:23</div>
-            <div class="comanda_mesas">
-              Mesas: 
-              <span class="badge badge-important">7</span> 
-              <span class="badge badge-important">9</span>
-              <span class="badge badge-important">11</span>
-              <span class="badge badge-important">12</span>
-            </div>
-            <div class="comanda_total">Importe Adeudado: $1250</div>
-            
-            <div class="linea"></div>
-            <div class="comanda_btn">
-            <input type="button" class="btn btn-small" value="Generar Preticket" onClick="confirm('Usted Desea generar el Preticket de la  Comanda Nº XXXXXX?');">
-            <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda();">
-            </div>
-          </div>
-        </div>
-        <!--fin comanda abierta item //-->
-        
-        
-        <!--inicio comanda abierta item //-->
-        <div class="contenedor_comanda_item">
-          <div class="comanda_numero">Comanda Nº 15425489</div>
-          <div class="contenedor_comanda_data">
-            <div class="comanda_fecha">Fecha: 27-09-2013 09:22:23</div>
-            <div class="comanda_mesas">
-              Mesas: 
-              <span class="badge badge-important">7</span> 
-              <span class="badge badge-important">9</span>
-              <span class="badge badge-important">11</span>
-              <span class="badge badge-important">12</span>
-            </div>
-            <div class="comanda_total">Importe Adeudado: $1250</div>
-            
-            <div class="linea"></div>
-            <div class="comanda_btn">
-            <input type="button" class="btn btn-small" value="Generar Preticket" onClick="confirm('Usted Desea generar el Preticket de la  Comanda Nº XXXXXX?');">
-            <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda();">
-            </div>
-          </div>
-        </div>
-        <!--fin comanda abierta item //-->
-        
+                    <!-- ACA inicio codigo //-->
+                    <div class="salto_linea"></div>
 
-
-
-        
-        
-          <!--inicio comanda abierta item //-->
-        <div class="contenedor_comanda_item">
-          <div class="preticket_numero">Preticket Nº 24570014</div>
-          <div class="contenedor_ticket_data">
-            <div class="comanda_fecha">Fecha: 27-09-2013 12:11:06</div>
-            <div class="comanda_mesas">
-              Mesas: 
-              <span class="badge badge-success">15</span> 
-              <span class="badge badge-success">16</span>
-              <span class="badge badge-success">17</span>
-            </div>
-            <div class="comanda_total">Importe: $350.25</div>
-            
-            <div class="linea"></div>
-            <div class="comanda_btn">
-            <input type="button" class="btn btn-small" value="Generar Factura" onClick="confirm('Usted Desea generar la Factura del  Preticket Nº XXXXXX?');">
-            <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda();">
-            </div>
-          </div>
-        </div>
-        <!--fin comanda abierta item //-->
-
-
-
-        
-        <!--inicio comanda abierta item //-->
-        
-        <!--inicio comanda abierta item //-->
-        <div class="contenedor_comanda_item">
-          <div class="comanda_numero">Pedido Nº 15425489</div>
-          <div class="contenedor_comanda_data">
-            <div class="comanda_fecha">Fecha: 27-09-2013 01:22:23</div>
-            <div class="comanda_mesas">
-              Mesas: 
-              <span class="badge badge-important">17</span> 
-              
-            </div>
-            <div class="comanda_total">Importe Adeudado: $100</div>
-            
-            <div class="linea"></div>
-            <div class="comanda_btn">
-            <input type="button" class="btn btn-small" value="Generar Factura" onClick="confirm('Usted Desea generar la Factura del Pedido Nº XXXXXX?');">
-            <input type="button" class="btn btn-small" value=" Detalle Pedido" onClick="mostrarDetallePedido();">
-            </div>
-          </div>
-        </div>
-        <!--fin comanda abierta item //-->
-        
-        <!--fin comanda abierta item //-->
-        
-
-
-
-
-</div><!-- fin menu collapse//-->
-
-    
-    <!-- ACA fin codigo //-->
-    
-    </div><!-- fin bloke de mesas//-->
-      </div><!-- fin contenedor principal//-->
+                    {% for c in comandas %}
+                    <!--inicio comanda abierta item //-->
+                        <div class="contenedor_comanda_item">
+                            <div class="comanda_numero">Comanda Nº {{ c.id }}</div>
+                            <div class="contenedor_comanda_data">
+                                <div class="comanda_fecha">Fecha: {{ c.fecha }} {{ c.hora }}</div>
+                                <div class="comanda_mesas">
+                                    Mesas:
+                                    {% for m in c.mesas.all %}
+                                    <span class="badge badge-warning">{{ m.id }}</span>
+                                    {% endfor %}
+                                </div>
+                                <div class="linea"></div>
+                                <div class="comanda_btn">
+                                    <input type="button" class="btn btn-small" value="Cerrar Comanda"
+                                           onClick="confirm('Usted Desea Cerrar la Comanda Nº {{c.id}}?');">
+                                    <input type="button" class="btn btn-small" value=" Detalle Comanda" onClick="mostrarDetalleComanda();">
+                                </div>
+                            </div>
+                        </div>
+                    <!--fin comanda abierta item //-->
+                    {% endfor %}
+                    <!-- ACA fin codigo //-->
+                </div><!-- fin bloke de mesas//-->
+        </div><!-- fin contenedor principal//-->
     </div><!-- fin de contenedor secundario //-->
 </div>
 {% endblock %}
@@ -322,5 +89,6 @@ $(document).ready(function(){
   
   $('.dropdown-toggle').dropdownHover(options);
 });
+
 </script>
 {% endblock %}

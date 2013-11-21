@@ -231,11 +231,9 @@ def guardarComanda(request):
     lista = request.session['listaProductosComanda']
     cantidadComensales = request.session['cantidadC']
     mesas = request.session['listaMesasComanda']
-    #Creamos la comanda
-    fecha = datetime.date.today()
-    now = datetime.datetime.now()
-    hora = datetime.time(now.hour, now.minute, now.second)
-    comanda = Comanda.objects.create(fecha=fecha, hora=hora, cantidadC=cantidadComensales)
+    idcomanda = request.session["id_comanda"]
+    comanda = Comanda.objects.get(pk=idcomanda)
+    comanda.cantidadC = cantidadComensales
     for id_mesa in mesas:
         mesa = Mesa.objects.get(pk=id_mesa)
         comanda.mesas.add(mesa)

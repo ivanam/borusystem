@@ -1,13 +1,9 @@
-from datetime import time
 from django.db import models
-from django.template import defaulttags
 from gestiones.Carta.altacarta.models import SeccionCarta
 from gestiones.Mozo.models import Personal
 from gestiones.Producto.producto.models import Plato, Ejecutivo, Bebida, DelDia
 from gestiones.Salon.altamesa.models import Mesa
 import datetime
-from datetime import date
-from time import time
 
 
 ESTRATEGIAS = []
@@ -47,6 +43,9 @@ class EstrategiaServicio(object):
     def filtrar_secciones(self):
         pass
 
+    def finalizar_comanda(self):
+        pass
+
     #return self.estrategia.filtrar_secciones(secciones)
 
 class EstrategiaComanda(EstrategiaServicio):
@@ -74,6 +73,9 @@ class EstrategiaComanda(EstrategiaServicio):
         seccion = SeccionCarta.objects.filter(activo__exact=1)
         return seccion
 
+    def finalizar_comanda(self):
+        pass
+
 class EstrategiaPedido(EstrategiaServicio):
     def cargarProductos(self, comanda, producto, cantidad):
         detalle = DetalleComanda.objects.create(cantidadP=cantidad)
@@ -92,6 +94,17 @@ class EstrategiaPedido(EstrategiaServicio):
         seccion = SeccionCarta.objects.filter(categoria__exact='B', activo__exact=1)
         return seccion
 
+    def finalizar_comanda(self, comanda):
+        comanda.cerrada = True
+        fecha = datetime.date.today()
+        now = datetime.datetime.now()
+        hora = datetime.time(now.hour, now.minute, now.second)
+        total = 0
+        for platos in comanda.detalles.platos:
+            
+
+
+
 
 
 ESTRATEGIAS.append(EstrategiaPedido("Pub", datetime.time(0, 0, 0), datetime.time(6, 59, 59)))
@@ -105,6 +118,22 @@ class DetalleComanda(models.Model):
     menuD = models.ForeignKey(DelDia, null=True, blank=True)
     menuE = models.ForeignKey(Ejecutivo, null=True, blank=True)
 
+    def importe(self):
+       detalleImporte=0.00
+
+       if len(self.platos) != 0:
+           detalleImporte = self.platos.importe()*self.cantidadP
+       else:
+           if len(self.bebidas) != 0:
+               detalleImporte = self.bebidas.importe() * self.cantidadP
+           else:
+               if len(self.menuD) != 0:
+                   detalleImporte = self.menuD.importe() * self.cantidadP
+               else:
+                   if len(self.menuE) != 0:
+                       detalleImporte = self.menuE.importe() * self.cantidadP
+
+       return detalleImporte
 
 class Comanda(models.Model):
     fecha = models.DateField("Fecha")

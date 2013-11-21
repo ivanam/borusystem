@@ -1,4 +1,4 @@
-from django.forms import ModelForm, Textarea, CheckboxInput, CheckboxSelectMultiple
+from django.forms import ModelForm, Textarea, CheckboxSelectMultiple
 from django.forms.widgets import Select
 from gestiones.Carta.altacarta.models import SeccionCarta
 from gestiones.Producto.producto.models import DelDia
