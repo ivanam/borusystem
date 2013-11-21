@@ -101,8 +101,13 @@ class EstrategiaPedido(EstrategiaServicio):
         hora = datetime.time(now.hour, now.minute, now.second)
         total = 0
         for platos in comanda.detalles.platos:
-            
-
+            total = total + platos.importe
+        for bebidas in comanda.detalles.bebidas:
+            total = total + bebidas.importe
+        for menuD in comanda.detalles.menuD:
+            total = total + menuD.precio
+        for mennuE in comanda.detalles.menuE:
+            pass
 
 
 
