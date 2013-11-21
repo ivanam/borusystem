@@ -5,15 +5,31 @@
     <div class="listado_modificar_mozos cont_redondeado">
         <div class="label label-inverse titulo_menu" id="listado_mozos">Listado de Mozos</div>
         <!-- inicio listado de mozos //-->
+        <div class="label label-inverse">
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Nombre</div>
+            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz">Apellido</div>
+            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz">DNI</div>
+            <div class="listado_item_campo_base listado_item_campo_02 flotar_iz">&nbsp</div>
+        </div>
         {% for m in mozos %}
         <div class="listado_modificar_mozo_item {% if not m.is_active %}inactivo{% endif %}">
-            <div class="listado_mozo_item_campo">
-                <img src="{{STATIC_URL}}img/conf/{% if m.is_active %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}" urldel="{% url 'modificarmozo_id_del' m.id %}" estado="{{m.is_active}}"  class="eliminar_mozo" nombre="{{m.first_name}} {{m.last_name}}" title="{% if not m.is_active %}Acivar{% else %}Eliminar{% endif %} mozo: {{m.first_name|capfirst}} {{m.last_name|capfirst}}">
-            </div>
+
             <div class="cargar_modificar_mozo" href="{% url 'modificarmozo_id' m.id %}">
-                <div class="listado_mozo_item_campo" title="Numero de Documento: {{m.numeroDoc}}">{{m.numeroDoc}}</div>
-                <div class="listado_mozo_item_campo" title="Apellido: {{m.last_name|capfirst}}">{{m.last_name|capfirst|truncatechars:9}}</div>
-                <div class="listado_mozo_item_campo" title="Nombre: {{m.first_name|capfirst}}">{{m.first_name|capfirst|truncatechars:10}}</div>
+                <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_iz"
+                     title="Nombre: {{m.first_name|capfirst}}">{{m.first_name|capfirst|truncatechars:13}}
+                </div>
+                <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
+                     title="Apellido: {{m.last_name|capfirst}}">{{m.last_name|capfirst|truncatechars:12}}
+                </div>
+                <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
+                     title="Numero de Documento: {{m.numeroDoc}}">{{m.numeroDoc}}
+                </div>
+            </div>
+            <div class="listado_item_campo_base listado_item_campo_02">
+                <img src="{{STATIC_URL}}img/conf/{% if m.is_active %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
+                     urldel="{% url 'modificarmozo_id_del' m.id %}" estado="{{m.is_active}}" class="eliminar_mozo"
+                     nombre="{{m.first_name}} {{m.last_name}}"
+                     title="{% if not m.is_active %}Acivar{% else %}Eliminar{% endif %} mozo: {{m.first_name|capfirst}} {{m.last_name|capfirst}}">
             </div>
         </div>
         {% endfor %}
@@ -156,5 +172,6 @@ $(document).ready(function(){
 	$('.dropdown-toggle').dropdownHover(options);
 
 });
+
 </script>
 {% endblock %}

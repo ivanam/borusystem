@@ -1,6 +1,5 @@
+from collections import defaultdict
 from django.db import models
-#from boru.gestiones.Salon.altamesa.models import *
-
 
 TIPO = (
     ('F', 'Fumador'),
@@ -26,10 +25,21 @@ class Sector(models.Model):
     def __str__(self):
         return self.descripcion
 
+    def cambiarEstado(self):
+        if self.activo:
+            self.activo=False
+        else:
+            self.activo=True
 
 class Mesa(models.Model):
     tipo = models.IntegerField(max_length=2, choices=TIPO_MESA, default=3)
     capacidad = models.IntegerField()
     ocupada = models.BooleanField("Ocupada", choices=OCUPADA, null=False, blank=False, default=False)
     activo = models.BooleanField("Activo", choices=ACTIVO, null=False, blank=False,default=True)
-    sector = models.ForeignKey(Sector)
+    sector = models.ForeignKey(Sector, null=False, blank=False, default=1)
+
+    def cambiarEstado(self):
+        if self.activo:
+            self.activo = False
+        else:
+            self.activo = True

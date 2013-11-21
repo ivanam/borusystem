@@ -1,10 +1,6 @@
 {% extends "base_administrador.html" %}
 {% block titulo %}Boru - Alta Plato{% endblock %}
 {% block contenido %}
-
-
-
-
 <div id="con_menu_mozo" class="cont_redondeado contenedor_principal_big">
     <div class="label label-inverse titulo_menu">Alta de Plato</div>
     <br>
@@ -64,7 +60,7 @@
                     <div class="form_error_msg">{{ formulario.descuento.errors|striptags }}</div>
                 </div>
 
-             </div>
+            </div>
 
             <div class="contenefor_form_row">
                 <div class="contenedor_texto"><span class="form_error_msg">*</span> Seccion</div>
@@ -73,8 +69,16 @@
                     <div class="form_error_msg">{{ formulario.seccion.errors|striptags }}</div>
                 </div>
 
-             </div>
+            </div>
 
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Activo</div>
+                <div class="contenedor_input">
+                    {{ formulario.activo }}
+                    <div class="form_error_msg">{{ formulario.activo.errors|striptags }}</div>
+                </div>
+
+            </div>
 
             {% csrf_token %}
             <div class="salto_linea"></div>
@@ -93,38 +97,15 @@
 {% endblock %}
 {% block script %}
 <script>
-// Traducción al español
-$(function($){
-    $.datepicker.regional['es'] = {
-        closeText: 'Cerrar',
-        prevText: '<Ant',
-        nextText: 'Sig>',
-        currentText: 'Hoy',
-        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-        weekHeader: 'Sm',
-        dateFormat: 'dd/mm/yy',
-        firstDay: 1,
-        isRTL: false,
-        showMonthAfterYear: false,
-        yearSuffix: ''
-    };
-    $.datepicker.setDefaults($.datepicker.regional['es']);
-});
-
-
 function promocion(){
 
     if ($("#id_enPromocion").val()== "True"){
-        $("#id_descuento").attr("readonly",false);
-        $("#id_descuento").attr("value","50");
+        $("#id_descuento").attr("disabled",false);
+        $("#id_descuento option[value=0]").attr("selected",true);
     }
     else{
-        $("#id_descuento").attr("readonly",true);
-        $("#id_descuento").attr("value","0");
+
+        $("#id_descuento").attr("disabled",true);
     }
 
 }
@@ -136,9 +117,9 @@ $(document).ready(function(){
     });
 
     promocion();
-    $("#id_fecha_Inicio").attr("readonly",true);
-	$("#id_fecha_Inicio").datepicker();
+
 	$('.dropdown-toggle').dropdownHover(options);
 });
+
 </script>
 {% endblock %}

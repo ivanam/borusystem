@@ -15,10 +15,27 @@
             {{ formulario.non_field_errors }}
 
             <div class="contenefor_form_row">
-                <div class="contenedor_texto">Nombre</div>
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Nombre</div>
                 <div class="contenedor_input">
                     {{ formulario.nombre }}
                     <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
+                </div>
+            </div>
+
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Precio</div>
+                <div class="contenedor_input">
+                    {{ formulario.precio }}
+                    <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Stock</div>
+                <div class="contenedor_input">
+                    {{ formulario.stock }}
+                    <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
                 </div>
             </div>
 
@@ -30,11 +47,12 @@
                 </div>
             </div>
 
+
             <div class="contenefor_form_row">
-                <div class="contenedor_texto">Precio</div>
+                <div class="contenedor_texto">Promocion</div>
                 <div class="contenedor_input">
-                    {{ formulario.precio }}
-                    <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
+                    {{ formulario.enPromocion }}
+                    <div class="form_error_msg">{{ formulario.enPromocion.errors|striptags }}</div>
                 </div>
             </div>
 
@@ -46,38 +64,24 @@
                 </div>
             </div>
 
+
             <div class="contenefor_form_row">
-                <div class="contenedor_texto">Stock</div>
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Seccion</div>
                 <div class="contenedor_input">
-                    {{ formulario.stock }}
-                    <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
+                    {{ formulario.seccion }}
+                    <div class="form_error_msg">{{ formulario.seccion.errors|striptags }}</div>
                 </div>
             </div>
 
 
             <div class="contenefor_form_row">
-                <div class="contenedor_texto">En Promocion</div>
-                <div class="contenedor_input">
-                    {{ formulario.enPromocion }}
-                    <div class="form_error_msg">{{ formulario.enPromocion.errors|striptags }}</div>
-                </div>
-            </div>
-
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto">Activo</div>
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Activo</div>
                 <div class="contenedor_input">
                     {{ formulario.activo }}
                     <div class="form_error_msg">{{ formulario.activo.errors|striptags }}</div>
                 </div>
             </div>
 
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto">Seccion</div>
-                <div class="contenedor_input">
-                    {{ formulario.seccion }}
-                    <div class="form_error_msg">{{ formulario.seccion.errors|striptags }}</div>
-                </div>
-            </div>
 
             {% csrf_token %}
             <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Alta Bebida"
@@ -87,15 +91,40 @@
 
     </div>
     <!-- fin bloke de mesas//-->
+    <div class="salto_linea"></div>
+    <span class="form_error_msg">* Campos Obligatorios</span>
 </div><!-- fin contenedor principal//-->
 
 {% endblock %}
 {% block script %}
 <script>
 
+
+function promocion(){
+
+    if ($("#id_enPromocion").val()== "True"){
+        $("#id_descuento").attr("disabled",false);
+        $("#id_descuento option[value=0]").attr("selected",true);
+    }
+    else{
+
+        $("#id_descuento").attr("disabled",true);
+    }
+
+}
+
+
 $(document).ready(function(){
+
+	$("#id_enPromocion").change(function(event){
+        promocion();
+    });
+
+    promocion();
+
 	$('.dropdown-toggle').dropdownHover(options);
 });
+
 
 </script>
 {% endblock %}

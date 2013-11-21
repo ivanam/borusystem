@@ -5,27 +5,33 @@
     <div class="listado_modificar_mozos cont_redondeado">
         <div class="label label-inverse titulo_menu" id="listado_mozos">Listado de Sectores</div>
         <!-- inicio listado de mozos //-->
+        <div class="label label-inverse">
+            <div class="listado_item_campo_base listado_item_campo_01 flotar_iz">Nº</div>
+            <div class="listado_item_campo_base listado_item_campo_05 flotar_iz">Desc.</div>
+            <div class="listado_item_campo_base listado_item_campo_05 flotar_iz">Tipo</div>
+            <div class="listado_item_campo_base listado_item_campo_02 flotar_iz">&nbsp</div>
+        </div>
+
+
         {% for m in sector %}
         <div class="listado_modificar_mozo_item {% if not m.activo %}inactivo{% endif %}">
-            <div class="listado_mozo_item_campo">
+
+            <div class="cargar_modificar_mozo" href="{% url 'modificarsector_id' m.id %}">
+
+                <div class="listado_item_campo_base listado_item_campo_01 flotar_iz" title="Numero de Sector:{{m.id}}">{{m.id}}</div>
+                <div class="listado_item_campo_base listado_item_campo_05 flotar_iz" title="Descripcion: {{m.descripcion}}">
+                    {{m.descripcion|capfirst|truncatechars:15}}
+                </div>
+                <div class="listado_item_campo_base listado_item_campo_05 flotar_iz" title="Tipo: {{m.get_tipo_display}}">
+                    {{m.get_tipo_display|capfirst|truncatechars:10}}
+                </div>
+
+            </div>
+            <div class="listado_item_campo_base listado_item_campo_02 flotar_iz">
                 <img src="{{STATIC_URL}}img/conf/{% if m.activo %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
                      urldel="{% url 'modificarsector_id_del' m.id %}" estado="{{m.activo}}" class="eliminar_mozo"
                      nombre="{{m.id}}"
                      title="{% if not m.activo %}Acivar{% else %}Eliminar{% endif %} Sector: {{m.id}}">
-            </div>
-            <div class="cargar_modificar_mozo" href="{% url 'modificarsector_id' m.id %}">
-<div class="listado_mozo_item_campo flotar_iz" title="Numero de Sector:{{m.id}}">{{m.id}}</div>
- <div class="listado_mozo_item_campo flotar_iz" title="Descripcion: {{m.descripcion}}">{{m.descripcion|capfirst|truncatechars:10}}
-                </div>
-                <div class="listado_mozo_item_campo flotar_der" title="{{m.get_activo_display}}">
-                    {{m.get_activo_display|capfirst|truncatechars:8}}
-                </div>
-                <div class="listado_mozo_item_campo flotar_iz" title="Tipo: {{m.get_tipo_display}}">
-                    {{m.get_tipo_display|capfirst|truncatechars:8}}
-                </div>
-
-
-
             </div>
         </div>
         {% endfor %}

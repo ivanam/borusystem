@@ -9,35 +9,36 @@
 
         <!-- inicio buscador platos//-->
         <!--<form name="fromBuscador" method="get" id="formBuscador" action="{% url 'buscador_producto_ajax_resultados' %}">//-->
-            <div class="input-append">
-                <input class="span2 buscador_productos" id="appendedInputButton" type="text" name="q">
-                <button class="btn" id="buscarresultados" type="submit" name="buscar" value="buscar">Buscar</button>
-            </div>
-            <div class="cont_resultado_busqueda_productos">
-            </div>
-            <!--{% csrf_token %}//-->
+        <div class="input-append">
+            <input class="span2 buscador_productos" id="appendedInputButton" type="text" name="q">
+            <button class="btn" id="buscarresultados" type="submit" name="buscar" value="buscar">Buscar</button>
+        </div>
+        <div class="cont_resultado_busqueda_productos">
+        </div>
+        <!--{% csrf_token %}//-->
         <!--</form>//-->
 
         <!-- fin buscador platos//-->
         <!-- inicio listado de platos //-->
 
-            <div class="listado_eliminar_mozo_item_checkbox label label-inverse">
+        <div class="listado_eliminar_mozo_item_checkbox label label-inverse">
 
-                <div class="listado_item_campo_base listado_item_campo_06 flotar_iz">Nombre</div>
-                <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Precio</div>
-                <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Stock</div>
+            <div class="listado_item_campo_base listado_item_campo_06 flotar_iz">Nombre</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Precio</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Stock</div>
 
-            </div>
+        </div>
 
 
         <div class="ajax_resultados">
-         {% for m in plato %}
+            {% for m in plato %}
             <div class="item">
                 <div class="listado_eliminar_mozo_item {% if not m.activo %}inactivo{% endif %}">
 
                     <input type="hidden" name="id_plato" class="id_plato" value="{{m.id}}">
 
-                    <div class="listado_item_campo_base listado_item_campo_06 flotar_iz" title="{{m.nombre|capfirst}}: {{m.descripcion}}">
+                    <div class="listado_item_campo_base listado_item_campo_06 flotar_iz"
+                         title="{{m.nombre|capfirst}}: {{m.descripcion}}">
                         {{m.nombre|capfirst|truncatechars:20}}
                     </div>
 
@@ -51,12 +52,13 @@
 
                 </div>
             </div>
-        {% endfor %}
-        <!-- inicio paginador //-->
-        <div class="pagination">
+            {% endfor %}
+            <!-- inicio paginador //-->
+            <div class="pagination">
             <span class="step-links">
                 {% if plato.has_previous %}
-                    <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png" onclick="paginarProductos({{ plato.previous_page_number }});"></a>
+                    <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
+                                                          onclick="paginarProductos({{ plato.previous_page_number }});"></a>
                 {% endif %}
 
                 <span class="current">
@@ -64,101 +66,102 @@
                 </span>
 
                 {% if plato.has_next %}
-                    <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png" onclick="paginarProductos({{ plato.next_page_number }});"></a>
+                    <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"
+                                                           onclick="paginarProductos({{ plato.next_page_number }});"></a>
                 {% endif %}
             </span>
-        </div>
-        <!-- fin paginador //-->
+            </div>
+            <!-- fin paginador //-->
 
 
         </div>
         <!-- fin listado de platos //-->
-<!-- fin buscador de platos//-->
+        <!-- fin buscador de platos//-->
     </div>
 </div>
 <form action="" method="post" name="add_menu_dia" id="id_add_menu_dia">
-<div class="centro">
-<div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
-    <div class="label label-inverse titulo_menu">Alta Menu del Dia</div>
-    <br>
+    <div class="centro">
+        <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
+            <div class="label label-inverse titulo_menu">Alta Menu del Dia</div>
+            <br>
 
-    <div class="salto_linea"></div>
-    <div id="mesas_libres" class="bloque_mesas">
-        <div class="salto_linea"></div>
-
-        <!--Aca inicio contenido//-->
-
-            {{ formulario.non_field_errors }}
-
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Nombre</div>
-                <div class="contenedor_input">
-
-                    {{ formulario.nombre }}
-                    <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
-                </div>
-            </div>
-
-
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Precio</div>
-                <div class="contenedor_input">
-                    {{ formulario.precio }}
-                    <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
-                </div>
-            </div>
-
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Stock</div>
-                <div class="contenedor_input">
-                    {{ formulario.stock }}
-                    <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
-                </div>
-            </div>
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Descripcion</div>
-                <div class="contenedor_input">
-                    {{ formulario.descripcion}}
-                    <div class="form_error_msg">{{ formulario.descripcion.errors|striptags }}</div>
-                </div>
-            </div>
-
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Fecha Inicio</div>
-                <div class="contenedor_input">
-                    {{ formulario.fecha_Inicio }}
-                    <div class="form_error_msg">{{ formulario.fecha_Inicio.errors|striptags }}</div>
-                </div>
-            </div>
-
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto_small"><span class="form_error_msg">*</span>Seccion</div>
-                <div class="contenedor_input">
-                    {{ formulario.seccion }}
-                    <div class="form_error_msg">{{ formulario.seccion.errors|striptags }}</div>
-                </div>
-            </div>
-
-
-            {% csrf_token %}
             <div class="salto_linea"></div>
-            <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Alta Menu del Día"
-                   class="btn btn-large btn-primary">
+            <div id="mesas_libres" class="bloque_mesas">
+                <div class="salto_linea"></div>
+
+                <!--Aca inicio contenido//-->
+
+                {{ formulario.non_field_errors }}
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Nombre</div>
+                    <div class="contenedor_input">
+
+                        {{ formulario.nombre }}
+                        <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
+                    </div>
+                </div>
 
 
-        <!-- Aca fin de contenido//-->
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Precio</div>
+                    <div class="contenedor_input">
+                        {{ formulario.precio }}
+                        <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
+                    </div>
+                </div>
 
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Stock</div>
+                    <div class="contenedor_input">
+                        {{ formulario.stock }}
+                        <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg"></span> Descripcion</div>
+                    <div class="contenedor_input">
+                        {{ formulario.descripcion}}
+                        <div class="form_error_msg">{{ formulario.descripcion.errors|striptags }}</div>
+                    </div>
+                </div>
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Fecha Inicio</div>
+                    <div class="contenedor_input">
+                        {{ formulario.fecha_Inicio }}
+                        <div class="form_error_msg">{{ formulario.fecha_Inicio.errors|striptags }}</div>
+                    </div>
+                </div>
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span>Seccion</div>
+                    <div class="contenedor_input">
+                        {{ formulario.seccion }}
+                        <div class="form_error_msg">{{ formulario.seccion.errors|striptags }}</div>
+                    </div>
+                </div>
+
+                {% csrf_token %}
+                <div class="salto_linea"></div>
+                <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Alta Menu del Día"
+                       class="btn btn-large btn-primary">
+
+
+                <!-- Aca fin de contenido//-->
+
+            </div>
+            <!-- fin bloke de mesas//-->
+            <div class="salto_linea"></div>
+            <span class="form_error_msg">* Campos Obligatorios</span>
+        </div>
+        <!-- fin contenedor principal//-->
     </div>
-    <!-- fin bloke de mesas//-->
-    <div class="salto_linea"></div>
-    <span class="form_error_msg">* Campos Obligatorios</span>
-</div><!-- fin contenedor principal//-->
-</div>
-<div class="izquierda">
-    <div class="listado_modificar_mozos cont_redondeado">
-        <div class="label label-inverse titulo_menu">Platos Agregados al Menu</div>
-        <!-- inicio buscador de platos //-->
-        <div class="listado_eliminar_mozo_item_checkbox label label-inverse">
+    <div class="izquierda">
+        <div class="listado_modificar_mozos cont_redondeado">
+            <div class="label label-inverse titulo_menu">Platos Agregados al Menu</div>
+            <!-- inicio buscador de platos //-->
+            <div class="listado_eliminar_mozo_item_checkbox label label-inverse">
 
                 <div class="listado_item_campo_base listado_item_campo_06 flotar_iz">Nombre</div>
                 <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Precio</div>
@@ -166,13 +169,15 @@
 
             </div>
 
-        <div class="platos">
-            {{lista_platos}}
+                    <div class="platos">
+                        {{lista_platos}}
+                    </div>
+                    <div class="form_error_msg">{{ formulario.platos.errors|striptags }}</div>
+
+            <!-- fin buscador de platos//-->
         </div>
-        <!-- fin buscador de platos//-->
     </div>
-</div>
- </form>
+</form>
 {% endblock %}
 {% block script %}
 <script>
@@ -349,6 +354,7 @@ $(document).ready(function(){
     $('.dropdown-toggle').dropdownHover(options);
 
 });
+
 
 </script>
 {% endblock %}

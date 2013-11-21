@@ -7,23 +7,17 @@ from gestiones.Salon.altasector.forms import altaSectorForm
 
 @permission_required('Administrador.is_admin', login_url="login")
 def altasector(request):
-
-    print("antes")
     if request.method == 'POST':
 
-        print("en post")
         formulario = altaSectorForm(request.POST)
 
         if formulario.is_valid():
-
-            print("en valid")
             #capturamos y limpiamos datos
             tipo = formulario.cleaned_data['tipo']
             descripcion = formulario.cleaned_data['descripcion']
             activo = formulario.cleaned_data['activo']
-            #mesas = formulario.cleaned_data['mesas']
 
-            sector = Sector.objects.create(tipo=tipo,descripcion=descripcion,activo=activo)
+            sector = Sector.objects.create(tipo=tipo, descripcion=descripcion, activo=activo)
 
             #mostramos que la operacion fue exitosa
             return render_to_response('Salon/altasector/altasectorexito.html', {},
@@ -35,4 +29,4 @@ def altasector(request):
     else:
         formulario = altaSectorForm()
         return render_to_response('Salon/altasector/altasector.html', {'formulario': formulario},
-                          context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))

@@ -34,7 +34,7 @@ def crearcomanda(request):
             request.session['cantidadC']=cantidad
 
             #recupero las mesas que estan activas
-            mesas=Mesa.objects.filter(activo__exact=1)
+            mesas=Mesa.objects.filter(activo__exact=1).order_by("sector")
 
             #recupero el panel que muestra las mesas seleccionadas
             panel_seleccionar_mesa=get_template('Mozo/panel_mesas_seleccionadas.html')

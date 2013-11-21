@@ -3,7 +3,7 @@
     <div class="listado_eliminar_mozo_item {% if not m.activo %}inactivo{% endif %}">
 
 
-            <input type="checkbox" name="chkId" class="check_add_plato" value="{{m.id}}" checked>
+            <input type="checkbox" name="platos" class="check_add_plato" value="{{m.id}}" multiple checked>
 
 
         <div class="listado_item_campo_base listado_item_campo_06 flotar_iz" title="{{m.nombre|capfirst}}">

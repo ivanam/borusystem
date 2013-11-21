@@ -21,3 +21,11 @@ class Personal(User):
 
     class Meta:
         ordering =["first_name"]
+
+    def cambiarEstado(self):
+        if self.is_active:
+            self.is_active=False
+        else:
+            self.is_active=True
+
+    User.add_to_class('cambiarEstado',cambiarEstado)

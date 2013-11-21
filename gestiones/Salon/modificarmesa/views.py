@@ -8,8 +8,7 @@ from gestiones.Salon.altamesa.models import Mesa
 
 
 @permission_required('Administrador.is_admin', login_url="login")
-def modificarmesa(request, id_mesa = None):
-
+def modificarmesa(request, id_mesa=None):
     #rescato los    usarios que son mozos
     mesas = Mesa.objects.all().order_by('-activo')
 
@@ -19,11 +18,11 @@ def modificarmesa(request, id_mesa = None):
 
         #creo diccionario con los datos del mozo para mostrarlos ne el formulario
         datosMesa = {'id': unaMesa.id, 'tipo': unaMesa.tipo, 'capacidad': unaMesa.capacidad,
-                     'ocupada': unaMesa.ocupada, 'activo': unaMesa.activo,'sector':unaMesa.sector}
+                     'ocupada': unaMesa.ocupada, 'activo': unaMesa.activo, 'sector': unaMesa.sector}
 
     except:
         datosMesa = ''
-        unaMesa=None
+        unaMesa = None
 
     #si se apreto el boton de modificar
     if request.method == 'POST' and unaMesa != None:
@@ -68,21 +67,16 @@ def modificarmesa(request, id_mesa = None):
 
 @permission_required('Administrador.is_admin', login_url="login")
 def modificarmesadel(request, id_mesa):
-
     try:
         #obtengo en el caso de que venga el id por GET, al usuario
         unaMesa = Mesa.objects.get(pk=id_mesa)
     except:
-        unaMesa=None
+        unaMesa = None
 
     #si se apreto el boton de modificar
     if request.method == 'GET' and unaMesa != None:
 
-        if unaMesa.activo:
-            unaMesa.activo = False
-        else:
-            unaMesa.activo = True
-
+        unaMesa.cambiarEstado()
         unaMesa.save()
 
     return HttpResponseRedirect(reverse('modificarmesa'))

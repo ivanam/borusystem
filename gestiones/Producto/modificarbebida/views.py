@@ -19,7 +19,8 @@ def modificarbebida(request, id_bebida = None):
         #creo diccionario con los datos de la bebida para mostrarlos en el formulario
         datosBebida = {'id': unaBebida.id, 'nombre': unaBebida.nombre, 'precio': unaBebida.precio,
                        'stock': unaBebida.stock, 'activo': unaBebida.activo, 'marca': unaBebida.marca,
-                       'enPromocion': unaBebida.enPromocion, 'descuento': unaBebida.descuento, 'seccion': unaBebida.seccion}
+                       'enPromocion': unaBebida.enPromocion, 'descuento': unaBebida.descuento,
+                       'seccion': unaBebida.seccion}
 
     except:
         datosBebida = ''
@@ -83,11 +84,7 @@ def modificarbebidadel(request, id_bebida):
     #si se apreto el boton de modificar
     if request.method == 'GET' and unaBebida != None:
 
-        if unaBebida.activo:
-            unaBebida.activo = False
-        else:
-            unaBebida.activo = True
-
+        unaBebida.cambiarEstado()
         unaBebida.save()
 
     return HttpResponseRedirect(reverse('modificarbebida'))

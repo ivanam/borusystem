@@ -17,6 +17,7 @@ def altamenudia(request):
     platos = paginator.page(1)
 
     if request.method == 'POST':
+
         formulario = altaMenuDiaForm(request.POST)
 
         if formulario.is_valid():
@@ -34,7 +35,7 @@ def altamenudia(request):
             seccion.save()
 
             #recupero las ids de los platos que quiero agregar al menu
-            lista_platos_seleccionado = request.POST.getlist('chkId')
+            lista_platos_seleccionado = request.POST.getlist('platos')
             #las recorro y rescato los platos y los asigno al menu
             for p in lista_platos_seleccionado:
                 menu.platos.add(Plato.objects.get(pk=p))

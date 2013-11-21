@@ -1,5 +1,20 @@
 /* Estilos Mozo */
 /* Genericos */
+
+.texto_iz{
+text-align:left !important;
+}
+
+
+.texto_der{
+text-align:right !important;
+}
+
+
+.texto_centro{
+text-align:center !important;
+}
+
 .num_sec{
 height:auto;
 width:12px;
@@ -37,14 +52,33 @@ width:auto;
 height:auto;
 width:15px;
 }
+.listado_item_campo_01_2{
+height:auto;
+width:25px;
+}
+
 .listado_item_campo_02{
 height:auto;
 width:35px;
 }
+
+.listado_item_campo_02_2{
+height:auto;
+width:45px;
+}
+
+
 .listado_item_campo_03{
 height:auto;
 width:55px;
 }
+
+.listado_item_campo_03_2{
+height:auto;
+width:65px;
+}
+
+
 .listado_item_campo_04{
 height:auto;
 width:75px;

@@ -94,11 +94,7 @@ def modificarmozodel(request, id_user):
     #si se apreto el boton de modificar
     if request.method == 'GET' and usuarioMozo != None:
 
-        if usuarioMozo.is_active:
-            usuarioMozo.is_active = False
-        else:
-            usuarioMozo.is_active = True
-
+        usuarioMozo.cambiarEstado()
         usuarioMozo.save()
 
     return HttpResponseRedirect(reverse('modificarmozo'))
