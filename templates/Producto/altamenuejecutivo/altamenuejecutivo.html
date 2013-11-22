@@ -1,91 +1,191 @@
 {% extends "base_administrador.html" %}
-{% block titulo %}Boru - Alta Menu Ejecutivo {% endblock %}
+{% block titulo %}Boru - Alta Menu del Ejecutivo {% endblock %}
 {% block contenido %}
 
+<div class="izquierda">
+    <div class="listado_modificar_mozos cont_redondeado">
+        <div class="label label-inverse titulo_menu">Listado de Platos</div>
+        <!-- inicio buscador de platos //-->
 
-<div id="con_menu_mozo" class="cont_redondeado contenedor_principal_big">
-    <div class="label label-inverse titulo_menu">Alta Menu Ejecutivo</div>
-    <br>
+        <!-- inicio buscador platos//-->
+        <!--<form name="fromBuscador" method="get" id="formBuscador" action="{% url 'buscador_producto_ajax_resultados' %}">//-->
+        <div class="input-append">
+            <input class="span2 buscador_productos" id="appendedInputButton" type="text" name="q">
+            <button class="btn" id="buscarresultados" type="submit" name="buscar" value="buscar">Buscar</button>
+        </div>
+        <div class="cont_resultado_busqueda_productos">
+        </div>
+        <!--{% csrf_token %}//-->
+        <!--</form>//-->
 
-    <div class="salto_linea"></div>
-    <div id="mesas_libres" class="bloque_mesas">
-        <div class="salto_linea"></div>
+        <!-- fin buscador platos//-->
+        <!-- inicio listado de platos //-->
 
-        <!--Aca inicio contenido//-->
-        <form action="" method="post" name="add_menu_diao" id="id_add_menu_dia">
-            {{ formulario.non_field_errors }}
+        <div class="listado_eliminar_mozo_item_checkbox label label-inverse">
 
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg">*</span> Nombre</div>
-                <div class="contenedor_input">
+            <div class="listado_item_campo_base listado_item_campo_06 flotar_iz">Nombre</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Precio</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Stock</div>
 
-                    {{ formulario.nombre }}
-                    <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
+        </div>
+
+
+        <div class="ajax_resultados">
+            {% for m in plato %}
+            <div class="item">
+                <div class="listado_eliminar_mozo_item {% if not m.activo %}inactivo{% endif %}">
+
+                    <input type="hidden" name="id_plato" class="id_plato" value="{{m.id}}">
+
+                    <div class="listado_item_campo_base listado_item_campo_06 flotar_iz"
+                         title="{{m.nombre|capfirst}}: {{m.descripcion}}">
+                        {{m.nombre|capfirst|truncatechars:20}}
+                    </div>
+
+                    <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.precio}}">
+                        {{m.precio}}
+                    </div>
+
+                    <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.stock}}">
+                        {{m.stock}}
+                    </div>
+
                 </div>
             </div>
+            {% endfor %}
+            <!-- inicio paginador //-->
+            <div class="pagination">
+            <span class="step-links">
+                {% if plato.has_previous %}
+                    <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
+                                                          onclick="paginarProductos({{ plato.previous_page_number }});"></a>
+                {% endif %}
 
+                <span class="current">
+                    {{ plato.number }}
+                </span>
 
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg"></span> Precio</div>
-                <div class="contenedor_input">
-                    {{ formulario.precio }}
-                    <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
-                </div>
+                {% if plato.has_next %}
+                    <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"
+                                                           onclick="paginarProductos({{ plato.next_page_number }});"></a>
+                {% endif %}
+            </span>
             </div>
+            <!-- fin paginador //-->
 
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg"></span> Stock</div>
-                <div class="contenedor_input">
-                    {{ formulario.stock }}
-                    <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
-                </div>
-            </div>
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg"></span> Descripcion</div>
-                <div class="contenedor_input">
-                    {{ formulario.descripcion}}
-                    <div class="form_error_msg">{{ formulario.descripcion.errors|striptags }}</div>
-                </div>
-            </div>
 
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg"></span> Fecha Inicio</div>
-                <div class="contenedor_input">
-                    {{ formulario.fecha_Inicio }}
-                    <div class="form_error_msg">{{ formulario.fecha_Inicio.errors|striptags }}</div>
-                </div>
-            </div>
-
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg"></span> Fecha Fin</div>
-                <div class="contenedor_input">
-                    {{ formulario.fecha_fin }}
-                    <div class="form_error_msg">{{ formulario.fecha_fin.errors|striptags }}</div>
-                </div>
-            </div>
-
-            <div class="contenefor_form_row">
-                <div class="contenedor_texto"><span class="form_error_msg"></span>Seccion</div>
-                <div class="contenedor_input">
-                    {{ formulario.seccion }}
-                    <div class="form_error_msg">{{ formulario.seccion.errors|striptags }}</div>
-                </div>
-            </div>
-
-            {% csrf_token %}
-            <div class="salto_linea"></div>
-            <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Alta Menu Ejecutivo"
-                   class="btn btn-large btn-primary">
-
-        </form>
-        <!-- Aca fin de contenido//-->
-
+        </div>
+        <!-- fin listado de platos //-->
+        <!-- fin buscador de platos//-->
     </div>
-    <!-- fin bloke de mesas//-->
-    <div class="salto_linea"></div>
-    <span class="form_error_msg">* Campos Obligatorios</span>
-</div><!-- fin contenedor principal//-->
+</div>
+<form action="" method="post" name="add_menu_dia" id="id_add_menu_dia">
+    <div class="centro">
+        <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
+            <div class="label label-inverse titulo_menu">Alta Menu del Ejecutivo</div>
+            <br>
 
+            <div class="salto_linea"></div>
+            <div id="mesas_libres" class="bloque_mesas">
+                <div class="salto_linea"></div>
+
+                <!--Aca inicio contenido//-->
+
+                {{ formulario.non_field_errors }}
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Nombre</div>
+                    <div class="contenedor_input">
+
+                        {{ formulario.nombre }}
+                        <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
+                    </div>
+                </div>
+
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Precio</div>
+                    <div class="contenedor_input">
+                        {{ formulario.precio }}
+                        <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
+                    </div>
+                </div>
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Stock</div>
+                    <div class="contenedor_input">
+                        {{ formulario.stock }}
+                        <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg"></span> Descripcion</div>
+                    <div class="contenedor_input">
+                        {{ formulario.descripcion}}
+                        <div class="form_error_msg">{{ formulario.descripcion.errors|striptags }}</div>
+                    </div>
+                </div>
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Fecha Inicio</div>
+                    <div class="contenedor_input">
+                        {{ formulario.fecha_Inicio }}
+                        <div class="form_error_msg">{{ formulario.fecha_Inicio.errors|striptags }}</div>
+                    </div>
+                </div>
+
+                                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Fecha Fin</div>
+                    <div class="contenedor_input">
+                        {{ formulario.fecha_fin }}
+                        <div class="form_error_msg">{{ formulario.fecha_fin.errors|striptags }}</div>
+                    </div>
+                </div>
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span>Seccion</div>
+                    <div class="contenedor_input">
+                        {{ formulario.seccion }}
+                        <div class="form_error_msg">{{ formulario.seccion.errors|striptags }}</div>
+                    </div>
+                </div>
+
+                {% csrf_token %}
+                <div class="salto_linea"></div>
+                <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Alta Menu del Día"
+                       class="btn btn-large btn-primary">
+
+
+                <!-- Aca fin de contenido//-->
+
+            </div>
+            <!-- fin bloke de mesas//-->
+            <div class="salto_linea"></div>
+            <span class="form_error_msg">* Campos Obligatorios</span>
+        </div>
+        <!-- fin contenedor principal//-->
+    </div>
+    <div class="izquierda">
+        <div class="listado_modificar_mozos cont_redondeado">
+            <div class="label label-inverse titulo_menu">Platos Agregados al Menu</div>
+            <!-- inicio buscador de platos //-->
+            <div class="listado_eliminar_mozo_item_checkbox label label-inverse">
+
+                <div class="listado_item_campo_base listado_item_campo_06 flotar_iz">Nombre</div>
+                <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Precio</div>
+                <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Stock</div>
+
+            </div>
+
+                    <div class="platos">
+                        {{lista_platos}}
+                    </div>
+                    <div class="form_error_msg">{{ formulario.platos.errors|striptags }}</div>
+
+            <!-- fin buscador de platos//-->
+        </div>
+    </div>
+</form>
 {% endblock %}
 {% block script %}
 <script>
@@ -111,15 +211,158 @@ $(function($){
     $.datepicker.setDefaults($.datepicker.regional['es']);
 });
 
+function enviarForm(msg){
+    $(".buscador_productos").val(msg);
+    buscarresultados();
+}
+
+function reemplazarCadena(cad, q){
+var re = new RegExp(q,"gi");
+    return cad.replace(re,"<span class='resaltado resaltarBusqueda'>"+q+"</span>");
+}
+
+function buscarresultados(){
+
+    var busqueda=$(".buscador_productos").val();
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'buscador_producto_ajax_resultados' %}",
+        data: "q="+busqueda,
+        success: function(datos){
+
+            if(datos.length > 0){
+                $(".ajax_resultados").html(datos);
+                $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                agregarFuncionalidad();
+            }
+          }
+    });
+
+}
+
+function agregarPlato(data){
+
+    var id_plato=$(".id_plato", data).val();
+
+    $.ajax({
+                type: "GET",
+                url: "{% url 'agregar_producto_lista_ajax' %}",
+                data: "id_prod="+id_plato,
+                success: function(datos){
+                    $(".platos").html(datos);
+                }
+            });
+}
+
+
+function paginarProductos(pagina){
+
+    $.ajax({
+                type: "GET",
+                url: "{% url 'paginador_ajax_resultados' %}",
+                data: "pagina="+pagina,
+                success: function(datos){
+                    $(".ajax_resultados").html(datos);
+                    agregarFuncionalidad();
+                }
+            });
+}
+
+
+function agregarFuncionalidad(){
+    //agrego la funcionalidad de agregar a la lista de platos
+    $(".item").each(function(i){
+
+        $(this).css("cursor","pointer");
+
+        $(this).click(function(event){
+            agregarPlato($(this).html());
+        });
+
+    });
+}
+
 $(document).ready(function(){
+
+
+    agregarFuncionalidad();
+
+    $("#buscarresultados").click(function(event){
+        buscarresultados();
+    });
+
+
+
+    //checkbox
+    $("input[name=checktodos]").change(function(){
+        $('input[type=checkbox]').each( function() {
+            if($("input[name=checktodos]:checked").length == 1){
+                this.checked = true;
+            } else {
+                this.checked = false;
+            }
+        });
+    });
+
+    $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+
+    //cuando presiono una tecla en la caja de busqueda
+    $(".buscador_productos").keyup(function(event){
+
+        var busqueda=$(this).val();
+
+        if( busqueda.length >= 2){
+
+            $.ajax({
+                type: "GET",
+                url: "{% url 'buscador_producto_ajax' %}",
+                data: "q="+busqueda,
+                success: function(datos){
+
+                    if(datos.length > 0){
+                        $(".cont_resultado_busqueda_productos").html(datos);
+                        $(".cont_resultado_busqueda_productos").css("visibility","visible");
+
+                        $(".busqueda_item").each(function(i){
+                            var cad=$(this).text();
+                            $(this).html(reemplazarCadena(cad, busqueda));
+                            $(".resaltado").addClass("resaltarBusqueda");
+                        });
+
+                    }
+                    else{
+                        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                    }
+
+                  }
+            });
+        }
+        else
+        {
+            $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+        }
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+          if(keycode == '13'){
+
+                buscarresultados();
+          }
+
+
+    });
+
     $("#id_fecha_Inicio").attr("readonly",true);
-	$("#id_fecha_Inicio").datepicker();
+    $("#id_fecha_Inicio").datepicker();
 
-	$("#id_fecha_fin").attr("readonly",true);
-	$("#id_fecha_fin").datepicker();
+    $("#id_fecha_fin").attr("readonly",true);
+    $("#id_fecha_fin").datepicker();
 
+    $('.dropdown-toggle').dropdownHover(options);
 
-	$('.dropdown-toggle').dropdownHover(options);
 });
+
+
 </script>
 {% endblock %}
