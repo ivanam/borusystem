@@ -42,7 +42,8 @@ def crearcomanda(request):
             now = datetime.datetime.now()
             hora = datetime.time(now.hour, now.minute, now.second)
             comanda = Comanda.objects.create(fecha=fecha, hora=hora, cantidadC=cantidad)
-
+            comanda.mozo = request.user
+            comanda.save()
             #guardo en la sesion el id de la comanda
             request.session['id_comanda']= comanda.id
 

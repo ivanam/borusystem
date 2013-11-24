@@ -10,13 +10,12 @@
                                     <span class="badge badge-important">{{mp.id}}</span>
                                     {% endfor %}
                                 </div>
-                                <div class="comanda_total">Importe Adeudado: {{importe}}</div>
 
                                 <div class="linea"></div>
                                 <div class="comanda_btn">
-                                    <input type="button" class="btn btn-small" value="Generar Factura"
+                                    <input type="button" class="btn btn-small" value="Ver Factura"
                                            onClick="confirm('Usted Desea generar la Factura del Pedido Nº XXXXXX?');">
-                                    <input type="button" class="btn btn-small" value=" Detalle Pedido" onClick="mostrarDetallePedido();">
+                                    <input type="button" class="btn btn-small" value=" Detalle Pedido" onClick="mostrarDetallePedido({{p.id}});">
                                 </div>
                             </div>
                         </div>

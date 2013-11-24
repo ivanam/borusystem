@@ -1,4 +1,4 @@
-from unicodedata import decimal
+from django.contrib.auth.models import User
 from django.db import models
 from gestiones.Carta.altacarta.models import SeccionCarta
 from gestiones.Mozo.models import Personal
@@ -48,6 +48,8 @@ class EstrategiaServicio(object):
 
         #return self.estrategia.filtrar_secciones(secciones)
 
+    def cerrar_comanda(self,comanda):
+        pass
 
 class EstrategiaComanda(EstrategiaServicio):
     def cargarProductos(self, comanda, producto, cantidad):
@@ -140,9 +142,9 @@ class DetalleComanda(models.Model):
                 detalleImporte = self.bebidas.importe() * self.cantidadP
             else:
                 if (self.menuD) != None:
-                    detalleImporte = self.menuD.precio() * self.cantidadP
+                    detalleImporte = self.menuD.precio * self.cantidadP
                 else:
-                    detalleImporte = self.menuE.precio() * self.cantidadP
+                    detalleImporte = self.menuE.precio * self.cantidadP
 
         return detalleImporte
 
@@ -170,13 +172,20 @@ class Comanda(models.Model):
     cerrada = models.BooleanField("Cerrada", default=False)
     detalles = models.ManyToManyField(DetalleComanda, related_name="tiene", null=True, blank=True)
     mesas = models.ManyToManyField(Mesa, related_name="ocupa", null=True, blank=True)
-    mozo = models.ForeignKey(Personal, null=True, blank=True)
+    mozo = models.ForeignKey(User, null=True, blank=True)
     vista = models.BooleanField("Vista", default=False)
-
+    finalizada=models.BooleanField("Finalizada", default=False)
     def __init__(self, *args, **kwargs):
         models.Model.__init__(self, *args, **kwargs)
         self.estrategia = EstrategiaServicio.obtenerEstrategia(self)
         print ("seteadas estrategias")
+
+    def total(self):
+        aux=0
+        for  c in self.detalles.all():
+            aux = aux + c.importe()
+
+        return aux
 
     def filtrar_secciones(self):
         return self.estrategia.filtrar_secciones()

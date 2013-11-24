@@ -5,7 +5,7 @@
 
     <button class="btn btn-inverse menu_cajero" id="comandas_abiertas">
         Comandas Abiertas
-        <div class="comanda_nueva">2</div>
+        <div id="comandas_nuevas"></div>
     </button>
     <button class="btn btn-inverse menu_cajero">
         Comandas Cerradas
@@ -55,7 +55,6 @@ function mostrarDetalleComanda(id_comanda){
         data: "id_comanda="+id_comanda,
         success: function(datos){
 
-
             $('.modal-titulo').html("Comanda Nº "+id_comanda);
             $('.modal-body').html(datos);
             $('#myModal').modal("show")
@@ -64,15 +63,78 @@ function mostrarDetalleComanda(id_comanda){
 }
 
 
-function mostrarDetallePedido(){
+function mostrarDetallePedido(id_comanda){
 
-    $('.modal-titulo').html("Pedido Nº 24578412");
-    $('.modal-body').html($("#15236548").html());
-  $('#myModal').modal("show")
+    $.ajax({
+        type: "GET",
+        url: "{% url 'detalle_comanda_ajax' %}",
+        data: "id_comanda="+id_comanda,
+        success: function(datos){
+
+            $('.modal-titulo').html("Pedido Nº "+id_comanda);
+            $('.modal-body').html(datos);
+            $('#myModal').modal("show")
+          }
+    });
+}
+
+function pollingComandas(){
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'polling_comandas' %}",
+        success: function(datos){
+
+            var cant=parseInt($(datos, "#comanda_nueva").html());
+
+            if(cant == 0){
+                $("#comandas_nuevas").html("");
+                titulo(" ");
+            }
+            else{
+                $("#comandas_nuevas").html(datos);
+                titulo(" - Comandas("+cant+")");
+            }
+        }
+    });
 
 }
 
+
+function comandaVista(id_comanda){
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'comanda_vista' %}",
+        data:"id_comanda="+id_comanda,
+        async:false,
+        success: function(datos){
+            pollingComandas();
+        }
+    });
+}
+
+function titulo(str){
+var titulo = $("title").html("Boru - Cajero "+str);
+}
+
 $(document).ready(function(){
+
+pollingComandas();
+ var revisar_comandas = setInterval(function(){pollingComandas()},10000);
+
+
+$(".comandas_abiertas_nuevas").each(function(i){
+
+    $(this).mouseover(function(event){
+
+        if($(this).attr("estado")=="False"){
+            comandaVista($(this).attr("rel"));
+        }
+
+    });
+});
+
 
     $("#comandas_abiertas").click(function(event){
       		document.location.href = "{% url 'cajero' %}";
