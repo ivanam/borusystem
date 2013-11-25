@@ -1,5 +1,25 @@
 /* Estilos Mozo */
 /* Genericos */
+#buscador_comandas_form{
+height:auto;
+width:650px;
+margin:1px auto;
+}
+
+.procesando{
+height:35px;
+width:318px;
+margin:20px auto;
+padding:10px 20px;
+font-size:25px;
+font-weight:bold;
+vertical-align:middle;
+}
+.buscador_comandas_contenedor{
+height:60px;
+width:100%;
+background-color:#CCFFCC;
+}
 .paginacion_comandas{
 height:auto;
 width:85px;
@@ -213,12 +233,13 @@ width:450px;
 
 .comanda_btn{
 height:20px;
-width:250px;
+width:auto ;
 margin-right:8px;
 padding:4px 0px 4px 0px;
 float:right;
 clear:both;
 display:block;
+text-align:right;
 }
 
 .comanda_total{

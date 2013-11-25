@@ -1,0 +1,44 @@
+<!-- inicio paginador //-->
+<div class="paginacion_comandas">
+    <span class="step-links">
+        {% if pretickets.has_previous %}
+            <a href="{% url 'pretickets' pretickets.previous_page_number %}" title=" < Anterior "><img
+                    src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"></a>
+        {% endif %}
+
+        <span class="current">
+            {{ pretickets.number }}<span class="paginado_de"> de {{ pretickets.paginator.num_pages }}</span>
+        </span>
+
+        {% if pretickets.has_next %}
+            <a href="{% url 'pretickets' pretickets.next_page_number %}" title=" Siguiente > "><img
+                    src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"></a>
+        {% endif %}
+    </span>
+</div>
+<!-- fin paginador //-->
+{% for p in pretickets %}
+<!--inicio pretickets item //-->
+<div class="contenedor_comanda_item">
+    <div class="preticket_numero">Preticket Nº {{p.id}}</div>
+    <div class="contenedor_ticket_data">
+        <div class="comanda_fecha">Fecha: {{ p.fecha }} {{ p.hora }}</div>
+        <div class="comanda_mozo flotar_der label">Mozo: {{p.comanda.mozo|capfirst}}</div>
+        <div class="comanda_mesas">
+            Mesas:
+            {% for m in p.comanda.mesas.all %}
+            <span class="badge badge-success">{{ m.id }}</span>
+            {% endfor %}
+        </div>
+        <div class="linea"></div>
+        <div class="comanda_btn">
+            <input type="button" class="btn btn-small" value="Generar Factura"
+                   onClick="confirm('Usted Desea generar la Factura del  Preticket Nº XXXXXX?');">
+            <input type="button" class="btn btn-small" value=" Detalle Comanda Asociada"
+                   onClick="mostrarDetalleComanda({{p.comanda.id}});">
+        </div>
+    </div>
+</div>
+<div class="salto_linea"></div>
+<!--fin pretickets item //-->
+{% endfor %}

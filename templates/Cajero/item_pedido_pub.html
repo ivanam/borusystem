@@ -1,23 +1,44 @@
-             {% for p in pedidos %}
-                        <!--inicio comanda abierta item //-->
-                        <div class="contenedor_comanda_item">
-                            <div class="comanda_numero">Pedido Nº {{p.id}}</div>
-                            <div class="contenedor_comanda_data">
-                                <div class="comanda_fecha">Fecha:  {{ p.fecha }} {{ p.hora }}</div>
-                                <div class="comanda_mesas">
-                                    Mesas:
-                                    {% for mp in p.mesas.all %}
-                                    <span class="badge badge-important">{{mp.id}}</span>
-                                    {% endfor %}
-                                </div>
+<!-- inicio paginador //-->
+<div class="paginacion_comandas">
+    <span class="step-links">
+        {% if pedidos.has_previous %}
+            <a href="{% url 'pedidos_pub' pedidos.previous_page_number %}" title=" < Anterior "><img
+                    src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"></a>
+        {% endif %}
 
-                                <div class="linea"></div>
-                                <div class="comanda_btn">
-                                    <input type="button" class="btn btn-small" value="Ver Factura"
-                                           onClick="confirm('Usted Desea generar la Factura del Pedido Nº XXXXXX?');">
-                                    <input type="button" class="btn btn-small" value=" Detalle Pedido" onClick="mostrarDetallePedido({{p.id}});">
-                                </div>
-                            </div>
-                        </div>
-                        <!--fin comanda abierta item //-->
-                    {% endfor %}
+        <span class="current">
+            {{ pedidos.number }}<span class="paginado_de"> de {{ pedidos.paginator.num_pages }}</span>
+        </span>
+
+        {% if pedidos.has_next %}
+            <a href="{% url 'pedidos_pub' pedidos.next_page_number %}" title=" Siguiente > "><img
+                    src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"></a>
+        {% endif %}
+    </span>
+</div>
+<!-- fin paginador //-->
+{% for p in pedidos %}
+<!--inicio pedido item //-->
+<div class="contenedor_comanda_item">
+    <div class="comanda_numero">Pedido Nº {{p.id}}</div>
+    <div class="contenedor_comanda_data">
+        <div class="comanda_fecha">Fecha: {{ p.fecha }} {{ p.hora }}</div>
+        <div class="comanda_mesas">
+            Mesas:
+            {% for mp in p.mesas.all %}
+            <span class="badge badge-info">{{mp.id}}</span>
+            {% endfor %}
+        </div>
+
+        <div class="linea"></div>
+        <div class="comanda_btn">
+            <input type="button" class="btn btn-small" value="Ver Factura"
+                   onClick="confirm('Usted Desea generar la Factura del Pedido Nº XXXXXX?');">
+            <input type="button" class="btn btn-small" value=" Detalle Pedido"
+                   onClick="mostrarDetallePedido({{p.id}});">
+        </div>
+    </div>
+</div>
+<div class="salto_linea"></div>
+<!--fin pedido item //-->
+{% endfor %}

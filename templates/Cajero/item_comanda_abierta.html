@@ -2,7 +2,8 @@
 <div class="paginacion_comandas">
     <span class="step-links">
         {% if comandas.has_previous %}
-            <a href="{% url 'cajero' comandas.previous_page_number %}" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"></a>
+            <a href="{% url 'cajero' comandas.previous_page_number %}" title=" < Anterior "><img
+                    src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"></a>
         {% endif %}
 
         <span class="current">
@@ -10,7 +11,8 @@
         </span>
 
         {% if comandas.has_next %}
-            <a href="{% url 'cajero' comandas.next_page_number %}" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"></a>
+            <a href="{% url 'cajero' comandas.next_page_number %}" title=" Siguiente > "><img
+                    src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"></a>
         {% endif %}
     </span>
 </div>
@@ -34,7 +36,7 @@
         <div class="linea"></div>
         <div class="comanda_btn">
             <input type="button" class="btn btn-small" value="Cerrar Comanda"
-                   onClick="confirm('Usted Desea Cerrar la Comanda Nº {{c.id}}?');">
+                   onClick="cerrarComanda({{c.id}});">
             <input type="button" class="btn btn-small" value=" Detalle Comanda"
                    onClick="mostrarDetalleComanda({{c.id}});">
         </div>
