@@ -4,6 +4,7 @@ from django.template import RequestContext
 from gestiones.Carta.altaseccion.forms import altaSeccionForm
 from gestiones.Carta.altacarta.models import Carta, SeccionCarta
 
+
 @permission_required('Administrador.is_admin', login_url="login")
 def altaseccion(request):
     if request.method == 'POST':

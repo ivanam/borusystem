@@ -10,6 +10,8 @@
 <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/twitter-bootstrap-hover-dropdown.min.js"></script>
 <link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap.css"  type="text/css" media="all" />
 <link rel="stylesheet" href="{{STATIC_URL}}css/boru.css"  type="text/css" media="all" />
+<link rel='shortcut icon' href="{{STATIC_URL}}img/favicon.ico">
+
 </head>
 <body>
 <div id="contenedor">
@@ -113,7 +115,7 @@
 				<ul class="dropdown-menu">
 				    <li><a href="{% url 'altacarta' %}">Alta Carta</a></li>
 					<li><a href="{% url 'altaseccion' %}">Crear Seccion Carta</a></li>
-					<li><a href="adm_carta_modificar.html">Modificar Seccion Carta</a></li>
+					<li><a href="{% url 'modificarseccion' %}">Modificar Seccion Carta</a></li>
 					<li><a href="adm_carta_eliminar.html">Eliminar Seccion Carta</a></li>
 					<div class="divider"></div>
 					

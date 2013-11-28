@@ -49,7 +49,9 @@ urlpatterns = patterns('',
 
     url(r'administrador/altacarta', include('gestiones.Carta.altacarta.urls')),
     url(r'administrador/altaseccion', include('gestiones.Carta.altaseccion.urls')),
+    url(r'administrador/modificarseccion', include('gestiones.Carta.modificarseccion.urls')),
     url(r'logout', include('gestiones.Logout.urls')),
+
 )
 
 if settings.DEBUG:
