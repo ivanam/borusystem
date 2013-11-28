@@ -148,6 +148,7 @@ INSTALLED_APPS = (
 
     'gestiones.Carta.altacarta',
     'gestiones.Carta.altaseccion',
+    'gestiones.Carta.modificarseccion',
 
     'gestiones.Salon.altamesa',
     'gestiones.Salon.modificarmesa',
