@@ -19,6 +19,7 @@
 <!-- fin paginador //-->
 {% for c in comandas %}
 <!--inicio comanda cerrada item //-->
+<div class="fecha_buscador">{{fecha_del_dia}}</div>
 <div class="contenedor_comanda_item">
     <div class="comanda_numero">Comanda Nº {{c.id}}</div>
     <div class="contenedor_comanda_data">
@@ -33,9 +34,14 @@
 
         <div class="linea"></div>
         <div class="comanda_btn">
+            {% if not comandas.preticket %}
             <input type="button" class="btn btn-small" value="Generar Preticket"
                    onClick="generarPreticket({{c.id}});">
-            <input type="button" class="btn btn-small" value=" Detalle Comanda"
+            {% else %}
+            <input type="button" class="btn btn-small" value="Ver Preticket"
+                   onClick="generarPreticket({{c.id}});">
+            {% endif %}
+            <input type="button" class="btn btn-small" value="Detalle Comanda"
                    onClick="mostrarDetalleComanda({{c.id}});">
         </div>
     </div>

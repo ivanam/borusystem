@@ -27,6 +27,7 @@ TIPO_PAGO = (
 
 
 class EstrategiaServicio(object):
+
     def __init__(self, nombre, inicio, fin):
         self.inicio = inicio
         self.fin = fin
@@ -53,13 +54,12 @@ class EstrategiaServicio(object):
     def finalizar_comanda(self, comanda):
         pass
 
-        #return self.estrategia.filtrar_secciones(secciones)
-
     def generar_preticket(self, comanda):
         pass
 
 
 class EstrategiaComanda(EstrategiaServicio):
+
     def cargarProductos(self, comanda, producto, cantidad):
         detalle = DetalleComanda.objects.create(cantidadP=cantidad)
         if type(producto) is Plato:
@@ -90,14 +90,13 @@ class EstrategiaComanda(EstrategiaServicio):
 
     def generar_preticket(self, comanda):
 
-        esta_creado = Preticket.objects.filter(comanda_id=comanda.id)
-        print("esta creado")
-        print(esta_creado)
-        if len(esta_creado) == 0:
-            print("No hay preticket asociado a la comanda")
+        print("comanda preticket")
+        print(comanda.preticket)
+        if comanda.preticket == None:
+
             #creo el preticket asociado a la comanda
             #al crear el preticket la fecha y la hora son las del momento en que lo genero
-            #de esta menera cuando voy a pretickets tengo arriba los que rceine genere
+            #de esta menera cuando voy a pretickets tengo arriba los que recien genere
             fecha = datetime.date.today()
             now = datetime.datetime.now()
             hora = datetime.time(now.hour, now.minute, now.second)
@@ -106,28 +105,33 @@ class EstrategiaComanda(EstrategiaServicio):
 
             #creo los detalles
             for d in comanda.detalles.all():
-                detalle_preticket = DetallePreticket.objects.create(cantidad=d.cantidadP, precioXunidad=0,
-                                                                    detalleComanda=d)
+                detalle_preticket = DetallePreticket.objects.create(cantidad=d.cantidadP, precioXunidad=0,detalleComanda=d)
 
                 if (d.platos) != None:
                     detallePrecio = d.platos.importe()
+                    detalle_preticket.platos=d.platos
                 else:
                     if (d.bebidas) != None:
                         detallePrecio = d.bebidas.importe()
+                        detalle_preticket.bebidas = d.bebidas
                     else:
                         if (d.menuD) != None:
                             detallePrecio = d.menuD.precio
+                            detalle_preticket.menuD = d.menuD
                         else:
                             detallePrecio = d.menuE.precio
+                            detalle_preticket.menuE = d.menuE
 
                 detalle_preticket.precioXunidad = detallePrecio
                 detalle_preticket.save()
 
                 preticket.detalles.add(detalle_preticket)
                 preticket.save()
-
+                comanda.preticket = preticket
+                comanda.save()
 
 class EstrategiaPedido(EstrategiaServicio):
+
     def cargarProductos(self, comanda, producto, cantidad):
         detalle = DetalleComanda.objects.create(cantidadP=cantidad)
         if type(producto) is Bebida:
@@ -137,6 +141,7 @@ class EstrategiaPedido(EstrategiaServicio):
 
         comanda.detalles.add(detalle)
         comanda.save()
+
 
     def facturar(self, comanda):
         pass
@@ -152,28 +157,26 @@ class EstrategiaPedido(EstrategiaServicio):
 
     def finalizar_comanda(self, comanda):
 
-        comanda.cerrada = True
         comanda.finalizada = True
+        comanda.cerrada = True
         fecha = datetime.date.today()
         now = datetime.datetime.now()
         hora = datetime.time(now.hour, now.minute, now.second)
         total = 0
-        print("Aca creo la factura")
+
         factura = Factura.objects.create(fecha=fecha, hora=hora, tipo='C', total=total, comanda=comanda)
+
         for detalles in comanda.detalles.all():
-            print("Cargo detalle")
-            total = total + detalles.importe()
+            #total = total + detalles.importe()
             detalleF = detalles.covertir_factura()
-            print("cargo detalle en fact")
             factura.detalle.add(detalleF)
 
-        print("cargo total")
-        factura.total = total
+
+        factura.total = comanda.total()
         factura.save()
-        comanda.finalizada = True
+        comanda.total = comanda.total()
+        comanda.factura = factura
         comanda.save()
-        #TODO el facturar es comun a los dos tipos de comanda hay que subirlo
-        #y de finalizar comanda llamarlo haciendo uso del facturar
 
 
 ESTRATEGIAS.append(EstrategiaPedido("Pub", datetime.time(0, 0, 0), datetime.time(6, 59, 59)))
@@ -222,16 +225,22 @@ class DetalleComanda(models.Model):
 
 
 class Comanda(models.Model):
+
+    tipo_comanda = models.CharField(max_length=1, choices=TIPO_COMANDA)
     fecha = models.DateField("Fecha")
     hora = models.TimeField("Hora")
     cantidadC = models.DecimalField("CantidadC", max_digits=11, decimal_places=0)
-    cerrada = models.BooleanField("Cerrada", default=False)
     detalles = models.ManyToManyField(DetalleComanda, related_name="tiene", null=True, blank=True)
     mesas = models.ManyToManyField(Mesa, related_name="ocupa", null=True, blank=True)
     mozo = models.ForeignKey(User, null=True, blank=True)
     vista = models.BooleanField("Vista", default=False)
     finalizada = models.BooleanField("Finalizada", default=False)
-    tipo_comanda = models.CharField(max_length=1, choices=TIPO_COMANDA)
+    cerrada = models.BooleanField("Cerrada", default=False)
+    #si es un pedido
+    factura = models.ForeignKey("Factura", null=True, blank=True,related_name="comanda_factura")
+    #si es una comanda
+    preticket = models.ForeignKey("Preticket", null=True, blank=True,related_name="comanda_preticket")
+    total = models.DecimalField("CantidadC", max_digits=11, decimal_places=2, null=True, blank=True)
 
     def __init__(self, *args, **kwargs):
         models.Model.__init__(self, *args, **kwargs)
@@ -242,7 +251,6 @@ class Comanda(models.Model):
         else:
             self.tipo_comanda = "P"
 
-        print (self.tipo_comanda)
 
     def total(self):
         aux = 0
@@ -277,32 +285,42 @@ class Comanda(models.Model):
 class DetallePreticket(models.Model):
     cantidad = models.DecimalField("CantidadP", max_digits=11, decimal_places=0)
     precioXunidad = models.DecimalField("Precio", max_digits=11, decimal_places=2)
+    platos = models.ForeignKey(Plato, null=True, blank=True)
+    bebidas = models.ForeignKey(Bebida, null=True, blank=True)
+    menuD = models.ForeignKey(DelDia, null=True, blank=True)
+    menuE = models.ForeignKey(Ejecutivo, null=True, blank=True)
     detalleComanda = models.ForeignKey(DetalleComanda)
 
+    def importe(self):
+        return self.cantidad*self.precioXunidad
 
 class Preticket(models.Model):
     fecha = models.DateField("Fecha")
     hora = models.TimeField("Hora")
     total = models.DecimalField("Total", max_digits=11, decimal_places=2)
-    comanda = models.ForeignKey(Comanda)
     detalles = models.ManyToManyField(DetallePreticket, related_name="compuesto", null=True, blank=True)
+    comanda = models.ForeignKey(Comanda,related_name="preticket_comanda")
+    factura = models.ForeignKey("Factura", null=True, blank=True,related_name="preticket_factura")
 
+    def generar_factura(self):
 
-class DetalleFactura(models.Model):
-    cantidad = models.DecimalField("CantidadP", max_digits=11, decimal_places=0)
-    precioXunidad = models.DecimalField("Precio", max_digits=11, decimal_places=2)
-    detalleComanda = models.ForeignKey(DetalleComanda, null=True, blank=True)
-    detallePreticket = models.ForeignKey(DetallePreticket, null=True, blank=True)
+        fecha = datetime.date.today()
+        now = datetime.datetime.now()
+        hora = datetime.time(now.hour, now.minute, now.second)
+        total = 0
 
+        factura_nueva = Factura.objects.create(fecha=fecha, hora=hora, tipo='C', total=total, preticket=self)
+        for d in self.detalles.all():
 
-class Factura(models.Model):
-    fecha = models.DateField("Fecha")
-    hora = models.TimeField("Hora")
-    tipo = models.CharField("Tipo", choices=TIPO, max_length=1)
-    total = models.DecimalField("Total", max_digits=11, decimal_places=2)
-    detalle = models.ManyToManyField(DetalleFactura, related_name="contiene", null=True, blank=True)
-    comanda = models.ForeignKey(Comanda, null=True, blank=True)
-    preticket = models.ForeignKey(Preticket, null=True, blank=True)
+            total = total + d.importe()
+            detalleFactura = DetalleFactura.objects.create(cantidad=d.cantidad,precioXunidad=d.precioXunidad,detallePreticket=d)
+            factura_nueva.detalle.add(detalleFactura)
+
+        factura_nueva.total = total
+        factura_nueva.save()
+
+        self.factura = factura_nueva
+
 
 
 class DetallePago(models.Model):
@@ -312,4 +330,28 @@ class DetallePago(models.Model):
 
 class Pago(models.Model):
     fecha = models.DateField("Fecha")
-    factura = models.ForeignKey(Factura)
+    total = models.DecimalField("Total_pago", max_digits=11, decimal_places=2)
+    detalles = models.ManyToManyField(DetallePago, related_name="detalle_pago", null=True, blank=True)
+
+
+
+class DetalleFactura(models.Model):
+    cantidad = models.DecimalField("CantidadP", max_digits=11, decimal_places=0)
+    precioXunidad = models.DecimalField("Precio", max_digits=11, decimal_places=2)
+    #solo en los pedidos
+    detalleComanda = models.ForeignKey(DetalleComanda, null=True, blank=True)
+    #solo en las comandas
+    detallePreticket = models.ForeignKey(DetallePreticket, null=True, blank=True)
+
+
+class Factura(models.Model):
+    fecha = models.DateField("Fecha")
+    hora = models.TimeField("Hora")
+    tipo = models.CharField("Tipo", choices=TIPO, max_length=1)
+    total = models.DecimalField("Total", max_digits=11, decimal_places=2)
+    detalle = models.ManyToManyField(DetalleFactura, related_name="contiene", null=True, blank=True)
+    #si es pedido
+    comanda = models.ForeignKey(Comanda, null=True, blank=True,related_name="factura_comanda")
+    #si es comanda
+    preticket = models.ForeignKey(Preticket, null=True, blank=True,related_name="factura_preticket")
+    pago = models.ForeignKey(Pago, null=True, blank=True)

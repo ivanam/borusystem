@@ -19,6 +19,7 @@
 <!-- fin paginador //-->
 {% for p in pretickets %}
 <!--inicio pretickets item //-->
+<div class="fecha_buscador">{{fecha_del_dia}}</div>
 <div class="contenedor_comanda_item">
     <div class="preticket_numero">Preticket Nº {{p.id}}</div>
     <div class="contenedor_ticket_data">
@@ -30,12 +31,20 @@
             <span class="badge badge-success">{{ m.id }}</span>
             {% endfor %}
         </div>
+        <div class="comanda_total">Importe Adeudado: {{ p.total }}</div>
         <div class="linea"></div>
         <div class="comanda_btn">
-            <input type="button" class="btn btn-small" value="Generar Factura"
-                   onClick="confirm('Usted Desea generar la Factura del  Preticket Nº XXXXXX?');">
-            <input type="button" class="btn btn-small" value=" Detalle Comanda Asociada"
+            <input type="button" class="btn btn-small" value="Relizar pago"
+                   onClick="pagarFactura({{p.id}});">
+            <input type="button" class="btn btn-small" value="Ver Factura"
+                   onClick="generarFactura({{p.id}});">
+            <input type="button" class="btn btn-small" value="Ver Comanda Asociada"
                    onClick="mostrarDetalleComanda({{p.comanda.id}});">
+            <input type="button" class="btn btn-small" value="Detalle Preticket"
+                   onClick="mostrarDetallePreticket({{p.id}});">
+            <button class="btn btn-small" value="Editar"
+                   onClick="editarDetallePreticket({{p.id}});" title="Editar Preticket"><img width="17" src="{{STATIC_URL}}img/conf/glyphicons_150_edit.png"></button>
+
         </div>
     </div>
 </div>

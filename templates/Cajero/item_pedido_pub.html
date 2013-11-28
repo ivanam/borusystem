@@ -19,22 +19,25 @@
 <!-- fin paginador //-->
 {% for p in pedidos %}
 <!--inicio pedido item //-->
-<div class="contenedor_comanda_item">
+<div class="contenedor_comanda_item pedidos_nuevos" rel="{{p.id}}" estado="{{p.vista}}">
     <div class="comanda_numero">Pedido Nº {{p.id}}</div>
     <div class="contenedor_comanda_data">
-        <div class="comanda_fecha">Fecha: {{ p.fecha }} {{ p.hora }}</div>
+        <div class="comanda_fecha">Fecha: {{ p.fecha }} {{ p.hora }} {% if not p.vista %}<span
+                class="label label-important">Nuevo</span>{% endif %}
+        </div>
+        <div class="comanda_mozo flotar_der label">Mozo: {{p.mozo|capfirst}}</div>
         <div class="comanda_mesas">
             Mesas:
             {% for mp in p.mesas.all %}
             <span class="badge badge-info">{{mp.id}}</span>
             {% endfor %}
         </div>
-
+        <div class="comanda_total">Importe Adeudado: {{ p.total }}</div>
         <div class="linea"></div>
         <div class="comanda_btn">
             <input type="button" class="btn btn-small" value="Ver Factura"
                    onClick="confirm('Usted Desea generar la Factura del Pedido Nº XXXXXX?');">
-            <input type="button" class="btn btn-small" value=" Detalle Pedido"
+            <input type="button" class="btn btn-small" value="Detalle Pedido"
                    onClick="mostrarDetallePedido({{p.id}});">
         </div>
     </div>

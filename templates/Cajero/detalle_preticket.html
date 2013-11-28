@@ -1,0 +1,101 @@
+<!-- Modal cuerpo preticket //-->
+<div class="detalle_cajero" id="{{ comanda.id }}">
+    <div class="salto_linea"></div>
+    <div class="label label-inverse titulo_menu">Comensales</div>
+    <div class="salto_linea"></div>
+    <div class="comanda_info">Cantidad de comensales:
+
+        <span class="badge badge-success">
+            {{ preticket.comanda.cantidadC }}</span>
+    </div>
+    <div class="salto_linea"></div>
+
+    <div class="salto_linea"></div>
+    <div class="label label-inverse titulo_menu">Mesas Seleccionadas</div>
+    <div class="salto_linea"></div>
+    <div class="comanda_info">Mesas: {% for m in preticket.comanda.mesas.all %}
+
+        <span class="badge badge-success">
+            {{ m.id }}</span> {% endfor %}
+    </div>
+    <div class="salto_linea"></div>
+
+    <div class="label label-inverse titulo_menu header_detalle_cajero">
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
+        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz">Nombre</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Precio</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Cantidad</div>
+        <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">Descuento</div>
+        <div class="salto_linea"></div>
+    </div>
+    {% for p in preticket.detalles.all %}
+
+    {% if p.platos %}
+    <div class="detalle_info">
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
+        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.platos.nombre|capfirst }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.platos.precio }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidadP }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">
+            {% if p.platos.descuento %}{{ p.platos.descuento }}{% else %}0{% endif %}%
+        </div>
+    </div>
+    <div class="salto_linea"></div>
+    {% endif %}
+
+    {% if p.bebidas %}
+    <div class="detalle_info">
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
+        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.bebidas.nombre|capfirst }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.bebidas.precio }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidadP }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">
+            {% if p.bebidas.descuento %}{{ p.bebidas.descuento }}{% else %}0{% endif %}%
+        </div>
+    </div>
+    <div class="salto_linea"></div>
+    {% endif %}
+
+    {% if p.menuD %}
+    <div class="detalle_info">
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
+        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.menuD.nombre|capfirst }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.menuD.precio }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidadP }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">0%</div>
+    </div>
+    <div class="salto_linea"></div>
+    <div class="detalle_info">
+        {% for pp in p.menuD.platos.all %}
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;{{ pp.nombre|capfirst }}
+        </div>
+        <div class="salto_linea"></div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if p.menuE %}
+    <div class="detalle_info">
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
+        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.menuE.nombre|capfirst }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.menuE.precio }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidadP }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">0%</div>
+    </div>
+    <div class="salto_linea"></div>
+    <div class="detalle_info">
+        {% for pp in p.menuE.platos.all %}
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;{{ pp.nombre|capfirst }}
+        </div>
+        <div class="salto_linea"></div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% endfor %}
+    <br>
+
+    <div class="label label-inverse">Importe Total: <span id="total_comensales">{{ total }}</span></div>
+    <div class="salto_linea"></div>
+</div>
+<!-- Fin Modal cuerpo //-->

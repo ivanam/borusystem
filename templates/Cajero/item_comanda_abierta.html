@@ -19,6 +19,7 @@
 <!-- fin paginador //-->
 {% for c in comandas %}
 <!--inicio comanda abierta item //-->
+<div class="fecha_buscador">{{fecha_del_dia}}</div>
 <div class="contenedor_comanda_item comandas_abiertas_nuevas" rel="{{c.id}}" estado="{{c.vista}}">
     <div class="comanda_numero">Comanda Nº {{ c.id }}</div>
     <div class="contenedor_comanda_data">
@@ -37,7 +38,7 @@
         <div class="comanda_btn">
             <input type="button" class="btn btn-small" value="Cerrar Comanda"
                    onClick="cerrarComanda({{c.id}});">
-            <input type="button" class="btn btn-small" value=" Detalle Comanda"
+            <input type="button" class="btn btn-small" value="Detalle Comanda"
                    onClick="mostrarDetalleComanda({{c.id}});">
         </div>
     </div>
