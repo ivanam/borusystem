@@ -1,4 +1,4 @@
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>{% block titulo %}{% endblock %}</title>
@@ -91,6 +91,16 @@
   <div class="salto_linea"></div>
 </div>
 
+<!-- Modal cargado-->
+<div id="modalCargando" class="modal hide">
+    <div class="procesando">
+        <div class="flotar_iz"><img src="{{STATIC_URL}}img/conf/loading.gif"></div>
+        <div class="flotar_der">Procesando Peticion ...</div>
+    </div>
+</div>
+<!-- Fin Modal cargando-->
+
+
 <!-- Modal -->
 <div id="myModal" class="comanda_detalle_modal modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
@@ -99,6 +109,8 @@
   </div>
   <div class="modal-body"> </div>
   <div class="modal-footer">
+
+    <button class="btn" data-dismiss="modal" aria-hidden="true" title="Imprimir" onclick="print();"><img width="20" src="{{STATIC_URL}}img/conf/glyphicons_015_print.png" title="Imprimir"></button>
     <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
   </div>
 </div>

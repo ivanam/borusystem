@@ -73,6 +73,8 @@ class Menu(Producto):
     class Meta:
         abstract = True
 
+    def importe(self):
+        return self.precio
 
 class DelDia(Menu):
     pass

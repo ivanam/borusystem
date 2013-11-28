@@ -42,7 +42,9 @@ def crearcomanda(request):
             now = datetime.datetime.now()
             hora = datetime.time(now.hour, now.minute, now.second)
             comanda = Comanda.objects.create(fecha=fecha, hora=hora, cantidadC=cantidad)
-
+            comanda.mozo = request.user
+            comanda.finalizada = False
+            comanda.save()
             #guardo en la sesion el id de la comanda
             request.session['id_comanda']= comanda.id
 
@@ -54,6 +56,20 @@ def crearcomanda(request):
         #si trato de entrar sin haber enviado el form,me vuelve a la primera pagina
         return HttpResponseRedirect(reverse('mozo'))
 
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def vistaMesas(request):
+    cantidad = request.session['cantidadC']
+    mesas_seleccionadas = request.session['listaMesasComanda']
+    for id_mesa in mesas_seleccionadas:
+        mesa = Mesa.objects.get(pk=id_mesa)
+        mesa.ocupada = False
+        mesa.save()
+    mesas=Mesa.objects.filter(activo__exact=1).order_by("sector")
+    panel_seleccionar_mesa=get_template('Mozo/panel_mesas_seleccionadas.html')
+    return render_to_response('Mozo/seleccionar_mesas.html', {'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas }, context_instance=RequestContext(request))
+
+
 @permission_required('Administrador.is_mozo', login_url="login")
 def seleccionarproductos(request):
     idcomanda = request.session["id_comanda"]
@@ -64,9 +80,27 @@ def seleccionarproductos(request):
         pass
     except:
         print("Excepcion en seleccionar productos")
-
+    lista = request.session['listaProductosComanda']
+    listaPlatos = []
+    for producto in lista:
+            print(producto)
+            datos = producto.split('_')
+            id_prod = datos[0]
+            cantidad = datos[1]
+            categoria = datos[2]
+            print(id_prod)
+            print (cantidad)
+            print(categoria)
+            if categoria == 'P':
+                listaPlatos.append(Plato.objects.get(pk=id_prod))
+            if categoria == 'B':
+                listaPlatos.append(Bebida.objects.get(pk=id_prod))
+            if categoria == 'D':
+                listaPlatos.append(DelDia.objects.get(pk=id_prod))
+            if categoria == 'E':
+                listaPlatos.append(Ejecutivo.objects.get(pk=id_prod))
     panel_seleccionar_producto=get_template('Mozo/panel_menu_seleccionado.html')
-    return render_to_response('Mozo/seleccionar_menu.html', {'seccion': seccion, 'panel_seleccionar_mesa':panel_seleccionar_producto.render( Context({}) )}, context_instance=RequestContext(request))
+    return render_to_response('Mozo/seleccionar_menu.html', {'seccion': seccion, 'panel_seleccionar_mesa':panel_seleccionar_producto.render( Context({'producto': listaPlatos}) )}, context_instance=RequestContext(request))
 
 @permission_required('Administrador.is_mozo', login_url="login")
 def cargararproductosajax(request):
@@ -128,8 +162,15 @@ def cancelarComandajax(request):
     idcomanda =request.session["id_comanda"]
     comanda = Comanda.objects.get(pk=idcomanda)
     print(idcomanda)
+    mesas_seleccionadas = request.session['listaMesasComanda']
+    for id_mesa in mesas_seleccionadas:
+        mesa = Mesa.objects.get(pk=id_mesa)
+        mesa.ocupada = False
+        mesa.save()
     comanda.delete()
-    return HttpResponseRedirect(reverse('mozo'))
+    request.session['listaProductosComanda']=[]
+    request.session['listaMesasComanda']=[]
+    return render_to_response('Mozo/mozo.html', {}, context_instance=RequestContext(request))
     #comanda.remove()
     #return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))
     #return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))

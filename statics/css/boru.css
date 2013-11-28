@@ -1,5 +1,46 @@
 /* Estilos Mozo */
 /* Genericos */
+#buscador_comandas_form{
+height:auto;
+width:650px;
+margin:1px auto;
+}
+
+.procesando{
+height:35px;
+width:318px;
+margin:20px auto;
+padding:10px 20px;
+font-size:25px;
+font-weight:bold;
+vertical-align:middle;
+}
+.buscador_comandas_contenedor{
+height:60px;
+width:100%;
+background-color:#CCFFCC;
+}
+.paginacion_comandas{
+height:auto;
+width:85px;
+position:absolute;
+font-weight:bold;
+left:565px;
+top:-33px;
+text-align:right;
+}
+
+.paginado_de{
+font-size:10px;
+}
+
+.comanda_mozo{
+height: 15px;
+width: auto;
+margin: 10px 15px 5px 0px;
+font-size: 11px !important;
+font-weight: bold;
+}
 
 .texto_iz{
 text-align:left !important;
@@ -31,6 +72,8 @@ width:200px;
 position: relative;
 
 }
+
+
 .listado_item_campo_header{
 width:250px;
 padding:5px;
@@ -161,6 +204,7 @@ border-radius:  7px 0px 7px 7px;
 	width:100%;
 	padding:2px 2px;
 	overflow: visible;
+	position:relative;
 }
 
 .comanda_nueva{
@@ -189,12 +233,13 @@ width:450px;
 
 .comanda_btn{
 height:20px;
-width:250px;
+width:auto ;
 margin-right:8px;
 padding:4px 0px 4px 0px;
 float:right;
 clear:both;
 display:block;
+text-align:right;
 }
 
 .comanda_total{
@@ -679,6 +724,30 @@ text-align:left;
 margin-left:35px;
 font-size:12px;
 }
+
+.header_detalle_cajero{
+width:90%;
+height:auto;
+}
+
+.detalle_info{
+width:90%;
+height:auto;
+font-size:12px;
+}
+
+.detalle_cajero{
+border:1px solid #999999;
+margin:5px auto 5px auto;
+height:auto;
+width:90%;
+padding:5px 5px;
+-webkit-border-radius:7px 7px;
+-moz-border-radius:7px 7px;
+border-radius:7px 7px;
+}
+
+
 
 .bloque_final{
 border:1px solid #999999;
