@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.contrib.auth.decorators import permission_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -163,10 +164,26 @@ def cancelarComandajax(request):
     comanda = Comanda.objects.get(pk=idcomanda)
     print(idcomanda)
     mesas_seleccionadas = request.session['listaMesasComanda']
+    productos_seleccionados = request.session['listaProductosComanda']
     for id_mesa in mesas_seleccionadas:
         mesa = Mesa.objects.get(pk=id_mesa)
         mesa.ocupada = False
         mesa.save()
+    for producto in productos_seleccionados:
+        datos = producto.split('_')
+        id_prod = datos[0]
+        cantidad = datos[1]
+        categoria = datos[2]
+        if categoria == 'P':
+             prod = Plato.objects.get(pk=id_prod)
+        if categoria == 'B':
+              prod = Bebida.objects.get(pk=id_prod)
+        if categoria == 'D':
+            prod = DelDia.objects.get(pk=id_prod)
+        if categoria == 'E':
+            prod = Ejecutivo.objects.get(pk=id_prod)
+        prod.stock = prod.stock + Decimal(cantidad)
+        prod.save()
     comanda.delete()
     request.session['listaProductosComanda']=[]
     request.session['listaMesasComanda']=[]
@@ -182,6 +199,20 @@ def guardarproductosajax(request):
     print("voy a guardar")
     if request.method == 'GET':
         datos_producto = request.GET['datos_producto']
+        datosp = datos_producto.split('_')
+        id = datosp[0]
+        cantidadp = datosp[1]
+        cat = datosp[2]
+        if cat=='P':
+            prod = Plato.objects.get(pk=id)
+        if cat=='B':
+            prod = Bebida.objects.get(pk=id)
+        if cat=='D':
+            prod = DelDia.objects.get(pk=id)
+        if cat=='E':
+            prod = Ejecutivo.objects.get(pk=id)
+        prod.stock = prod.stock - Decimal (cantidadp)
+        prod.save()
         #producto = Bebida.objects.get(pk=id_prod)
         print("pase a guardar")
         lista = request.session['listaProductosComanda']
