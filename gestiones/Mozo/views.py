@@ -28,7 +28,7 @@ def crearcomanda(request):
 
         cantidad = request.POST['cantidadC']
 
-        if cantidad.isdigit():
+        if (cantidad.isdigit()) and (int(cantidad)>0):
 
             request.session['cantidadC']=cantidad
 
