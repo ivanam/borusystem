@@ -17,7 +17,8 @@
 
                 {% for m in mesas %}
                 <div id="mesa_{{m.id}}"
-                      class="{% if not m.ocupada %}mesa_item  mesa_item2{% else %}mesa_item_ocupada_base mesa_item_ocupada{% endif %}"
+                      class="{% if not m.ocupada %}mesa_item  mesa_item2{% else %} mesa_item_ocupada_base mesa_item_ocupada
+                      {% endif %}"
                      numero_mesa="{{m.id}}" capacidad="{{m.capacidad}}" tipo="{{m.get_tipo_display}}"
                      seleccionado="false" title="{% if not m.ocupada %}Mesa Libre{% else %}Mesa Ocupada{% endif %}">
                     <div class="num_sec" title="Numero de Sector {{m.sector.id}}">{{m.sector.id}}</div>

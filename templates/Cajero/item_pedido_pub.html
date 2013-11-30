@@ -6,9 +6,11 @@
                     src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"></a>
         {% endif %}
 
+        {% if pedidos.number %}
         <span class="current">
             {{ pedidos.number }}<span class="paginado_de"> de {{ pedidos.paginator.num_pages }}</span>
         </span>
+        {% endif %}
 
         {% if pedidos.has_next %}
             <a href="{% url 'pedidos_pub' pedidos.next_page_number %}" title=" Siguiente > "><img
@@ -35,8 +37,18 @@
         <div class="comanda_total">Importe Adeudado: {{ p.total }}</div>
         <div class="linea"></div>
         <div class="comanda_btn">
-            <input type="button" class="btn btn-small" value="Ver Factura"
-                   onClick="confirm('Usted Desea generar la Factura del Pedido Nº XXXXXX?');">
+
+            {% if p.factura and not p.factura.pago %}
+            <input type="button" class="btn btn-small" value="Relizar pago"
+                   onClick="ir('{% url 'pagar_factura' p.factura.id p.id %}');">
+            {% endif %}
+            {% if p.factura and p.factura.pago %}
+            <input type="button" class="btn btn-small factura_pagada_btn" value="Factura Pagada" disabled>
+            {% endif %}
+
+             <input type="button" class="btn btn-small" value="Ver Factura"
+                   onClick="mostrarDetalleFactura({{p.factura.id}});">
+
             <input type="button" class="btn btn-small" value="Detalle Pedido"
                    onClick="mostrarDetallePedido({{p.id}});">
         </div>

@@ -5,7 +5,7 @@
     <div class="salto_linea"></div>
     <div class="comanda_info">Cantidad de comensales:
 
-        <span class="badge badge-success">
+        <span class="badge">
             {{ factura.comanda.cantidadC }}
             {{ factura.preticket.comanda.cantidadC }}
         </span>
@@ -18,11 +18,11 @@
     <div class="comanda_info">Mesas:
 
         {% for m in factura.comanda.mesas.all %}
-        <span class="badge badge-success">{{ m.id }}</span>
+        <span class="badge">{{ m.id }}</span>
         {% endfor %}
 
         {% for m in factura.preticket.comanda.mesas.all %}
-        <span class="badge badge-success">{{ m.id }}</span>
+        <span class="badge">{{ m.id }}</span>
         {% endfor %}
 
     </div>
@@ -169,7 +169,10 @@
 
     <br>
 
-    <div class="label label-inverse">Importe Total: <span id="total_comensales">{{ total }}</span></div>
+    <div class="label label-inverse">Importe Total: <span id="total_comensales">{{ total }}</span>
+    </div>
+
+    {% if factura.pago %}<div class="label label-important">Pagada</div>{% endif %}
     <div class="salto_linea"></div>
 </div>
 <!-- Fin Modal cuerpo //-->

@@ -6,9 +6,11 @@
                     src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"></a>
         {% endif %}
 
+        {% if pretickets.number %}
         <span class="current">
             {{ pretickets.number }}<span class="paginado_de"> de {{ pretickets.paginator.num_pages }}</span>
         </span>
+        {% endif %}
 
         {% if pretickets.has_next %}
             <a href="{% url 'pretickets' pretickets.next_page_number %}" title=" Siguiente > "><img
@@ -34,11 +36,23 @@
         <div class="comanda_total">Importe Adeudado: {{ p.total }}</div>
         <div class="linea"></div>
         <div class="comanda_btn">
+
+            {% if p.factura and not p.factura.pago %}
             <input type="button" class="btn btn-small" value="Relizar pago"
-                   onClick="pagarFactura({{p.id}});">
+                   onClick="ir('{% url 'pagar_factura' p.factura.id p.comanda.id %}');">
+            {% endif %}
+            {% if p.factura and p.factura.pago %}
+            <input type="button" class="btn btn-small factura_pagada_btn" value="Factura Pagada" disabled>
+            {% endif %}
+
+            {% if not p.factura %}
+            <input type="button" class="btn btn-small" value="Generar Factura"
+                   onClick="ir('{% url 'generar_factura' p.id p.comanda.id %}');">
+            {% else %}
             <input type="button" class="btn btn-small" value="Ver Factura"
-                   onClick="generarFactura({{p.id}});">
-            <input type="button" class="btn btn-small" value="Ver Comanda Asociada"
+                   onClick="mostrarDetalleFactura({{p.factura.id}});">
+            {% endif %}
+            <input type="button" class="btn btn-small" value="Ver Comanda"
                    onClick="mostrarDetalleComanda({{p.comanda.id}});">
             <input type="button" class="btn btn-small" value="Detalle Preticket"
                    onClick="mostrarDetallePreticket({{p.id}});">

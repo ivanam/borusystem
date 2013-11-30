@@ -6,9 +6,11 @@
                     src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"></a>
         {% endif %}
 
+        {% if comandas.number %}
         <span class="current">
             {{ comandas.number }}<span class="paginado_de"> de {{ comandas.paginator.num_pages }}</span>
         </span>
+        {% endif %}
 
         {% if comandas.has_next %}
             <a href="{% url 'cajero' comandas.next_page_number %}" title=" Siguiente > "><img
@@ -33,11 +35,24 @@
             <span class="badge badge-warning">{{ m.id }}</span>
             {% endfor %}
         </div>
-
+        <div class="comanda_total">Importe Adeudado: {{ c.total }}</div>
         <div class="linea"></div>
         <div class="comanda_btn">
+
+            {% if not c.cerrada %}
             <input type="button" class="btn btn-small" value="Cerrar Comanda"
-                   onClick="cerrarComanda({{c.id}});">
+                   onClick="ir('{% url 'cerrar_comanda' c.id %}');">
+            {% else %}
+
+                {% if not c.preticket %}
+                <input type="button" class="btn btn-small" value="Generar Preticket"
+                       onClick="ir('{% url 'generar_preticket' c.id %}');">
+                {% else %}
+                <input type="button" class="btn btn-small" value="Ver Preticket"
+                       onClick="mostrarDetallePreticket({{c.preticket.id}});">
+                {% endif %}
+
+            {% endif %}
             <input type="button" class="btn btn-small" value="Detalle Comanda"
                    onClick="mostrarDetalleComanda({{c.id}});">
         </div>

@@ -43,3 +43,11 @@ class Mesa(models.Model):
             self.activo = False
         else:
             self.activo = True
+
+    def ocupar(self):
+        self.ocupada = True
+        self.save()
+
+    def desocupar(self):
+        self.ocupada = False
+        self.save()

@@ -4,7 +4,7 @@ urlpatterns = patterns('',
     
     url(r'^(?P<pagina>\d+)*$', 'gestiones.Cajero.views.Cajero', name="cajero"),
 
-    url(r'^comanda_cerrada/(?P<comandacerrada>\d+)*$', 'gestiones.Cajero.views.comandas_cerradas', name="comandas_cerradas"),
+    #url(r'^comanda_cerrada/(?P<comandacerrada>\d+)*$', 'gestiones.Cajero.views.comandas_cerradas', name="comandas_cerradas"),
     url(r'^detalle$', 'gestiones.Cajero.views.detalle_comanda_ajax', name="detalle_comanda_ajax"),
 
     url(r'^pretickets/(?P<pretickets_page>\d+)*$', 'gestiones.Cajero.views.pretickets', name="pretickets"),
@@ -18,11 +18,14 @@ urlpatterns = patterns('',
 
     url(r'^ver_comanda', 'gestiones.Cajero.views.comanda_vista', name="comanda_vista"),
 
-    url(r'^cerrar_comanda', 'gestiones.Cajero.views.cerrar_comanda', name="cerrar_comanda"),
+    url(r'^cerrar_comanda/(?P<id_comanda>\d+)$', 'gestiones.Cajero.views.cerrar_comanda', name="cerrar_comanda"),
 
-    url(r'^generar_preticket', 'gestiones.Cajero.views.generar_preticket', name="generar_preticket"),
-    url(r'^generar_factura', 'gestiones.Cajero.views.generar_factura', name="generar_factura"),
+    url(r'^pagar_factura/(?P<id_factura>\d+)/(?P<id_comanda>\d+)$', 'gestiones.Cajero.views.pagar_factura', name="pagar_factura"),
+
+    url(r'^generar_preticket/(?P<id_comanda>\d+)$', 'gestiones.Cajero.views.generar_preticket', name="generar_preticket"),
+    url(r'^generar_factura/(?P<id_preticket>\d+)/(?P<id_comanda>\d+)$', 'gestiones.Cajero.views.generar_factura', name="generar_factura"),
     url(r'^buscar_mesa$', 'gestiones.Cajero.views.buscar_mesa', name="buscar_mesa"),
 
+    url(r'^una_comanda/(?P<id_comanda>\d+)$', 'gestiones.Cajero.views.una_comanda', name="una_comanda"),
 
 )

@@ -320,18 +320,19 @@ class Preticket(models.Model):
         factura_nueva.save()
 
         self.factura = factura_nueva
-
+        self.save()
 
 
 class DetallePago(models.Model):
     importe = models.DecimalField("importe", max_digits=11, decimal_places=2)
-    tipoPago = models.CharField("Tipo", choices=TIPO_PAGO, max_length=2)
+    tipoPago = models.CharField("Tipo", choices=TIPO_PAGO, max_length=2,default="E")
 
 
 class Pago(models.Model):
     fecha = models.DateField("Fecha")
+    hora = models.TimeField("Hora")
     total = models.DecimalField("Total_pago", max_digits=11, decimal_places=2)
-    detalles = models.ManyToManyField(DetallePago, related_name="detalle_pago", null=True, blank=True)
+    detalles = models.ForeignKey(DetallePago, related_name="detalle_pago", null=True, blank=True)
 
 
 
@@ -355,3 +356,28 @@ class Factura(models.Model):
     #si es comanda
     preticket = models.ForeignKey(Preticket, null=True, blank=True,related_name="factura_preticket")
     pago = models.ForeignKey(Pago, null=True, blank=True)
+
+
+    def realizar_pago(self):
+
+        fecha = datetime.date.today()
+        now = datetime.datetime.now()
+        hora = datetime.time(now.hour, now.minute, now.second)
+
+        pago_nuevo = Pago.objects.create(fecha=fecha,hora=hora,total=self.total)
+        detalle_pago_nuevo = DetallePago.objects.create(importe=self.total,tipoPago="E")
+        detalle_pago_nuevo.save()
+        pago_nuevo.detalle = detalle_pago_nuevo;
+        pago_nuevo.save()
+
+        listado_de_mesas=[]
+        if self.comanda != None:
+            listado_de_mesas = self.comanda.mesas.all()
+        else:
+            listado_de_mesas = self.preticket.comanda.mesas.all()
+
+        for m in listado_de_mesas:
+            m.desocupar()
+
+        self.pago=pago_nuevo
+        self.save()
