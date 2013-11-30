@@ -18,7 +18,7 @@ import datetime
 def inicio(request):
     request.session['listaProductosComanda']=[]
     request.session['listaMesasComanda']=[]
-    request.session['total']
+    request.session['total'] = 0
     return render_to_response('Mozo/mozo.html', {}, context_instance=RequestContext(request))
 
 
