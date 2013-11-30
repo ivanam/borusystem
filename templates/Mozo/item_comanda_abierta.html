@@ -1,0 +1,48 @@
+<!-- inicio paginador //-->
+<div class="paginacion_comandas">
+    <span class="step-links">
+        {% if comandas.has_previous %}
+            <a href="{% url 'cajero' comandas.previous_page_number %}" title=" < Anterior "><img
+                    src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"></a>
+        {% endif %}
+
+        <span class="current">
+            {{ comandas.number }}<span class="paginado_de"> de {{ comandas.paginator.num_pages }}</span>
+        </span>
+
+        {% if comandas.has_next %}
+            <a href="{% url 'cajero' comandas.next_page_number %}" title=" Siguiente > "><img
+                    src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"></a>
+        {% endif %}
+    </span>
+</div>
+<!-- fin paginador //-->
+{% for c in comandas %}
+<!--inicio comanda abierta item //-->
+<div class="fecha_buscador">{{fecha_del_dia}}</div>
+<div class="contenedor_comanda_item comandas_abiertas_nuevas" rel="{{c.id}}" estado="{{c.vista}}">
+    <div class="comanda_numero">Comanda Nº {{ c.id }}</div>
+    <div class="contenedor_comanda_data">
+        <div class="comanda_fecha">Fecha: {{ c.fecha }} {{ c.hora }} {% if not c.vista %}<span
+                class="label label-important">Nueva</span>{% endif %}
+        </div>
+        <div class="comanda_mozo flotar_der label">Mozo: {{c.mozo|capfirst}}</div>
+        <div class="comanda_mesas">
+            Mesas:
+            {% for m in c.mesas.all %}
+            <span class="badge badge-warning">{{ m.id }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="linea"></div>
+        <div class="comanda_btn">
+            <input type="button" class="btn btn-small" value="Cerrar Comanda"
+                   onClick="cerrarComanda({{c.id}});">
+            <input type="button" class="btn btn-small" value="Detalle Comanda"
+                   onClick="mostrarDetalleComanda({{c.id}});">
+        </div>
+    </div>
+</div>
+<div class="salto_linea"></div>
+<!--fin comanda abierta item //-->
+{% endfor %}

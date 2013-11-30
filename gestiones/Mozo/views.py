@@ -1,10 +1,12 @@
 from decimal import Decimal
 from django.contrib.auth.decorators import permission_required
+from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Context
 from django.template.loader import get_template
+from boru.settings import PAGINADO_PRODUCTOS, STATIC_URL
 from gestiones.Carta.altacarta.models import SeccionCarta
 from gestiones.Comanda.comanda.models import Comanda, DetalleComanda
 from gestiones.Producto.producto.models import Bebida, Plato, DelDia, Ejecutivo, MenuS
@@ -16,6 +18,7 @@ import datetime
 def inicio(request):
     request.session['listaProductosComanda']=[]
     request.session['listaMesasComanda']=[]
+    request.session['total']
     return render_to_response('Mozo/mozo.html', {}, context_instance=RequestContext(request))
 
 
@@ -31,6 +34,7 @@ def crearcomanda(request):
         if (cantidad.isdigit()) and (int(cantidad)>0):
 
             request.session['cantidadC']=cantidad
+            request.session['total'] = 0
 
             #recupero las mesas que estan activas
             mesas=Mesa.objects.filter(activo__exact=1).order_by("sector")
@@ -76,7 +80,7 @@ def seleccionarproductos(request):
     idcomanda = request.session["id_comanda"]
     comanda = Comanda.objects.get(pk=idcomanda)
     seccion = comanda.filtrar_secciones()
-
+    total = request.session["total"]
     try:
         pass
     except:
@@ -101,7 +105,7 @@ def seleccionarproductos(request):
             if categoria == 'E':
                 listaPlatos.append(Ejecutivo.objects.get(pk=id_prod))
     panel_seleccionar_producto=get_template('Mozo/panel_menu_seleccionado.html')
-    return render_to_response('Mozo/seleccionar_menu.html', {'seccion': seccion, 'panel_seleccionar_mesa':panel_seleccionar_producto.render( Context({'producto': listaPlatos}) )}, context_instance=RequestContext(request))
+    return render_to_response('Mozo/seleccionar_menu.html', {'seccion': seccion, 'panel_seleccionar_mesa':panel_seleccionar_producto.render( Context({'producto': listaPlatos, 'total':total}) )}, context_instance=RequestContext(request))
 
 @permission_required('Administrador.is_mozo', login_url="login")
 def cargararproductosajax(request):
@@ -114,7 +118,7 @@ def cargararproductosajax(request):
 
 #@permission_required('Administrador.is_mozo', login_url="login")
 #def finalizar(request):
- #   return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))
+ #   return render_to_response('Mozo/fidanalizar_comanda.html', {}, context_instance=RequestContext(request))
 
 @permission_required('Administrador.is_mozo', login_url="login")
 def cargararmesasjax(request):
@@ -213,6 +217,9 @@ def guardarproductosajax(request):
             prod = Ejecutivo.objects.get(pk=id)
         prod.stock = prod.stock - Decimal (cantidadp)
         prod.save()
+        subtotal = prod.importe() * Decimal(cantidadp)
+        total = request.session['total']+ subtotal
+        request.session['total']= total
         #producto = Bebida.objects.get(pk=id_prod)
         print("pase a guardar")
         lista = request.session['listaProductosComanda']
@@ -238,7 +245,7 @@ def guardarproductosajax(request):
             if categoria == 'E':
                 listaPlatos.append(Ejecutivo.objects.get(pk=id_prod))
 
-        return render_to_response('Mozo/panel_menu_seleccionado.html', {'producto': listaPlatos},
+        return render_to_response('Mozo/panel_menu_seleccionado.html', {'producto': listaPlatos, 'total':total},
                               context_instance=RequestContext(request))
 
 
@@ -259,6 +266,7 @@ def finalizar(request):
     print("voy a mostrar el final de la comanda")
     lista = request.session['listaProductosComanda']
     cantidadComensales = request.session['cantidadC']
+    total = request.session['total']
     #id_comanda = request.session["id_comanda"]
     #comanda = Comanda.objects.get(pk=id_comanda)
     mesas = ""
@@ -292,7 +300,7 @@ def finalizar(request):
                 men = MenuS(ejecutivo.nombre, cantidad, ejecutivo.precio)
                 menuS.append(men)
 
-    return render_to_response('Mozo/finalizar_comanda.html', {'cantidad': cantidadComensales, 'mesas': mesas, 'menuS':menuS},
+    return render_to_response('Mozo/finalizar_comanda.html', {'cantidad': cantidadComensales, 'mesas': mesas, 'menuS':menuS, 'total':total},
                               context_instance=RequestContext(request))
 
 
@@ -332,8 +340,33 @@ def guardarComanda(request):
     comanda.finalizar()
     return HttpResponseRedirect(reverse('mozo'))
 
+#------------------------------------------Inicio de Mis comandas--------------------------------------------------------
 
 
+@permission_required('Administrador.is_mozo', login_url="login")
+def miscomandas(request,pagina=1):
+
+    if pagina == None:
+        pagina = 1
+
+    comandas_lista = Comanda.objects.filter(tipo_comanda__exact="C", finalizada = True, cerrada = False).order_by("-fecha", "-hora")
+    paginator = Paginator(comandas_lista, PAGINADO_PRODUCTOS)
+    comandas = paginator.page(pagina)
+
+    #abro el modelo de comanda abierta
+    detalle_comanda=get_template('Mozo/item_comanda_abierta.html')
+    #renderizo el template html
+    detalle_renderizado=detalle_comanda.render(Context({'comandas': comandas,'STATIC_URL':STATIC_URL}))
+
+    print(detalle_renderizado)
+    return render_to_response('Mozo/mis_comandas.html', {"item_comandas_abiertas": detalle_renderizado,"titulo":"Comandas Abiertas"}, context_instance=RequestContext(request))
 
 
+@permission_required('Administrador.is_mozo', login_url="login")
+def polling_comandas(request):
+    if request.method == "GET":
+        print("Aca entre")
+        comandas_nuevas=Comanda.objects.filter(tipo_comanda__exact="C",vista=False,finalizada=True,cerrada=False).count()
+        pedidos_nuevos =Comanda.objects.filter(tipo_comanda__exact="P",vista=False,finalizada=True,cerrada=True).count()
 
+    return render_to_response('Mozo/comandas_nuevas.html',{'numero':comandas_nuevas,'numero_pedido':pedidos_nuevos},context_instance=RequestContext(request))

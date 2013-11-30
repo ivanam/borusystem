@@ -13,4 +13,6 @@ urlpatterns = patterns('',
                        url(r'^finalizar$', 'gestiones.Mozo.views.finalizar', name="finalizar"),
                        url(r'^volvermesas$', 'gestiones.Mozo.views.vistaMesas', name="vistaMesas"),
                        url(r'^guardarComanda$', 'gestiones.Mozo.views.guardarComanda', name="guardarComanda"),
+                       url(r'^miscomandas$', 'gestiones.Mozo.views.miscomandas', name="miscomandas"),
+                       url(r'^polling', 'gestiones.Mozo.views.polling_comandas', name="polling_comandas"),
 )

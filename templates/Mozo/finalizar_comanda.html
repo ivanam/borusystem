@@ -30,6 +30,9 @@
 					<div class="comanda_info">Pedido:{{m.nombre}} Cantidad:{{m.cantidad}} Total:{{m.total}}</div>
 					<div class="salto_linea"></div>
                 {% endfor %}
+            <div class="salto_linea"></div>
+            <div class="label label-info titulo_menu">Total: {{total}}</div>
+            <div class="salto_linea"></div>
 		    </div>
 		<br>
 		<input type="button" name="finaliza" id="finalizar_menu" class="btn btn-large btn-primary" value="Finalizar Menu">
@@ -54,7 +57,11 @@ $(document).ready(function(){
 	
 	$("#finalizar_menu").click(function(){
 		document.location.href = "{% url 'guardarComanda' %}";
-	});	
+	});
+
+	$("#cancelar_menu").click(function(){
+		document.location.href = "{% url 'cancelarComandajax' %}";
+	});
 	
 });
 </script>

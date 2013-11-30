@@ -1,0 +1,200 @@
+{% extends "base_mozo.html" %}
+{% block titulo %}Boru - Mozo{% endblock %}
+{% block contenido %}
+<div class="izquierda">
+
+
+    <button class="btn btn-inverse menu_cajero" id="comandas_abiertas">
+        Comandas Abiertas
+        <div id="comandas_nuevas"></div>
+    </button>
+        <button class="btn btn-inverse menu_cajero" id="volver_inicio">
+        Volver
+        <div id="volver"></div>
+    </button>
+</div>
+<div class="derecha">
+    <div class="contenedor_secundario_cajero">
+
+        <!-- inicio del buscador de mesas //-->
+        <div id="buscador_de_mesas" class="buscador_de_mesas">
+
+                    <form name="buscador_comandas_form" method="post" id="buscador_comandas_form" action="{% url 'buscar_mesa' %}">
+                    <input class="buscador_comandas_input" type="text" name="numero">
+                    <button class="btn buscador_comandas_btn" type="submit" name="buscar">Buscar Mesas</button>
+                    {% csrf_token %}
+                    </form>
+        </div>
+        <!-- fin del buscador de mesas //-->
+
+        <div id="con_menu_mozo" class="cont_redondeado contenedor_principal_cajero">
+            <div class="label label-inverse titulo_menu">{{titulo}}</div>
+            <br>
+
+            <div class="salto_linea"></div>
+                <div id="mesas_libres" class="bloque_comandas">
+
+                    <!-- ACA inicio codigo //-->
+                    <div class="salto_linea"></div>
+
+
+                    {{item_comandas_abiertas}}
+
+                    <!-- ACA fin codigo //-->
+                </div><!-- fin bloke de mesas//-->
+        </div><!-- fin contenedor principal//-->
+    </div><!-- fin de contenedor secundario //-->
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+
+function cerrarComanda(id_comanda){
+
+    if(confirm('Usted desea cerrar la Comanda Nº '+id_comanda+'?')){
+
+        $('#modalCargando').modal("show");
+
+        $.ajax({
+        type: "GET",
+        url: "{% url 'cerrar_comanda' %}",
+        data: "id_comanda="+id_comanda,
+        async:false,
+        success: function(datos){
+            document.location.href = "{% url 'comandas_cerradas' %}";
+          }
+        });
+    }
+}
+
+
+function mostrarDetalleComanda(id_comanda){
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'detalle_comanda_ajax' %}",
+        data: "id_comanda="+id_comanda,
+        success: function(datos){
+
+            $('.modal-titulo').html("Comanda Nº "+id_comanda);
+            $('.modal-body').html(datos);
+            $('#myModal').modal("show")
+          }
+    });
+}
+
+function mostrarDetallePedido(id_comanda){
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'detalle_comanda_ajax' %}",
+        data: "id_comanda="+id_comanda,
+        success: function(datos){
+
+            $('.modal-titulo').html("Pedido Nº "+id_comanda);
+            $('.modal-body').html(datos);
+            $('#myModal').modal("show")
+          }
+    });
+}
+
+
+
+function editarDetallePreticket(id_preticket){
+
+}
+
+
+function pollingComandas(){
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'polling_comandas' %}",
+        success: function(datos){
+
+            var comanda_arreglo = datos.split(";");
+
+            //parseo comandas
+            var cantComandas=parseInt($(comanda_arreglo[0], "#comanda_nueva").html());
+            var cantPedidos=parseInt($(comanda_arreglo[1], "#pedido_nuevo").html());
+
+
+            if(cantComandas != 0){
+                $("#comandas_nuevas").html(comanda_arreglo[0]);
+                titulo(" - C("+cantComandas+")");
+            }
+            if(cantPedidos != 0){
+                $("#pedidos_nuevos").html(comanda_arreglo[1]);
+                titulo(" - P("+cantPedidos+")");
+            }
+
+            if(cantComandas == 0 && cantPedidos == 0){
+                $("#comandas_nuevas").html("");
+                $("#pedidos_nuevos").html("");
+                titulo(" ");
+            }
+
+        }
+    });
+
+}
+
+
+
+function comandaVista(id_comanda){
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'comanda_vista' %}",
+        data:"id_comanda="+id_comanda,
+        async:false,
+        success: function(datos){
+            pollingComandas();
+        }
+    });
+}
+
+
+
+function titulo(str){
+    var titulo = $("title").html("Boru - Cajero "+str);
+}
+
+$(document).ready(function(){
+
+pollingComandas();
+var revisar_comandas = setInterval(function(){pollingComandas()},7000);
+
+
+    $(".comandas_abiertas_nuevas").each(function(i){
+
+        $(this).mouseover(function(event){
+
+            if($(this).attr("estado")=="False"){
+                comandaVista($(this).attr("rel"));
+            }
+
+        });
+    });
+
+    $(".pedidos_nuevos").each(function(i){
+
+        $(this).mouseover(function(event){
+
+            if($(this).attr("estado")=="False"){
+                comandaVista($(this).attr("rel"));
+            }
+
+        });
+    });
+
+    $("#volver_inicio").click(function(event){
+      		document.location.href = "{% url 'mozo' %}";
+    });
+
+  $('.dropdown-toggle').dropdownHover();
+});
+
+</script>
+{% endblock %}

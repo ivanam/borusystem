@@ -27,6 +27,7 @@
                     <form method="post" action="{% url 'crearcomanda' %}">
                         <input type="number" class="contenedor_cantidad" name="cantidadC">
                         <input type="hidden" class="contenedor_cantidad" name="id_comanda">
+                        <input type="hidden" class="contenedor_cantidad" name="total">
                 <!--<div class="linea"></div>-->
                         <div class="comanda_btn">
                             <input type="submit" class="btn btn-small" value="Aceptar">
@@ -38,7 +39,7 @@
             <!--</div>-->
         </div>
        </div>
-            <button class="btn btn-warning btn-large btn_menu_mozo" id="mis_comandas_pedidos">Mis Comandas</button>
+            <button class="btn btn-warning btn-large btn_menu_mozo" id="mis_comandas_pedidos" >Mis Comandas</button>
       </div>
 
 
@@ -47,6 +48,10 @@
 {% block script %}
 <script>
 $(document).ready(function(){
+$("#mis_comandas_pedidos").click(function(){
+        //alert("Andres");
+		//document.location.href = "{% url 'miscomandas' %}";
+	});
 });
 </script>
 {% endblock %}
