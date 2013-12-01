@@ -154,7 +154,7 @@ def detalle_preticket_ajax(request):
     if request.method == "GET":
         id_preticket = request.GET["id_preticket"]
         preticket = Preticket.objects.get(pk=id_preticket)
-        total = preticket.total
+        total = preticket.total_preticket
 
         return render_to_response('Cajero/detalle_preticket.html', {'preticket': preticket,'total':total},
                                   context_instance=RequestContext(request))
@@ -165,7 +165,7 @@ def detalle_factura_ajax(request):
     if request.method == "GET":
         id_factura = request.GET["id_factura"]
         factura = Factura.objects.get(pk=id_factura)
-        total = factura.total
+        total = factura.total_factura
 
         return render_to_response('Cajero/detalle_factura.html', {'factura': factura,'total':total},
                                   context_instance=RequestContext(request))

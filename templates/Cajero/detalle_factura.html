@@ -41,10 +41,10 @@
         <div class="detalle_info">
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
             <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.platos.nombre|capfirst }}</div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.platos.precio }}</div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidadP }}</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precioXunidad }}</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidad }}</div>
             <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">
-                {% if p.platos.descuento %}{{ p.platos.descuento }}{% else %}0{% endif %}%
+                {% if p.descuento %}{{ p.descuento }}{% else %}0{% endif %}%
             </div>
         </div>
         <div class="salto_linea"></div>
@@ -54,10 +54,10 @@
         <div class="detalle_info">
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
             <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.bebidas.nombre|capfirst }}</div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.bebidas.precio }}</div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidadP }}</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precioXunidad }}</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidad }}</div>
             <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">
-                {% if p.bebidas.descuento %}{{ p.bebidas.descuento }}{% else %}0{% endif %}%
+                {% if p.descuento %}{{ p.descuento }}{% else %}0{% endif %}%
             </div>
         </div>
         <div class="salto_linea"></div>
@@ -67,8 +67,8 @@
         <div class="detalle_info">
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
             <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.menuD.nombre|capfirst }}</div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.menuD.precio }}</div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidadP }}</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precioXunidad }}</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidad }}</div>
             <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">0%</div>
         </div>
         <div class="salto_linea"></div>
@@ -85,8 +85,8 @@
         <div class="detalle_info">
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
             <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.menuE.nombre|capfirst }}</div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.menuE.precio }}</div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidadP }}</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precioXunidad }}</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidad }}</div>
             <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">0%</div>
         </div>
         <div class="salto_linea"></div>
@@ -106,10 +106,10 @@
         <div class="detalle_info">
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
             <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.platos.nombre|capfirst }}</div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.platos.precio }}</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precioXunidad}}</div>
             <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidadP }}</div>
             <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">
-                {% if p.platos.descuento %}{{ p.platos.descuento }}{% else %}0{% endif %}%
+                {% if p.descuento %}{{ p.descuento }}{% else %}0{% endif %}%
             </div>
         </div>
         <div class="salto_linea"></div>
@@ -119,10 +119,10 @@
         <div class="detalle_info">
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
             <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.bebidas.nombre|capfirst }}</div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.bebidas.precio }}</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precioXunidad }}</div>
             <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidadP }}</div>
             <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">
-                {% if p.bebidas.descuento %}{{ p.bebidas.descuento }}{% else %}0{% endif %}%
+                {% if p.descuento %}{{ p.descuento }}{% else %}0{% endif %}%
             </div>
         </div>
         <div class="salto_linea"></div>
@@ -132,7 +132,7 @@
         <div class="detalle_info">
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
             <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.menuD.nombre|capfirst }}</div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.menuD.precio }}</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precioXunidad }}</div>
             <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidadP }}</div>
             <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">0%</div>
         </div>
@@ -150,7 +150,7 @@
         <div class="detalle_info">
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
             <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.menuE.nombre|capfirst }}</div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.menuE.precio }}</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precioXunidad }}</div>
             <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">{{ p.cantidadP }}</div>
             <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">0%</div>
         </div>

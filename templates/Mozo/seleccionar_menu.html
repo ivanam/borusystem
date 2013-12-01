@@ -14,7 +14,7 @@
             {% for s in seccion %}
             <div id="cat_01" class="cat_item" rel="{{s.nombre|capfirst}}" id_seccion="{{s.id}}">
               <div class="img_cont"> <img src="{{STATIC_URL}}img/comida/{{s.imagen}}"> </div>
-              <div class="label label-inverse">{{s.nombre}}</div>
+              <div class="nombre_seccion">{{s.nombre}}</div>
             </div>
              {% endfor %}
           </div>
@@ -32,7 +32,7 @@
 
   </div>
   <div class="modal-footer">
-    <button class="btn btn_aceptar" id="btn_aceptar" data-dismiss="modal" aria-hidden="true" onclick="btn_aceptar();">Aceptar</button>
+    <button class="btn" id="btn_aceptar" data-dismiss="modal" aria-hidden="true" onclick="btn_aceptar();">Aceptar</button>
     <button class="btn btn_cancelar" data-dismiss="modal" aria-hidden="true">Cerrar</button>
   </div>
 </div>
@@ -121,7 +121,7 @@ $.ajax({
             });
 }
 
-function btn_aceptar(){1
+function btn_aceptar(){
 
         $(".producto_cantidad").each(function(i){
 

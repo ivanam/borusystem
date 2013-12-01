@@ -1,5 +1,20 @@
 /* Estilos Mozo */
 /* Genericos */
+.nombre_seccion{
+height:auto !important;
+width:72px !important;
+word-wrap:break-word !important;
+font-size:12px;
+font-weight:bold;	
+margin:1px auto 1px auto;
+line-height:normal;
+
+}
+
+.btn_aceptar{
+height:40px !important;
+}
+
 .factura_pagada_btn{
 color:#FF0000 !important;
 font-weight:bold !important;
@@ -967,7 +982,7 @@ margin-bottom:1px;
 }
 
 .menu_producto{
-width:60px;
+width:90px;
 overflow:hidden;
 /*padding-right:1px;
 margin:5px auto 5px auto;*/
@@ -1021,8 +1036,107 @@ margin-top:-58px;
 position:relative;
 top:22px;
 }
+/* mesas imagenes */
+.Mesa_ocupada{
+background-image:url(../img/mesa_icon.png);
+background-repeat:no-repeat;
+background-position: center 6px;
+float: left;
+display:inline;
+cursor:pointer;
+height:100px;
+width:82px;
+margin:1px 1px;
+-webkit-border-radius:7px 7px;
+     -moz-border-radius:7px 7px;
+          border-radius:7px 7px;
+border: 1px solid #cccccc;
+}
+
+.Mesa_libre{
+background-image:url(../img/mesa_icon.png);
+background-repeat:no-repeat;
+background-position: center 6px;
+float: left;
+display:inline;
+cursor:pointer;
+height:100px;
+width:82px;
+margin:1px 1px;
+-webkit-border-radius:7px 7px;
+     -moz-border-radius:7px 7px;
+          border-radius:7px 7px;
+border: 1px solid #cccccc;
+}
 
 
+.Box_ocupada{
+background-image:url(../img/mesa_chica.png);
+background-repeat:no-repeat;
+background-position: center 6px;
+float: left;
+display:inline;
+cursor:pointer;
+height:100px;
+width:82px;
+margin:1px 1px;
+-webkit-border-radius:7px 7px;
+     -moz-border-radius:7px 7px;
+          border-radius:7px 7px;
+border: 1px solid #cccccc;
+}
+
+.Box_libre{
+background-image:url(../img/mesa_chica.png);
+background-repeat:no-repeat;
+background-position: center 6px;
+float: left;
+display:inline;
+cursor:pointer;
+height:100px;
+width:82px;
+margin:1px 1px;
+-webkit-border-radius:7px 7px;
+     -moz-border-radius:7px 7px;
+          border-radius:7px 7px;
+border: 1px solid #cccccc;
+}
+
+
+.Barra_ocupada{
+background-image:url(../img/mesa_barra.png);
+background-repeat:no-repeat;
+background-position: center 6px;
+float: left;
+display:inline;
+cursor:pointer;
+height:100px;
+width:82px;
+margin:1px 1px;
+-webkit-border-radius:7px 7px;
+     -moz-border-radius:7px 7px;
+          border-radius:7px 7px;
+border: 1px solid #cccccc;
+}
+
+.Barra_libre{
+background-image:url(../img/mesa_barra.png);
+background-repeat:no-repeat;
+background-position: center 6px;
+float: left;
+display:inline;
+cursor:pointer;
+height:100px;
+width:82px;
+margin:1px 1px;
+-webkit-border-radius:7px 7px;
+     -moz-border-radius:7px 7px;
+          border-radius:7px 7px;
+border: 1px solid #cccccc;
+}
+
+
+/* fin de in¡magenes de mesas */
 .mesa_item_ocupada_base{
 background-image:url(../img/mesa_icon.png);
 background-repeat:no-repeat;

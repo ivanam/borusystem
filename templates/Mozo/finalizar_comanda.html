@@ -14,22 +14,46 @@
 			<div class="salto_linea"></div>
 			<div class="label label-info titulo_menu">Comensales</div>
 			<div class="salto_linea"></div>
-			<div class="comanda_info">{{cantidad}}</div>
+			<div class="comanda_info"><div class="badge badge-warning"> {{cantidad}} </div></div>
 			<div class="salto_linea"></div>
 	
 			<div class="salto_linea"></div>
 			<div class="label label-info titulo_menu">Mesas Seleccionadas</div>
 			<div class="salto_linea"></div>
-			<div class="comanda_info">Mesas: {{mesas}}</div>
+			<div class="comanda_info">
+            {% for mesa in mesas %}
+                <div class="badge badge-warning"> {{mesa}} </div>
+            {% endfor %}
+            </div>
 			<div class="salto_linea"></div>
-			
+			 <!--
 			<div class="salto_linea"></div>
 			<div class="label label-info titulo_menu">Menu</div>
 			<div class="salto_linea"></div>
+
                 {% for m in menuS %}
 					<div class="comanda_info">Pedido:{{m.nombre}} Cantidad:{{m.cantidad}} Total:{{m.total}}</div>
 					<div class="salto_linea"></div>
                 {% endfor %}
+          //-->
+          <!-- inicio dela modificacion //-->
+
+          <div class="label label-info header_detalle_cajero centrar">
+              <div class="listado_item_campo_base listado_item_campo_05 flotar_iz">Nombre</div>
+              <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Cantidad</div>
+              <div class="listado_item_campo_base listado_item_campo_03 flotar_der">Subtotal</div>
+              <div class="salto_linea"></div>
+          </div>
+          {% for m in menuS %}
+          <div class="header_detalle_cajero centrar">
+              <div class="listado_item_campo_base listado_item_campo_05 flotar_iz texto_iz">{{ m.nombre|capfirst}}</div>
+              <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_centro">{{ m.cantidad }}</div>
+              <div class="listado_item_campo_base listado_item_campo_03 flotar_der">{{ m.total }}</div>
+          </div>
+          <div class="salto_linea"></div>
+          {% endfor %}
+
+          <!-- fin de la modificacion //-->
             <div class="salto_linea"></div>
             <div class="label label-info titulo_menu">Total: {{total}}</div>
             <div class="salto_linea"></div>

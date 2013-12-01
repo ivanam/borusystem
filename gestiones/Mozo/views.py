@@ -19,7 +19,7 @@ def inicio(request):
     request.session['listaProductosComanda']=[]
     request.session['listaMesasComanda']=[]
     request.session['total'] = 0
-    return render_to_response('Mozo/mozo.html', {}, context_instance=RequestContext(request))
+    return render_to_response('Mozo/mozo.html', {"crear_comanda":True}, context_instance=RequestContext(request))
 
 
 
@@ -54,7 +54,7 @@ def crearcomanda(request):
             request.session['id_comanda']= comanda.id
 
             #lo inserto en el resto del template y lo muestro
-            return render_to_response('Mozo/seleccionar_mesas.html', {'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas }, context_instance=RequestContext(request))
+            return render_to_response('Mozo/seleccionar_mesas.html', {"seleccionar_mesa":True, 'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas }, context_instance=RequestContext(request))
 
         return HttpResponseRedirect(reverse('mozo'))
     else:
@@ -105,7 +105,7 @@ def seleccionarproductos(request):
             if categoria == 'E':
                 listaPlatos.append(Ejecutivo.objects.get(pk=id_prod))
     panel_seleccionar_producto=get_template('Mozo/panel_menu_seleccionado.html')
-    return render_to_response('Mozo/seleccionar_menu.html', {'seccion': seccion, 'panel_seleccionar_mesa':panel_seleccionar_producto.render( Context({'producto': listaPlatos, 'total':total}) )}, context_instance=RequestContext(request))
+    return render_to_response('Mozo/seleccionar_menu.html', {"seleccionar_menu":True,'seccion': seccion, 'panel_seleccionar_mesa':panel_seleccionar_producto.render( Context({'producto': listaPlatos, 'total':total}) )}, context_instance=RequestContext(request))
 
 @permission_required('Administrador.is_mozo', login_url="login")
 def cargararproductosajax(request):
@@ -191,7 +191,8 @@ def cancelarComandajax(request):
     comanda.delete()
     request.session['listaProductosComanda']=[]
     request.session['listaMesasComanda']=[]
-    return render_to_response('Mozo/mozo.html', {}, context_instance=RequestContext(request))
+    #return render_to_response('Mozo/mozo.html', {}, context_instance=RequestContext(request))
+    return HttpResponseRedirect(reverse('mozo'))
     #comanda.remove()
     #return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))
     #return render_to_response('Mozo/finalizar_comanda.html', {}, context_instance=RequestContext(request))
@@ -249,7 +250,6 @@ def guardarproductosajax(request):
                               context_instance=RequestContext(request))
 
 
-
 @permission_required('Administrador.is_mozo', login_url="login")
 def cargarpanelajax(request):
     print("voy a cargar el panel")
@@ -269,10 +269,12 @@ def finalizar(request):
     total = request.session['total']
     #id_comanda = request.session["id_comanda"]
     #comanda = Comanda.objects.get(pk=id_comanda)
-    mesas = ""
-    listam = request.session['listaMesasComanda']
-    for mesa in listam:
-        mesas = mesas+str(mesa)+", "
+
+    #mesas = ""
+    #listam = request.session['listaMesasComanda']
+    #for mesa in listam:
+    #    mesas = mesas+str(mesa)+", "
+
     menuS = []
     for producto in lista:
             print(producto)
@@ -285,11 +287,11 @@ def finalizar(request):
             print(categoria)
             if categoria == 'P':
                 plato = Plato.objects.get(pk=id_prod)
-                men = MenuS(plato.nombre, cantidad, plato.precio)
+                men = MenuS(plato.nombre, cantidad, plato.importe())
                 menuS.append(men)
             if categoria == 'B':
                 bebida = Bebida.objects.get(pk=id_prod)
-                men = MenuS(bebida.nombre, cantidad, bebida.precio)
+                men = MenuS(bebida.nombre, cantidad, bebida.importe())
                 menuS.append(men)
             if categoria == 'D':
                 deldia = DelDia.objects.get(pk=id_prod)
@@ -300,7 +302,7 @@ def finalizar(request):
                 men = MenuS(ejecutivo.nombre, cantidad, ejecutivo.precio)
                 menuS.append(men)
 
-    return render_to_response('Mozo/finalizar_comanda.html', {'cantidad': cantidadComensales, 'mesas': mesas, 'menuS':menuS, 'total':total},
+    return render_to_response('Mozo/finalizar_comanda.html', {"finalizar":True,'cantidad': cantidadComensales, 'mesas': request.session['listaMesasComanda'], 'menuS':menuS, 'total':total},
                               context_instance=RequestContext(request))
 
 
@@ -325,16 +327,16 @@ def guardarComanda(request):
             categoria = datos[2]
             if categoria == 'P':
                 plato = Plato.objects.get(pk=id_prod)
-                detalle = DetalleComanda.objects.create(cantidadP=cantidad, platos= plato)
+                detalle = DetalleComanda.objects.create(cantidadP=cantidad, platos= plato, precioXunidad=plato.importe(),descuento=plato.descuento)
             if categoria == 'B':
                 bebida = Bebida.objects.get(pk=id_prod)
-                detalle = DetalleComanda.objects.create(cantidadP=cantidad, bebidas= bebida)
+                detalle = DetalleComanda.objects.create(cantidadP=cantidad, bebidas= bebida , precioXunidad=bebida.importe(),descuento=bebida.descuento)
             if categoria == 'D':
                 dia = DelDia.objects.get(pk=id_prod)
-                detalle = DetalleComanda.objects.create(cantidadP=cantidad, menuD= dia)
+                detalle = DetalleComanda.objects.create(cantidadP=cantidad, menuD= dia, precioXunidad=dia.precio,descuento=0)
             if categoria == 'E':
                 ejecutivo = Ejecutivo.objects.get(pk=id_prod)
-                detalle = DetalleComanda.objects.create(cantidadP=cantidad, menuE= ejecutivo)
+                detalle = DetalleComanda.objects.create(cantidadP=cantidad, menuE= ejecutivo, precioXunidad=ejecutivo.precio,descuento=0)
             comanda.detalles.add(detalle)
             comanda.save()
     comanda.finalizar()

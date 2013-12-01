@@ -5,6 +5,7 @@
       <th scope="col">#</th>
       <th scope="col">Nombre</th>
       <th scope="col">Precio</th>
+      <th scope="col">Desc.</th>
       <th scope="col">Stock</th>
       <th scope="col">Cantidad</th>
       <th scope="col">Acciones</th>
@@ -14,6 +15,7 @@
       <th scope="row">{{p.id}}</th>
       <td>{{p.nombre}}</td>
       <td>{{p.precio}}</td>
+      <td>{% if p.descuento %}{{p.descuento}}%{% else %}0%{% endif %}</td>
       <td>{{p.stock}}</td>
       <td><input type="text" id_prod="{{p.id}}" name="cantidad" value="0" id="{{p.id}}_cantidad" class="input-mini producto_cantidad" size="2" readonly="true" seccion_cat="{{p.seccion.categoria}}"></td>
       <td><input stock= "{{p.stock}}" id_prod="{{p.id}}_cantidad" name="mas" type="button" value="+" class="btn btn-large btn_mas">

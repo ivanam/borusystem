@@ -4,12 +4,20 @@
         <div class="menu">
           <!-- inicio menus selecionados //-->
           {% for p in producto %}
-          <div class="badge badge-inverse menu_producto">{{p.nombre}}</div>
-          <div class="badge badge-warning"></div>
-          <div class="badge badge-success">{{p.precio}}</div>
+          <div class="label label-info mesa_seleccionada_item">
+              <div class="label label-warning flotar_der">{{p.precio}}</div>
+              <div class="label label-info  flotar_der" title="{{p.nombre|capfirst}}:{{p.precio}}">{{p.nombre|capfirst|truncatechars:13}}</div>
+
+          </div>
           <div class="salto_linea"></div>
           {% endfor %}
           <!-- fin menus selecionados //-->
         </div>
-        <div class="label label-inverse mesa_seleccionada_item">Importe Total: <span id="total_comensales">{{total}}</span></div>
+        <div class="label label-inverse mesa_seleccionada_item">
+            <div class="badge badge-info flotar_der">{{total}}</div>
+            <div class="label label-inverse flotar_der">Total: </div>
+            <!--<span id="total_comensales">//-->
+
+            <!--</span>//-->
+        </div>
       </div>

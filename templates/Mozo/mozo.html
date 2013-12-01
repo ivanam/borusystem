@@ -1,57 +1,62 @@
 {% extends "base_mozo.html" %}
 {% block titulo %}Boru - Mozo{% endblock %}
 {% block contenido %}
-	  <!-- inicio contenedor principal //-->
-	  <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
-        <div class="label label-inverse titulo_menu">Menu Mozo</div>
-        <br>
+<!-- inicio contenedor principal //-->
+<div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
+    <div class="label label-inverse titulo_menu">Menu Mozo</div>
+    <br>
+
+    <div class="salto_linea"></div>
+    <div id="mesas_libres" class="bloque_comandas">
         <div class="salto_linea"></div>
-        <div id="mesas_libres" class="bloque_comandas">
-       <div class="salto_linea"></div>
 
         <div class="" id="accordion2">
 
-        <div class="accordion-group">
-        <div class="">
-        <button class="btn btn-info btn-large btn_menu_mozo" id="comanda_abierta" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-        Crear Comanda
-        </button>
-        </div>
-        <div id="collapseOne" class="">
-            <div class="">
+            <div class="accordion-group">
+                <div class="">
+                    <button class="btn btn-info btn-large btn_menu_mozo" id="comanda_abierta" data-toggle="collapse"
+                            data-parent="#accordion2" href="#collapseOne">
+                        Crear Comanda
+                    </button>
+                </div>
+                <div id="collapseOne" class="">
+                    <div class="">
 
-            <!--inicio comanda abierta item //-->
-            <div class="contenedor_comanda_data2">
-                <div class="comanda_numero2">Ingrese Cantidad de Comensales</div>
-                <!--<div class="contenedor_comanda_data2">-->
-                    <form method="post" action="{% url 'crearcomanda' %}">
-                        <input type="number" class="contenedor_cantidad" name="cantidadC">
-                        <input type="hidden" class="contenedor_cantidad" name="id_comanda">
-                        <input type="hidden" class="contenedor_cantidad" name="total">
-                <!--<div class="linea"></div>-->
-                        <div class="comanda_btn">
-                            <input type="submit" class="btn btn-small" value="Aceptar">
+                        <!--inicio comanda abierta item //-->
+                        <div class="contenedor_comanda_data2">
+                            <div class="comanda_numero2">Ingrese Cantidad de Comensales</div>
+                            <!--<div class="contenedor_comanda_data2">-->
+                            <form method="post" action="{% url 'crearcomanda' %}">
+                                <input type="number" class="contenedor_cantidad" name="cantidadC">
+                                <input type="hidden" class="contenedor_cantidad" name="id_comanda">
+                                <input type="hidden" class="contenedor_cantidad" name="total">
+                                <!--<div class="linea"></div>-->
+                                <div class="comanda_btn">
+                                    <input type="submit" class="btn btn-small btn_aceptar" value="Aceptar">
+                                </div>
+                                {% csrf_token %}
+                            </form>
                         </div>
-                        {% csrf_token %}
-                    </form>
+                        <!--</div>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <button class="btn btn-warning btn-large btn_menu_mozo" id="mis_comandas_pedidos"
+                        onclick="alert('En construccion...');">Mis Comandas
+                </button>
             </div>
-            <!--</div>-->
-            <!--</div>-->
-        </div>
-       </div>
-            <button class="btn btn-warning btn-large btn_menu_mozo" id="mis_comandas_pedidos" >Mis Comandas</button>
-      </div>
 
 
-{% endblock %}
+            {% endblock %}
 
-{% block script %}
-<script>
+            {% block script %}
+            <script>
 $(document).ready(function(){
 $("#mis_comandas_pedidos").click(function(){
         //alert("Andres");
 		//document.location.href = "{% url 'miscomandas' %}";
 	});
 });
-</script>
-{% endblock %}
+
+            </script>
+            {% endblock %}
