@@ -5,7 +5,7 @@
           <!-- inicio menus selecionados //-->
           {% for p in producto %}
           <div class="label label-info mesa_seleccionada_item">
-              <div class="label label-warning flotar_der">{{p.precio}}</div>
+              <div class="badge badge-warning flotar_der">{{p.precio}}</div>
               <div class="label label-info  flotar_der" title="{{p.nombre|capfirst}}:{{p.precio}}">{{p.nombre|capfirst|truncatechars:13}}</div>
 
           </div>

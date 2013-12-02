@@ -13,7 +13,7 @@
     {% for p in producto %}
     <tr class="tr_item_info">
       <th scope="row">{{p.id}}</th>
-      <td>{{p.nombre}}</td>
+      <td title="{{p.descripcion}}">{{p.nombre}}</td>
       <td>{{p.precio}}</td>
       <td>{% if p.descuento %}{{p.descuento}}%{% else %}0%{% endif %}</td>
       <td>{{p.stock}}</td>

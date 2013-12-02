@@ -80,7 +80,7 @@ class EstrategiaComanda(EstrategiaServicio):
         pass
 
     def filtrar_secciones(self):
-        seccion = SeccionCarta.objects.filter(activo__exact=1)
+        seccion = SeccionCarta.objects.filter(activo__exact=1).order_by("-categoria","nombre")
         return seccion
 
     def finalizar_comanda(self, comanda):
@@ -147,7 +147,7 @@ class EstrategiaPedido(EstrategiaServicio):
 
 
     def filtrar_secciones(self):
-        seccion = SeccionCarta.objects.filter(categoria__exact='B', activo__exact=1)
+        seccion = SeccionCarta.objects.filter(categoria__exact='B', activo__exact=1).order_by("-categoria","nombre")
         return seccion
 
     def finalizar_comanda(self, comanda):
@@ -324,7 +324,7 @@ class Preticket(models.Model):
             detalleFactura = DetalleFactura.objects.create(cantidad=d.cantidad,precioXunidad=d.precioXunidad,descuento=d.descuento,detallePreticket=d)
             factura_nueva.detalle.add(detalleFactura)
 
-        factura_nueva.total = total
+        factura_nueva.total_factura = total
         factura_nueva.save()
 
         self.factura = factura_nueva

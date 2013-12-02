@@ -166,7 +166,7 @@ def detalle_factura_ajax(request):
         id_factura = request.GET["id_factura"]
         factura = Factura.objects.get(pk=id_factura)
         total = factura.total_factura
-
+        print(factura.total_factura)
         return render_to_response('Cajero/detalle_factura.html', {'factura': factura,'total':total},
                                   context_instance=RequestContext(request))
 
