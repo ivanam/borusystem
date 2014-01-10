@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -22,6 +23,7 @@ def modificarsector(request, id_sector=None):
     except:
         datosSector = ''
         sector = None
+        id_sector = 0
 
     #si se apreto el boton de modificar
     if request.method == 'POST' and sector != None:
@@ -49,14 +51,14 @@ def modificarsector(request, id_sector=None):
 
         #si no es valido el formulario lo vuelvo a mostrar con los datos ingresados
         return render_to_response('Salon/modificarsector/modificarsector.html',
-                                  {'formulario': formulario, 'sector': sectores},
+                                  {'formulario': formulario, 'sector': sectores,'id_sector':id_sector},
                                   context_instance=RequestContext(request))
 
     else:
         #si no paretamos el boton modificar mozo y seleccionamos algun mozo mostramos sus datos, sino mostramos el form vacio
         formulario = modificarSectorForm(initial=datosSector)
         return render_to_response('Salon/modificarsector/modificarsector.html',
-                                  {'formulario': formulario, 'sector': sectores},
+                                  {'formulario': formulario, 'sector': sectores,'id_sector':id_sector},
                                   context_instance=RequestContext(request))
 
 

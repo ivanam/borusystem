@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Context
 from django.template.loader import get_template
-import estrategia
+#import estrategia
 from gestiones.Comanda.comanda.models import Comanda, EstrategiaPedido, Preticket, Factura
 
 

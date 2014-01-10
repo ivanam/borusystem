@@ -1,4 +1,4 @@
-from decimal import Decimal
+# -*- encoding: utf-8 -*-
 from django.db import models
 
 
@@ -7,7 +7,7 @@ class Producto(models.Model):
 
     nombre = models.CharField("Nombre", max_length=50)
     precio = models.DecimalField("Precio", max_digits=11, decimal_places=2)
-    stock = models.DecimalField("Stock", max_digits=11, decimal_places=0)
+    stock = models.PositiveIntegerField("Stock", max_length=3)
     activo = models.BooleanField("Activo", default=True, choices=ACTIVO_CHOICES)
     seccion = models.ForeignKey("altacarta.SeccionCarta", null=False, blank=False)
 

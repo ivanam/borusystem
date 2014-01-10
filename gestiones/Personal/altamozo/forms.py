@@ -25,7 +25,7 @@ class altaMozoForm(ModelForm):
         self.fields['password'].widget = PasswordInput()
 
         #agregando max-length
-        #self.fields['campo1'].widget.attrs['maxlength'] =
+        self.fields['numeroDoc'].widget.attrs['maxlength'] = 8
 
 
         #self.fields['tipoDoc'].widget = Select()

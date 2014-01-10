@@ -1,0 +1,67 @@
+{% for m in mozos %}
+
+<div class="item">
+    <!--
+    <div class="listado_eliminar_mozo_item {% if not m.activo %}inactivo{% endif %}">
+
+        <input type="hidden" name="id_plato" class="id_plato" value="{{m.id}}">
+
+        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz" title="{{m.nombre|capfirst}}: {{m.descripcion}}">
+            {{m.nombre|capfirst|truncatechars:20}}
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.precio}}">
+            {{m.precio}}
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.stock}}">
+            {{m.stock}}
+        </div>
+
+    </div>
+    //-->
+
+    <div class="listado_modificar_mozo_item {% if not m.is_active %}inactivo{% endif %}">
+
+                    <div class="cargar_modificar_mozo" href="{% url 'modificarmozo_id' m.id %}">
+                        <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
+                             title="Username: {{m.username|capfirst}}">{{m.username|capfirst|truncatechars:15}}
+                        </div>
+                        <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
+                             title="Nombre: {{m.first_name|capfirst}}">{{m.first_name|capfirst|truncatechars:12}}
+                        </div>
+                        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_iz"
+                             title="Apellido: {{m.last_name}}">{{m.last_name|capfirst|truncatechars:12}}
+                        </div>
+                    </div>
+                    <div class="listado_item_campo_base listado_item_campo_02">
+                        <img src="{{STATIC_URL}}img/conf/{% if m.is_active %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
+                             urldel="{% url 'modificarmozo_id_del' m.id %}" estado="{{m.is_active}}"
+                             class="eliminar_mozo"
+                             nombre="{{m.username}}"
+                             title="{% if not m.is_active %}Acivar{% else %}Eliminar{% endif %} mozo: {{m.username|capfirst}}">
+                    </div>
+    </div>
+
+
+</div>
+{% endfor %}
+<!-- inicio paginador //-->
+{% if mozos.paginator %}
+<div class="pagination">
+    <span class="step-links">
+        {% if mozos.has_previous %}
+            <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png" onclick="paginarMozos({{ mozos.previous_page_number }});"></a>
+        {% endif %}
+
+        <span class="current">
+            {{ mozos.number }}<span class="paginado_de"> de {{ mozos.paginator.num_pages }}</span>
+        </span>
+
+        {% if mozos.has_next %}
+            <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png" onclick="paginarMozos({{ mozos.next_page_number }});"></a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+<!-- fin paginador //-->

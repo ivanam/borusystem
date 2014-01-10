@@ -4,35 +4,74 @@
 <div class="izquierda">
     <div class="listado_modificar_mozos cont_redondeado">
         <div class="label label-inverse titulo_menu" id="listado_mozos">Listado de Mozos</div>
+
+
+        <!-- inicio buscador mozos//-->
+        <div class="input-append">
+            <input class="span2 buscador_mozos" id="appendedInputButton" type="text" name="q">
+            <button class="btn" id="buscarresultados" type="submit" name="buscar" value="buscar">Buscar</button>
+        </div>
+        <div class="cont_resultado_busqueda_productos">
+        </div>
+        <!-- fin buscador mozos//-->
+
         <!-- inicio listado de mozos //-->
         <div class="label label-inverse">
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Nombre</div>
-            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz">Apellido</div>
-            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz">DNI</div>
+            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz">Username</div>
+            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz">Nombre</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Apellido</div>
             <div class="listado_item_campo_base listado_item_campo_02 flotar_iz">&nbsp</div>
         </div>
-        {% for m in mozos %}
-        <div class="listado_modificar_mozo_item {% if not m.is_active %}inactivo{% endif %}">
 
-            <div class="cargar_modificar_mozo" href="{% url 'modificarmozo_id' m.id %}">
-                <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_iz"
-                     title="Nombre: {{m.first_name|capfirst}}">{{m.first_name|capfirst|truncatechars:13}}
-                </div>
-                <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
-                     title="Apellido: {{m.last_name|capfirst}}">{{m.last_name|capfirst|truncatechars:12}}
-                </div>
-                <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
-                     title="Numero de Documento: {{m.numeroDoc}}">{{m.numeroDoc}}
+        <div class="ajax_resultados">
+            {% for m in mozos %}
+            <div class="item">
+                <div class="listado_modificar_mozo_item {% if not m.is_active %}inactivo{% endif %}">
+
+                    <div class="cargar_modificar_mozo" href="{% url 'modificarmozo_id' m.id %}">
+                        <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
+                             title="Username: {{m.username|capfirst}}">{{m.username|capfirst|truncatechars:15}}
+                        </div>
+                        <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
+                             title="Nombre: {{m.first_name|capfirst}}">{{m.first_name|capfirst|truncatechars:12}}
+                        </div>
+                        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_iz"
+                             title="Apellido: {{m.last_name}}">{{m.last_name|capfirst|truncatechars:12}}
+                        </div>
+                    </div>
+                    <div class="listado_item_campo_base listado_item_campo_02">
+                        <img src="{{STATIC_URL}}img/conf/{% if m.is_active %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
+                             urldel="{% url 'modificarmozo_id_del' m.id %}" estado="{{m.is_active}}"
+                             class="eliminar_mozo"
+                             nombre="{{m.username}}"
+                             title="{% if not m.is_active %}Acivar{% else %}Eliminar{% endif %} mozo: {{m.username|capfirst}}">
+                    </div>
                 </div>
             </div>
-            <div class="listado_item_campo_base listado_item_campo_02">
-                <img src="{{STATIC_URL}}img/conf/{% if m.is_active %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
-                     urldel="{% url 'modificarmozo_id_del' m.id %}" estado="{{m.is_active}}" class="eliminar_mozo"
-                     nombre="{{m.first_name}} {{m.last_name}}"
-                     title="{% if not m.is_active %}Acivar{% else %}Eliminar{% endif %} mozo: {{m.first_name|capfirst}} {{m.last_name|capfirst}}">
+            {% endfor %}
+            <!-- inicio paginador //-->
+            {% if mozos.paginator %}
+            <div class="pagination">
+            <span class="step-links">
+                {% if mozos.has_previous %}
+                    <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
+                                                          onclick="paginarMozos({{ mozos.previous_page_number }});"></a>
+                {% endif %}
+
+                <span class="current">
+                    {{ mozos.number }}<span class="paginado_de"> de {{ mozos.paginator.num_pages }}</span>
+                </span>
+
+                {% if mozos.has_next %}
+                    <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"
+                                                           onclick="paginarMozos({{ mozos.next_page_number }});"></a>
+                {% endif %}
+            </span>
             </div>
+            {% endif %}
+            <!-- fin paginador //-->
+
         </div>
-        {% endfor %}
         <!-- fin listado de mozos//-->
     </div>
 </div>
@@ -146,9 +185,71 @@
 {% block script %}
 <script>
 
-$(document).ready(function(){
 
-	 $(".cargar_modificar_mozo").each(function(i){
+
+function enviarForm(msg){
+    $(".buscador_mozos").val(msg);
+    buscarresultados();
+}
+
+function reemplazarCadena(cad, q){
+var re = new RegExp(q,"gi");
+    return cad.replace(re,"<span class='resaltado resaltarBusqueda'>"+q+"</span>");
+}
+
+function buscarresultados(){
+
+    var busqueda=$(".buscador_mozos").val();
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'buscador_mozos_ajax_resultados' %}",
+        data: "q="+busqueda,
+        success: function(datos){
+
+            if(datos.length > 0){
+                $(".ajax_resultados").html(datos);
+                $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                agregarFuncionalidad();
+            }
+          }
+    });
+
+}
+
+function paginarMozos(pagina){
+
+    $.ajax({
+                type: "GET",
+                url: "{% url 'paginador_ajax_resultados_mozos' %}",
+                data: "pagina="+pagina,
+                success: function(datos){
+                    $(".ajax_resultados").html(datos);
+                    agregarFuncionalidad();
+                }
+            });
+}
+
+
+function agregarFuncionalidad(){
+    //agrego la funcionalidad de agregar a la lista de platos
+    /*
+    $(".item").each(function(i){
+
+        $(this).css("cursor","pointer");
+
+        $(this).click(function(event){
+            //agregarPlato($(this).html());
+        });
+
+    });
+    */
+    cargarFunciones();
+}
+
+function cargarFunciones(){
+
+    $(".cargar_modificar_mozo").each(function(i){
 	 	$(this).css("cursor","pointer");
 			$(this).click(function(event){
 				var uri=$(this).attr("href");
@@ -169,9 +270,98 @@ $(document).ready(function(){
 			});
 	 });
 
+}
+
+
+
+$(document).ready(function(){
+
+
+
+    $("#buscarresultados").click(function(event){
+        buscarresultados();
+    });
+
+
+
+    $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+
+    //cuando presiono una tecla en la caja de busqueda
+    $(".buscador_mozos").keyup(function(event){
+
+        var busqueda=$(this).val();
+
+        if( busqueda.length >= 2){
+
+            $.ajax({
+                type: "GET",
+                url: "{% url 'buscador_mozos_ajax' %}",
+                data: "q="+busqueda,
+                success: function(datos){
+
+                    if(datos.length > 0){
+                        $(".cont_resultado_busqueda_productos").html(datos);
+                        $(".cont_resultado_busqueda_productos").css("visibility","visible");
+
+                        $(".busqueda_item").each(function(i){
+                            var cad=$(this).text();
+                            $(this).html(reemplazarCadena(cad, busqueda));
+                            $(".resaltado").addClass("resaltarBusqueda");
+                        });
+
+                    }
+                    else{
+                        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                    }
+
+                  }
+            });
+        }
+        else
+        {
+            $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+        }
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+          if(keycode == '13'){
+
+                buscarresultados();
+          }
+
+
+    });
+
+
+    cargarFunciones();
+
+    /*
+	 $(".cargar_modificar_mozo").each(function(i){
+	 	$(this).css("cursor","pointer");
+			$(this).click(function(event){
+				var uri=$(this).attr("href");
+				$(location).attr('href',uri);
+			});
+	 });
+
+	 $(".eliminar_mozo").each(function(i){
+	 	$(this).css("cursor","pointer");
+
+			$(this).click(function(event){
+				var mozo = $(this).attr("nombre");
+				var estado = $(this).attr("estado");
+				var msg = (estado == "True")?"Usted desea eliminar al mozo ":"Usted desea activar al mozo ";
+                if( confirm(msg+mozo+"?") ){
+                   $(location).attr('href', $(this).attr("urldel") );
+                }
+			});
+	 });
+	 */
+
 	$('.dropdown-toggle').dropdownHover(options);
 
 });
+
 
 </script>
 {% endblock %}

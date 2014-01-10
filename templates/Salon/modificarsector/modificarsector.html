@@ -51,7 +51,17 @@
             <form action="" method="post" name="add_mozo" id="id_add_mozo">
                 {{ formulario.non_field_errors }}
 
-                <!--<input type="hidden" id="id_id" name="id" value="">//-->
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto">
+                      <span class="badge badge-inverse"> Nro.</span>
+                        <span class="badge badge-warning"> {{id_sector}} </span>
+
+                    </div>
+                    <div class="contenedor_input texto_iz">
+                    </div>
+                </div>
+
                 <div class="contenefor_form_row">
                     <div class="contenedor_texto"><span class="form_error_msg">*</span> Descripcion</div>
                     <div class="contenedor_input">

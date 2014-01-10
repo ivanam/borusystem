@@ -1,5 +1,5 @@
 {% extends "base_administrador.html" %}
-{% block titulo %}Boru - Alta Mozo - Registro Exitoso{% endblock %}
+{% block titulo %}Boru - Modificar Mozo - Modificacion Exitosa{% endblock %}
 {% block contenido %}
 
 	  <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
@@ -22,8 +22,7 @@
 {% block script %}
 <script>
 $(document).ready(function(){
-	
-	$('.dropdown-toggle').dropdownHover(options);
+	volver('{% url 'modificarmozo' %}',1250);
 });
 </script>
 {% endblock %}

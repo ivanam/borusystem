@@ -117,9 +117,6 @@ def paginadorajaxResultados(request):
             # If page is out of range (e.g. 9999), deliver last page of results.
             platos = paginator.page(paginator.num_pages)
 
-
-
-
         return render_to_response('Producto/altamenudia/busquedaresultados_items.html', {'plato': platos},
                                   context_instance=RequestContext(request))
 

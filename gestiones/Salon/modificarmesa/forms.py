@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.forms import ModelForm, Select
 from gestiones.Salon.altamesa.models import Mesa
 

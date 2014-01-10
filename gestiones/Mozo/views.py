@@ -372,3 +372,5 @@ def polling_comandas(request):
         pedidos_nuevos =Comanda.objects.filter(tipo_comanda__exact="P",vista=False,finalizada=True,cerrada=True).count()
 
     return render_to_response('Mozo/comandas_nuevas.html',{'numero':comandas_nuevas,'numero_pedido':pedidos_nuevos},context_instance=RequestContext(request))
+
+

@@ -1,0 +1,7 @@
+{% for m in listado%}
+<div class="cont_resultado_busqueda_item">
+    <a class="busqueda_item" onclick="enviarForm('{{m.id}}');" title="Mesa: {{m.id}}, Sector: {{m.sector}}">
+        Mesa: {{m.id}}, Sector: {{m.sector|capfirst}}
+    </a>
+</div>
+{% endfor %}

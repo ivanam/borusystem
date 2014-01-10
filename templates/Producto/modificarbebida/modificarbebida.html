@@ -5,32 +5,41 @@
     <div class="listado_modificar_mozos cont_redondeado">
         <div class="label label-inverse titulo_menu">Listado de Bebidas</div>
 
+        <!-- inicio buscador bebidas//-->
+        <div class="input-append">
+            <input class="span2 buscador_productos buscador_bebidas" id="appendedInputButton" type="text" name="q">
+            <button class="btn" id="buscarresultados" type="submit" name="buscar" value="buscar">Buscar</button>
+        </div>
+        <div class="cont_resultado_busqueda_productos">
+        </div>
+        <!-- fin buscador bebidas//-->
+
         <!-- inicio listado de mozos //-->
         <!-- inicio encabezados del listado //-->
         <div class="listado_item_campo_header label label-inverse">
 
-            <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz texto_iz" title="Nombre">
+            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz" title="Nombre">
                 Nombre
             </div>
 
 
-            <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Precio">
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="Precio">
                 Precio
             </div>
 
-
+<!--
             <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz" title="Stock">
                 Stk
+            </div>//-->
+
+
+            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz" title="Seccion">
+                Sección
             </div>
-
-
-            <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Seccion">
-                Secc
-            </div>
-
+<!--
             <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="En Promocion">
                 Promo
-            </div>
+            </div>//-->
 
 
             <div class="listado_item_campo_base listado_item_campo_00">
@@ -39,50 +48,81 @@
         </div>
         <!-- fin de encabezados del listado //-->
 
-        {% for p in bebidas %}
-        <div class="listado_modificar_mozo_item {% if not p.activo %}inactivo{% endif %}">
+        <div class="ajax_resultados">
+            <div class="item">
+                {% for p in bebidas %}
+                <div class="listado_modificar_mozo_item {% if not p.activo %}inactivo{% endif %}">
 
-            <div class="cargar_modificar_mozo" href="{% url 'modificarbebida_id' p.id %}">
+                    <div class="cargar_modificar_mozo" href="{% url 'modificarbebida_id' p.id %}">
 
 
-                <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz texto_iz"
-                     title="Nombre: {{p.nombre}}">
-                    {{p.nombre|truncatechars:11}}
+                        <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
+                             title="Nombre: {{p.nombre}}">
+                            {{p.nombre|truncatechars:10}}
+                        </div>
+
+                        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz"
+                             title="Precio. {{p.precio}}">
+                            {{p.precio}}
+                        </div>
+
+                        <!--
+                        <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz"
+                             title="Stock: {{p.stock}}">
+                            {{p.stock}}
+                        </div>//-->
+
+                        <div class="listado_item_campo_base listado_item_campo_04_2 flotar_iz"
+                             title="Seccion: {{p.seccion}}">
+                            {{p.seccion|truncatechars:12}}
+                        </div>
+
+                        <!--
+                        <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz"
+                             title="En Promocion: {{p.enPromocion}}">
+                            {{p.get_enPromocion_display}}
+                        </div>//-->
+
+
+                    </div>
+
+                    <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+                        <img src="{{STATIC_URL}}img/conf/{% if p.activo %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
+                             urldel="{% url 'modificarbebida_id_del' p.id %}" estado="{{p.activo}}"
+                             class="eliminar_mesa"
+                             nombre="{{p.nombre}}"
+                             title="{% if not p.activo %}Acivar{% else %}Desactivar{% endif %} plato: {{p.id}}">
+                    </div>
+
+
                 </div>
+                {% endfor %}
+                <!-- fin listado de mozos//-->
+                <!-- inicio paginador //-->
+                {% if bebidas.paginator %}
+                <div class="pagination">
+            <span class="step-links">
+                {% if bebidas.has_previous %}
+                    <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
+                                                          onclick="paginarBebidas({{ bebidas.previous_page_number }});"></a>
+                {% endif %}
 
-                <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Precio. {{p.precio}}">
-                    {{p.precio}}
+                <span class="current">
+                    {{ bebidas.number }}<span class="paginado_de"> de {{ bebidas.paginator.num_pages }}</span>
+                </span>
+
+                {% if bebidas.has_next %}
+                    <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"
+                                                           onclick="paginarBebidas({{ bebidas.next_page_number }});"></a>
+                {% endif %}
+            </span>
                 </div>
-
-
-                <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz" title="Stock: {{p.stock}}">
-                    {{p.stock}}
-                </div>
-
-                <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Seccion: {{p.seccion}}">
-                    {{p.seccion|truncatechars:11}}
-                </div>
-
-
-                <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz"
-                     title="En Promocion: {{p.enPromocion}}">
-                    {{p.get_enPromocion_display}}
-                </div>
+                {% endif %}
+                <!-- fin paginador //-->
 
 
             </div>
-
-            <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
-                <img src="{{STATIC_URL}}img/conf/{% if p.activo %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
-                     urldel="{% url 'modificarbebida_id_del' p.id %}" estado="{{p.activo}}" class="eliminar_mesa"
-                     nombre="{{p.nombre}}"
-                     title="{% if not p.activo %}Acivar{% else %}Desactivar{% endif %} plato: {{p.id}}">
-            </div>
-
-
         </div>
-        {% endfor %}
-        <!-- fin listado de mozos//-->
     </div>
 </div>
 
@@ -104,7 +144,7 @@
                     <div class="contenedor_texto"><span class="form_error_msg">*</span> Nombre</div>
                     <div class="contenedor_input">
                         {{ formulario.nombre }}
-                        <div class="form_error_msg">{{ formulario.tipo.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -113,7 +153,7 @@
                     <div class="contenedor_texto"><span class="form_error_msg">*</span> Precio</div>
                     <div class="contenedor_input">
                         {{ formulario.precio }}
-                        <div class="form_error_msg">{{ formulario.capacidad.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -123,7 +163,7 @@
                     <div class="contenedor_input">
 
                         {{ formulario.stock }}
-                        <div class="form_error_msg">{{ formulario.ocupada.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -140,7 +180,7 @@
                     <div class="contenedor_texto"><span class="form_error_msg"></span> Promocion</div>
                     <div class="contenedor_input">
                         {{ formulario.enPromocion }}
-                        <div class="form_error_msg">{{ formulario.sector.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.enPromocion.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -148,7 +188,7 @@
                     <div class="contenedor_texto"><span class="form_error_msg"></span> Descuento</div>
                     <div class="contenedor_input">
                         {{ formulario.descuento }}
-                        <div class="form_error_msg">{{ formulario.sector.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.descuento.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -156,7 +196,7 @@
                     <div class="contenedor_texto"><span class="form_error_msg">*</span> Seccion</div>
                     <div class="contenedor_input">
                         {{ formulario.seccion }}
-                        <div class="form_error_msg">{{ formulario.sector.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.seccion.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -171,7 +211,7 @@
 
                 {% csrf_token %}
                 <div class="salto_linea"></div>
-                <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Plato"
+                <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Bebida"
                        class="btn btn-large btn-primary">
 
             </form>
@@ -189,9 +229,57 @@
 
 {% block script %}
 <script>
-$(document).ready(function(){
 
-	 $(".cargar_modificar_mozo").each(function(i){
+function enviarForm(msg){
+    $(".buscador_bebidas").val(msg);
+    buscarresultados();
+}
+
+function reemplazarCadena(cad, q){
+var re = new RegExp(q,"gi");
+    return cad.replace(re,"<span class='resaltado resaltarBusqueda'>"+q+"</span>");
+}
+
+function buscarresultados(){
+
+    var busqueda=$(".buscador_bebidas").val();
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'buscador_bebidas_ajax_resultados' %}",
+        data: "q="+busqueda,
+        success: function(datos){
+
+            if(datos.length > 0){
+                $(".ajax_resultados").html(datos);
+                $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                agregarFuncionalidad();
+            }
+          }
+    });
+
+}
+
+
+
+
+function paginarBebidas(pagina){
+
+    $.ajax({
+                type: "GET",
+                url: "{% url 'paginador_ajax_resultados_bebidas' %}",
+                data: "pagina="+pagina,
+                success: function(datos){
+                    $(".ajax_resultados").html(datos);
+                    agregarFuncionalidad();
+                }
+            });
+}
+
+
+function agregarFuncionalidad(){
+
+    $(".cargar_modificar_mozo").each(function(i){
 	 	$(this).css("cursor","pointer");
 			$(this).click(function(event){
 				var uri=$(this).attr("href");
@@ -212,8 +300,64 @@ $(document).ready(function(){
 			});
 	 });
 
-	$('.dropdown-toggle').dropdownHover(options);
+}
 
+$(document).ready(function(){
+
+        $("#buscarresultados").click(function(event){
+        buscarresultados();
+        });
+
+
+        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+
+    //cuando presiono una tecla en la caja de busqueda
+    $(".buscador_bebidas").keyup(function(event){
+
+        var busqueda=$(this).val();
+
+        if( busqueda.length >= 2){
+
+            $.ajax({
+                type: "GET",
+                url: "{% url 'buscador_bebidas_ajax' %}",
+                data: "q="+busqueda,
+                success: function(datos){
+
+                    if(datos.length > 0){
+                        $(".cont_resultado_busqueda_productos").html(datos);
+                        $(".cont_resultado_busqueda_productos").css("visibility","visible");
+
+                        $(".busqueda_item").each(function(i){
+                            var cad=$(this).text();
+                            $(this).html(reemplazarCadena(cad, busqueda));
+                            $(".resaltado").addClass("resaltarBusqueda");
+                        });
+
+                    }
+                    else{
+                        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                    }
+
+                  }
+            });
+        }
+        else
+        {
+            $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+        }
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+          if(keycode == '13'){
+
+                buscarresultados();
+          }
+
+
+    });
+
+     agregarFuncionalidad();
 });
 
 

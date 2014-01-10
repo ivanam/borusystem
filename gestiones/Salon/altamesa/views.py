@@ -1,12 +1,8 @@
+# -*- encoding: utf-8 -*-
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.contrib.contenttypes.models import ContentType
-from gestiones.Administrador.models import permisosVistas
-from django.contrib.auth.models import Permission, User
-from django.http import HttpResponseRedirect
 from .forms import altaMesaForm
-#from altasector.models import Sector
 from gestiones.Salon.altamesa.models import Mesa
 
 

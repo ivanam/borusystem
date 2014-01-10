@@ -1,9 +1,9 @@
+# -*- encoding: utf-8 -*-
 from django.contrib.auth.decorators import permission_required
 from django.contrib.contenttypes.models import ContentType
 from gestiones.Administrador.models import permisosVistas
 from django.contrib.auth.models import Permission, User
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from .forms import altaMozoForm
 

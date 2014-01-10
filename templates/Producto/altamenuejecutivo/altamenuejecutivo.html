@@ -62,7 +62,7 @@
                 {% endif %}
 
                 <span class="current">
-                    {{ plato.number }}
+                    {{ plato.number }}<span class="paginado_de"> de {{ plato.paginator.num_pages }}</span>
                 </span>
 
                 {% if plato.has_next %}

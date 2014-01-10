@@ -1,5 +1,11 @@
 /* Estilos Mozo */
+
 /* Genericos */
+input[type='text']{
+text-transform:capitalize !important;
+}
+
+
 .nombre_seccion{
 height:auto !important;
 width:72px !important;
@@ -188,6 +194,11 @@ width:65px;
 height:auto;
 width:75px;
 }
+.listado_item_campo_04_2{
+height:auto;
+width:85px;
+}
+
 .listado_item_campo_05{
 height:auto;
 width:95px;
@@ -537,7 +548,6 @@ width: auto;
 height:auto;
 }
 
-
 .buscador{
 width:250px !important;
 }
@@ -547,6 +557,10 @@ width:188px !important;
 margin:0px auto;
 }
 
+.buscador_mozos{
+width:188px !important;
+margin:0px auto;
+}
 
 .cont_resultado_busqueda_productos{
 background:#FFFFFF;
@@ -1136,7 +1150,7 @@ border: 1px solid #cccccc;
 }
 
 
-/* fin de in¡magenes de mesas */
+/* fin de inï¿½magenes de mesas */
 .mesa_item_ocupada_base{
 background-image:url(../img/mesa_icon.png);
 background-repeat:no-repeat;

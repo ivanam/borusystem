@@ -1,9 +1,9 @@
 {% extends "base_administrador.html" %}
-{% block titulo %}Boru - Menu del Dia - Registro Exitoso{% endblock %}
+{% block titulo %}Boru - Menu del Dia - Alta Exitosa{% endblock %}
 {% block contenido %}
 
 	  <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
-        <div class="label label-inverse titulo_menu">Alta Bebida</div>
+        <div class="label label-inverse titulo_menu">Alta Menu Del Día</div>
         <br>
         <div class="salto_linea"></div>
         <div id="mesas_libres" class="bloque_mesas">
@@ -23,7 +23,7 @@
 <script>
 $(document).ready(function(){
 	
-	$('.dropdown-toggle').dropdownHover(options);
+	volver('{% url 'altamenudia' %}',1250);
 });
 </script>
 {% endblock %}

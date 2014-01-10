@@ -1,4 +1,3 @@
-from collections import defaultdict
 from django.db import models
 
 TIPO = (
@@ -33,7 +32,7 @@ class Sector(models.Model):
 
 class Mesa(models.Model):
     tipo = models.DecimalField(max_length=2, choices=TIPO_MESA, default=3, max_digits=11, decimal_places=0)
-    capacidad = models.DecimalField("Capacidad", max_digits=11, decimal_places=0)
+    capacidad = models.PositiveIntegerField("Capacidad",max_length=2)
     ocupada = models.BooleanField("Ocupada", choices=OCUPADA, null=False, blank=False, default=False)
     activo = models.BooleanField("Activo", choices=ACTIVO, null=False, blank=False,default=True)
     sector = models.ForeignKey(Sector, null=False, blank=False, default=1)

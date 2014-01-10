@@ -1,8 +1,13 @@
+# -*- encoding: utf-8 -*-
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from boru.settings import PAGINADO_PRODUCTOS
 from .forms import modificarMozo
 from django.core.urlresolvers import reverse
 
@@ -10,7 +15,9 @@ from django.core.urlresolvers import reverse
 def modificarmozo(request, id_user = None):
 
     #rescato los    usarios que son mozos
-    mozos = User.objects.filter(user_permissions__codename="is_mozo").order_by('-is_active')
+    mozos_lista = User.objects.filter(user_permissions__codename="is_mozo").order_by('username','-is_active')
+    paginator = Paginator(mozos_lista, PAGINADO_PRODUCTOS)
+    mozos = paginator.page(1)
 
     try:
         #obtengo en el caso de que venga el id por GET, al usuario
@@ -34,9 +41,12 @@ def modificarmozo(request, id_user = None):
 
         #si el formulario es valido
         if formulario.is_valid():
-            #rescato los datos de cada cmapo y los limpio
+            #rescato los datos de cada campo y los limpio
             usuario = formulario.cleaned_data['username']
             contrasenia = formulario.cleaned_data['password']
+
+            pcontrasenia = make_password(contrasenia)
+
             nombre = formulario.cleaned_data['first_name']
             apellido = formulario.cleaned_data['last_name']
             email = formulario.cleaned_data['email']
@@ -49,6 +59,7 @@ def modificarmozo(request, id_user = None):
 
             #seteo los nuevos datos en el objeto usuarioMozo que obtuvimos al principio
             usuarioMozo.username = usuario
+            usuarioMozo.password = pcontrasenia
             usuarioMozo.email = email
             usuarioMozo.first_name = nombre
             usuarioMozo.last_name = apellido
@@ -98,3 +109,53 @@ def modificarmozodel(request, id_user):
         usuarioMozo.save()
 
     return HttpResponseRedirect(reverse('modificarmozo'))
+
+
+
+
+@permission_required('Administrador.is_admin', login_url="login")
+def buscarmozosajax(request):
+    if request.method == 'GET':
+        q = request.GET['q']
+        listado = User.objects.filter( (Q(username__icontains=q) | Q(first_name__icontains=q) | Q(last_name__icontains=q)),user_permissions__codename="is_mozo").order_by('username','-is_active')[:30]
+
+        return render_to_response('Personal/modificarmozo/busquedaresultados.html', {'listado': listado},
+                                  context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_admin', login_url="login")
+def buscarmozosajaxResultados(request):
+    if request.method == 'GET':
+        q = request.GET['q']
+
+        if q != "":
+            mozos = User.objects.filter( (Q(username__icontains=q) | Q(first_name__icontains=q) | Q(last_name__icontains=q)),user_permissions__codename="is_mozo").order_by('-is_active')
+        else:
+            mozos_lista = User.objects.filter(user_permissions__codename="is_mozo").order_by('username','-is_active')
+            paginator = Paginator(mozos_lista, PAGINADO_PRODUCTOS)
+            mozos = paginator.page(1)
+
+        return render_to_response('Personal/modificarmozo/busquedaresultados_items.html', {'mozos': mozos},
+                                  context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_admin', login_url="login")
+def paginadorajaxResultados(request):
+
+    if request.method == 'GET':
+
+        pagina = request.GET['pagina']
+        mozos_lista = User.objects.filter(user_permissions__codename="is_mozo").order_by('username','-is_active')
+        paginator = Paginator(mozos_lista, PAGINADO_PRODUCTOS)
+
+        try:
+            mozos = paginator.page(pagina)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            mozos = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            mozos = paginator.page(paginator.num_pages)
+
+        return render_to_response('Personal/modificarmozo/busquedaresultados_items.html', {'mozos': mozos},
+                                  context_instance=RequestContext(request))
