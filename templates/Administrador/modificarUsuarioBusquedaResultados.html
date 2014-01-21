@@ -1,0 +1,7 @@
+{% for u in listado%}
+<div class="cont_resultado_busqueda_item">
+    <a class="busqueda_item" onclick="enviarForm('{{u.username}}');" title="{{u.username|capfirst}}">
+        {{u.username|capfirst}}
+    </a>
+</div>
+{% endfor %}

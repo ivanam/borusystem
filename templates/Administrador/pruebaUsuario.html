@@ -1,0 +1,99 @@
+{% extends "base_administrador.html" %}
+{% block titulo %}Boru - Alta Usuario{% endblock %}
+{% block contenido %}
+
+
+<div id="con_menu_mesa" class="cont_redondeado contenedor_principal_big">
+    <div class="label label-inverse titulo_menu">Alta Usuario</div>
+    <br>
+
+    <div class="salto_linea"></div>
+    <div id="mesas_libres" class="bloque_mesas">
+        <div class="salto_linea"></div>
+
+        <!--Aca inicio contenido//-->
+
+        <form action="" method="post" name="add_mesa" id="id_add_mesa">
+            {{ formulario.non_field_errors }}
+
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Usuario</div>
+                <div class="contenedor_input">
+                    <!--<input type="password" name="password" value="" class="validar_campo">-->
+                    {{ formulario.username }}
+                    <!--<input type="text" name="tipo">-->
+
+                    <div class="form_error_msg">{{ formulario.username.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Contraseña</div>
+                <div class="contenedor_input">
+                    <!--<input type="text" name="first_name" value="" class="validar_campo">-->
+                    {{ formulario.password }}
+
+
+                    <div class="form_error_msg">{{ formulario.password.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Correo</div>
+                <div class="contenedor_input">
+                    <!--<input type="text" name="last_name" value="" class="validar_campo">-->
+                    {{ formulario.email }}
+                    <!--<input type="text" name="ocupada">-->
+
+                    <div class="form_error_msg">{{ formulario.email.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Permiso</div>
+                <div class="contenedor_input">
+                    {{ formulario.user_permissions }}
+                    <!--<input type="text" name="activo">-->
+
+                    <div class="form_error_msg">{{ formulario.user_permissions.errors|striptags }}</div>
+                </div>
+
+            </div>
+
+                {% csrf_token %}
+                <div class="salto_linea"></div>
+                <!--{{formulario.as_table}}-->
+                <input type="submit" name="btn_add_mesa" id="btn_id_add_mesa" value="Alta Usuario"
+                       class="btn btn-large btn-primary">
+
+
+        </form>
+        <!-- Aca fin de contenido//-->
+        <!-- Aca fin de contenido//-->
+
+    </div>
+    <!-- fin bloke de mesas//-->
+<div class="salto_linea"></div>
+    <span class="form_error_msg">* Campos Obligatorios</span>
+</div><!-- fin contenedor principal//-->
+
+</div><!-- derecha fin//-->
+{% endblock %}
+
+
+{% block script %}
+<script>
+
+$(document).ready(function(){
+
+    $('.dropdown-toggle').dropdownHover(options);
+    
+});
+
+
+</script>
+{% endblock %}

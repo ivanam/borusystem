@@ -162,10 +162,10 @@
 					Usuarios <b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-				
-					<li><a href="#" onclick="alert('En construccion...');">Alta Usuarios</a></li>
-					<li><a href="#" onclick="alert('En construccion...');">Modificar Usuarios</a></li>
-					<li><a href="#" onclick="alert('En construccion...');">Eliminar Usuarios</a></li>
+
+				    <li><a href="{% url 'altaAdministrador' %}">Alta de Administrador</a></li>
+                    <li><a href="{% url 'altaCajero' %}">Alta de Cajero</a></li>
+					<li><a href="{% url 'modificarUsuarios' %}">Modificar Usuarios</a></li>
 				</ul>
 			</li>
 			<!-- fin menu clientes //-->

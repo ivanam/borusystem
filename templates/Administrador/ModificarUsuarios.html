@@ -1,0 +1,314 @@
+{% extends "base_administrador.html" %}
+{% block titulo %}Boru - Modificar Usuario{% endblock %}
+{% block contenido %}
+<div class="izquierda">
+    <div class="listado_modificar_mozos cont_redondeado">
+        <div class="label label-inverse titulo_menu" id="listado_mozos">Listado de Usuarios</div>
+
+
+        <!-- inicio buscador usuarios//-->
+        <div class="input-append">
+            <input class="span2 buscador_mozos" id="appendedInputButton" type="text" name="q">
+            <button class="btn" id="buscarresultados" type="submit" name="buscar" value="buscar">Buscar</button>
+        </div>
+        <div class="cont_resultado_busqueda_productos">
+        </div>
+        <!-- fin buscador usuarios//-->
+
+        <!-- inicio listado de usuarios //-->
+        <div class="label label-inverse">
+            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz">Username</div>
+            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz">Correo</div>
+            <div class="listado_item_campo_base listado_item_campo_02 flotar_iz">&nbsp</div>
+        </div>
+
+        <div class="ajax_resultados">
+            {% for u in usuarios %}
+            <div class="item">
+                <div class="listado_modificar_mozo_item {% if not u.is_active %}inactivo{% endif %}">
+
+                    <div class="cargar_modificar_mozo" href="{% url 'modificarUsuarios_id' u.id %}">
+                        <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
+                             title="Username: {{u.username|capfirst}}">{{u.username|capfirst|truncatechars:15}}
+                        </div>
+                        <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
+                             title="Correo: {{u.email|capfirst}}">{{u.email|capfirst|truncatechars:12}}
+                        </div>
+                    </div>
+                    <div class="listado_item_campo_base listado_item_campo_02">
+                        <img src="{{STATIC_URL}}img/conf/{% if u.is_active %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
+                             urldel="{% url 'modificarUsuarios_id_del' u.id %}" estado="{{u.is_active}}"
+                             class="eliminar_mozo"
+                             Username="{{u.username}}"
+                             title="{% if not u.is_active %}Acivar{% else %}Eliminar{% endif %} mozo: {{u.username|capfirst}}">
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- inicio paginador //-->
+            {% if usuarios.paginator %}
+            <div class="pagination">
+            <span class="step-links">
+                {% if usuarios.has_previous %}
+                    <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
+                                                          onclick="paginarUsuarios({{ usuarios.previous_page_number }});"></a>
+                {% endif %}
+
+                <span class="current">
+                    {{ usuarios.number }}<span class="paginado_de"> de {{ usuarios.paginator.num_pages }}</span>
+                </span>
+
+                {% if usuarios.has_next %}
+                    <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"
+                                                           onclick="paginarUsuarios({{ usuarios.next_page_number }});"></a>
+                {% endif %}
+            </span>
+            </div>
+            {% endif %}
+            <!-- fin paginador //-->
+
+        </div>
+        <!-- fin listado de mozos//-->
+    </div>
+</div>
+
+<div class="derecha">
+    <div id="con_menu_mozo" class="cont_redondeado contenedor_principal_big">
+        <div class="label label-inverse titulo_menu">Modificar Usuarios</div>
+        <br>
+
+        <div class="salto_linea"></div>
+        <div id="mesas_libres" class="bloque_mesas">
+            <div class="salto_linea"></div>
+            <!--Aca inicio contenido//-->
+            <form action="" method="post" name="add_mozo" id="id_add_mozo">
+                {{ formulario.non_field_errors }}
+
+                <!--<input type="hidden" id="id_id" name="id" value="">//-->
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg">*</span> Usuario</div>
+                    <div class="contenedor_input">
+                        {{ formulario.username }}
+                        <div class="form_error_msg">{{ formulario.username.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg">*</span> Contrase&ntilde;a</div>
+                    <div class="contenedor_input">
+                        {{ formulario.password }}
+                        <div class="form_error_msg">{{ formulario.password.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> E-mail</div>
+                    <div class="contenedor_input">
+                        {{ formulario.email }}
+                        <div class="form_error_msg">{{ formulario.email.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> Activo</div>
+                    <div class="contenedor_input">
+                        {{ formulario.is_active }}
+                        <div class="form_error_msg">{{ formulario.is_active.errors|striptags}}</div>
+                    </div>
+                </div>
+                {% csrf_token %}
+                <div class="salto_linea"></div>
+                <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Usuarios"
+                       class="btn btn-large btn-primary">
+            </form>
+            <!-- Aca fin de contenido//-->
+        </div>
+        <!-- fin bloke de mesas//-->
+        <div class="salto_linea"></div>
+        <span class="form_error_msg">* Campos Obligatorios</span>
+    </div>
+    <!-- fin contenedor principal//-->
+</div>
+<!-- derecha fin//-->
+{% endblock %}
+
+{% block script %}
+<script>
+
+
+
+function enviarForm(msg){
+    $(".buscador_mozos").val(msg);
+    buscarresultados();
+}
+
+function reemplazarCadena(cad, q){
+var re = new RegExp(q,"gi");
+    return cad.replace(re,"<span class='resaltado resaltarBusqueda'>"+q+"</span>");
+}
+
+function buscarresultados(){
+
+    var busqueda=$(".buscador_mozos").val();
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'buscador_usuarios_ajax_resultados' %}",
+        data: "q="+busqueda,
+        success: function(datos){
+
+            if(datos.length > 0){
+                $(".ajax_resultados").html(datos);
+                $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                agregarFuncionalidad();
+            }
+          }
+    });
+
+}
+
+function paginarUsuarios(pagina){
+
+    $.ajax({
+                type: "GET",
+                url: "{% url 'paginador_ajax_resultados_usuarios' %}",
+                data: "pagina="+pagina,
+                success: function(datos){
+                    $(".ajax_resultados").html(datos);
+                    agregarFuncionalidad();
+                }
+            });
+}
+
+
+function agregarFuncionalidad(){
+    //agrego la funcionalidad de agregar a la lista de usuarios
+    /*
+    $(".item").each(function(i){
+
+        $(this).css("cursor","pointer");
+
+        $(this).click(function(event){
+            //agregarPlato($(this).html());
+        });
+
+    });
+    */
+    cargarFunciones();
+}
+
+function cargarFunciones(){
+
+    $(".cargar_modificar_mozo").each(function(i){
+	 	$(this).css("cursor","pointer");
+			$(this).click(function(event){
+				var uri=$(this).attr("href");
+				$(location).attr('href',uri);
+			});
+	 });
+
+	 $(".eliminar_mozo").each(function(i){
+	 	$(this).css("cursor","pointer");
+
+			$(this).click(function(event){
+				var mozo = $(this).attr("Username");
+				var estado = $(this).attr("estado");
+				var msg = (estado == "True")?"Usted desea eliminar al usuario ":"Usted desea activar al usuario ";
+                if( confirm(msg+mozo+"?") ){
+                   $(location).attr('href', $(this).attr("urldel") );
+                }
+			});
+	 });
+
+}
+
+
+
+$(document).ready(function(){
+
+
+
+    $("#buscarresultados").click(function(event){
+        buscarresultados();
+    });
+
+
+
+    $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+
+    //cuando presiono una tecla en la caja de busqueda
+    $(".buscador_mozos").keyup(function(event){
+
+        var busqueda=$(this).val();
+
+        if( busqueda.length >= 2){
+
+            $.ajax({
+                type: "GET",
+                url: "{% url 'buscador_usuarios_ajax' %}",
+                data: "q="+busqueda,
+                success: function(datos){
+
+                    if(datos.length > 0){
+                        $(".cont_resultado_busqueda_productos").html(datos);
+                        $(".cont_resultado_busqueda_productos").css("visibility","visible");
+
+                        $(".busqueda_item").each(function(i){
+                            var cad=$(this).text();
+                            $(this).html(reemplazarCadena(cad, busqueda));
+                            $(".resaltado").addClass("resaltarBusqueda");
+                        });
+
+                    }
+                    else{
+                        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                    }
+
+                  }
+            });
+        }
+        else
+        {
+            $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+        }
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+          if(keycode == '13'){
+
+                buscarresultados();
+          }
+
+
+    });
+
+
+    cargarFunciones();
+
+    /*
+	 $(".cargar_modificar_mozo").each(function(i){
+	 	$(this).css("cursor","pointer");
+			$(this).click(function(event){
+				var uri=$(this).attr("href");
+				$(location).attr('href',uri);
+			});
+	 });
+
+	 $(".eliminar_mozo").each(function(i){
+	 	$(this).css("cursor","pointer");
+
+			$(this).click(function(event){
+				var mozo = $(this).attr("Username");
+				var estado = $(this).attr("estado");
+				var msg = (estado == "True")?"Usted desea eliminar al usuario ":"Usted desea activar al usuario ";
+                if( confirm(msg+mozo+"?") ){
+                   $(location).attr('href', $(this).attr("urldel") );
+                }
+			});
+	 });
+	 */
+
+	$('.dropdown-toggle').dropdownHover(options);
+
+});
+
+
+</script>
+{% endblock %}
