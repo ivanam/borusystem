@@ -1,0 +1,308 @@
+{% extends "base_administrador.html" %}
+{% block titulo %}Boru - Modificar Stock Bebida{% endblock %}
+{% block contenido %}
+<div class="izquierda">
+    <div class="listado_modificar_mozos cont_redondeado">
+        <div class="label label-inverse titulo_menu">Listado de Bebidas</div>
+
+        <!-- inicio buscador bebidas//-->
+        <div class="input-append">
+            <input class="span2 buscador_productos buscador_bebidas" id="appendedInputButton" type="text" name="q">
+            <button class="btn" id="buscarresultados" type="submit" name="buscar" value="buscar">Buscar</button>
+        </div>
+        <div class="cont_resultado_busqueda_productos">
+        </div>
+        <!-- fin buscador bebidas//-->
+
+        <!-- inicio listado de mozos //-->
+        <!-- inicio encabezados del listado //-->
+        <div class="listado_item_campo_header label label-inverse">
+
+            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz" title="Nombre">
+                Nombre
+            </div>
+
+
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="Precio">
+                Precio
+            </div>
+
+<!--
+            <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz" title="Stock">
+                Stk
+            </div>//-->
+
+
+            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz" title="Seccion">
+                Sección
+            </div>
+<!--
+            <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="En Promocion">
+                Promo
+            </div>//-->
+
+
+            <div class="listado_item_campo_base listado_item_campo_00">
+                &nbsp
+            </div>
+        </div>
+        <!-- fin de encabezados del listado //-->
+
+        <div class="ajax_resultados">
+            <div class="item">
+                {% for p in bebidas %}
+                <div class="listado_modificar_mozo_item {% if not p.activo %}inactivo{% endif %}">
+
+                    <div class="cargar_modificar_mozo" href="{% url 'stockbebida_id' p.id %}">
+
+
+                        <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
+                             title="Nombre: {{p.nombre}}">
+                            {{p.nombre|truncatechars:10}}
+                        </div>
+
+                        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz"
+                             title="Precio. {{p.precio}}">
+                            {{p.precio}}
+                        </div>
+
+                        <!--
+                        <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz"
+                             title="Stock: {{p.stock}}">
+                            {{p.stock}}
+                        </div>//-->
+
+                        <div class="listado_item_campo_base listado_item_campo_04_2 flotar_iz"
+                             title="Seccion: {{p.seccion}}">
+                            {{p.seccion|truncatechars:12}}
+                        </div>
+
+                        <!--
+                        <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz"
+                             title="En Promocion: {{p.enPromocion}}">
+                            {{p.get_enPromocion_display}}
+                        </div>//-->
+
+
+                    </div>
+
+
+
+                </div>
+                {% endfor %}
+                <!-- fin listado de mozos//-->
+                <!-- inicio paginador //-->
+                {% if bebidas.paginator %}
+                <div class="pagination">
+            <span class="step-links">
+                {% if bebidas.has_previous %}
+                    <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
+                                                          onclick="paginarBebidas({{ bebidas.previous_page_number }});"></a>
+                {% endif %}
+
+                <span class="current">
+                    {{ bebidas.number }}<span class="paginado_de"> de {{ bebidas.paginator.num_pages }}</span>
+                </span>
+
+                {% if bebidas.has_next %}
+                    <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"
+                                                           onclick="paginarBebidas({{ bebidas.next_page_number }});"></a>
+                {% endif %}
+            </span>
+                </div>
+                {% endif %}
+                <!-- fin paginador //-->
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="derecha">
+    <div id="con_menu_mesa" class="cont_redondeado contenedor_principal_big">
+        <div class="label label-inverse titulo_menu">Modificar Stock Bebidas</div>
+        <br>
+
+        <div class="salto_linea"></div>
+        <div id="mesas_libres" class="bloque_mesas">
+            <div class="salto_linea"></div>
+
+            <!--Aca inicio contenido//-->
+
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"></span> Nombre: {{ datosPlato.nombre }} </div>
+                </div>
+
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"> Precio :  {{datosPlato.precio }}</div>
+
+                </div>
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"> Stock : {{ formulario.stock }} </div>
+
+             </div>
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> Descripcion</div>
+                    <div class="contenedor_input">
+                        {{ datosPlato.descripcion }}
+
+                    </div>
+                </div>
+
+                {% csrf_token %}
+                <div class="salto_linea"></div>
+                <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Stock"
+                       class="btn btn-large btn-primary">
+
+            </form>
+            <!-- Aca fin de contenido//-->
+
+
+</div><!-- derecha fin//-->
+{% endblock %}
+
+{% block script %}
+<script>
+
+function enviarForm(msg){
+    $(".buscador_bebidas").val(msg);
+    buscarresultados();
+}
+
+function reemplazarCadena(cad, q){
+var re = new RegExp(q,"gi");
+    return cad.replace(re,"<span class='resaltado resaltarBusqueda'>"+q+"</span>");
+}
+
+function buscarresultados(){
+
+    var busqueda=$(".buscador_bebidas").val();
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'buscador_bebidas_ajax_resultados' %}",
+        data: "q="+busqueda,
+        success: function(datos){
+
+            if(datos.length > 0){
+                $(".ajax_resultados").html(datos);
+                $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                agregarFuncionalidad();
+            }
+          }
+    });
+
+}
+
+
+
+
+function paginarBebidas(pagina){
+
+    $.ajax({
+                type: "GET",
+                url: "{% url 'paginador_ajax_resultados_bebidas' %}",
+                data: "pagina="+pagina,
+                success: function(datos){
+                    $(".ajax_resultados").html(datos);
+                    agregarFuncionalidad();
+                }
+            });
+}
+
+
+function agregarFuncionalidad(){
+
+    $(".cargar_modificar_mozo").each(function(i){
+	 	$(this).css("cursor","pointer");
+			$(this).click(function(event){
+				var uri=$(this).attr("href");
+				$(location).attr('href',uri);
+			});
+	 });
+
+	 $(".eliminar_mesa").each(function(i){
+	 	$(this).css("cursor","pointer");
+
+			$(this).click(function(event){
+				var mozo = $(this).attr("nombre");
+				var estado = $(this).attr("estado");
+				var msg = (estado == "True")?"Usted desea dejar inactiva la bebida ":"Usted desea activar la bebida ";
+                if( confirm(msg+mozo+"?") ){
+                   $(location).attr('href', $(this).attr("urldel") );
+                }
+			});
+	 });
+
+}
+
+$(document).ready(function(){
+
+        $("#buscarresultados").click(function(event){
+        buscarresultados();
+        });
+
+
+        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+
+    //cuando presiono una tecla en la caja de busqueda
+    $(".buscador_bebidas").keyup(function(event){
+
+        var busqueda=$(this).val();
+
+        if( busqueda.length >= 2){
+
+            $.ajax({
+                type: "GET",
+                url: "{% url 'buscador_bebidas_ajax' %}",
+                data: "q="+busqueda,
+                success: function(datos){
+
+                    if(datos.length > 0){
+                        $(".cont_resultado_busqueda_productos").html(datos);
+                        $(".cont_resultado_busqueda_productos").css("visibility","visible");
+
+                        $(".busqueda_item").each(function(i){
+                            var cad=$(this).text();
+                            $(this).html(reemplazarCadena(cad, busqueda));
+                            $(".resaltado").addClass("resaltarBusqueda");
+                        });
+
+                    }
+                    else{
+                        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                    }
+
+                  }
+            });
+        }
+        else
+        {
+            $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+        }
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+          if(keycode == '13'){
+
+                buscarresultados();
+          }
+
+
+    });
+
+     agregarFuncionalidad();
+});
+
+
+</script>
+{% endblock %}

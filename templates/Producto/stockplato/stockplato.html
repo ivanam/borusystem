@@ -1,0 +1,169 @@
+{% extends "base_administrador.html" %}
+{% block titulo %}Boru - Modificar Plato{% endblock %}
+{% block contenido %}
+
+<div class="izquierda">
+    <div class="listado_modificar_mozos cont_redondeado">
+        <div class="label label-inverse titulo_menu">Listado de Platos</div>
+
+        <!-- inicio listado de mozos //-->
+        <!-- inicio encabezados del listado //-->
+        <div class="listado_item_campo_header label label-inverse">
+
+
+             <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Precio">
+                Nombre
+            </div>
+
+            <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Precio">
+                Precio
+            </div>
+
+
+            <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz" title="Stock">
+                Stk
+            </div>
+
+
+            <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Seccion">
+                Secc
+            </div>
+
+            <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="En Promocion">
+                Promo
+            </div>
+
+
+
+        </div>
+        <!-- fin de encabezados del listado //-->
+
+        {% for p in platos %}
+        <div class="listado_modificar_mozo_item {% if not p.activo %}inactivo{% endif %}">
+
+            <div class="cargar_modificar_mozo" href="{% url 'stockplato_id' p.id %}">
+
+
+                <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz texto_iz"
+                     title="Nombre: {{p.nombre}}">
+                    {{p.nombre|truncatechars:11}}
+                </div>
+
+                <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Precio. {{p.precio}}">
+                    {{p.precio}}
+                </div>
+
+
+                <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz" title="Stock: {{p.stock}}">
+                    {{p.stock}}
+                </div>
+
+                <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Seccion: {{p.seccion}}">
+                    {{p.seccion|truncatechars:11}}
+                </div>
+
+
+                <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz"
+                     title="En Promocion: {{p.enPromocion}}">
+                    {{p.get_enPromocion_display}}
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+        {% endfor %}
+        <!-- fin listado de mozos//-->
+    </div>
+</div>
+
+  <div class="derecha">
+    <div id="con_menu_mesa" class="cont_redondeado contenedor_principal_big">
+        <div class="label label-inverse titulo_menu">Modificar Stock Platos</div>
+        <br>
+
+        <div class="salto_linea"></div>
+        <div id="mesas_libres" class="bloque_mesas">
+            <div class="salto_linea"></div>
+
+            <!--Aca inicio contenido//-->
+
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"></span> Nombre: {{ datosPlato.nombre }} </div>
+                </div>
+
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"> Precio :  {{datosPlato.precio }}</div>
+
+                </div>
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"> Stock : {{ formulario.stock }} </div>
+
+             </div>
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"><span class="form_error_msg"></span> Descripcion</div>
+                    <div class="contenedor_input">
+                        {{ datosPlato.descripcion }}
+
+                    </div>
+                </div>
+
+                {% csrf_token %}
+                <div class="salto_linea"></div>
+                <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Plato"
+                       class="btn btn-large btn-primary">
+
+            </form>
+            <!-- Aca fin de contenido//-->
+
+        </div>
+        <!-- fin bloke de mesas//-->
+        <div class="salto_linea"></div>
+
+    </div>
+    <!-- fin contenedor principal//-->
+
+</div><!-- derecha fin//-->
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+
+	 $(".cargar_modificar_mozo").each(function(i){
+	 	$(this).css("cursor","pointer");
+			$(this).click(function(event){
+				var uri=$(this).attr("href");
+				$(location).attr('href',uri);
+			});
+	 });
+
+	 $(".eliminar_mesa").each(function(i){
+	 	$(this).css("cursor","pointer");
+
+			$(this).click(function(event){
+				var mozo = $(this).attr("nombre");
+				var estado = $(this).attr("estado");
+				var msg = (estado == "True")?"Usted desea dejar inactivo al plato ":"Usted desea activar el plato ";
+                if( confirm(msg+mozo+"?") ){
+                   $(location).attr('href', $(this).attr("urldel") );
+                }
+			});
+	 });
+
+	$('.dropdown-toggle').dropdownHover(options);
+
+});
+
+</script>
+{% endblock %}

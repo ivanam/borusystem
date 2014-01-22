@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/boru.iml" filepath="$PROJECT_DIR$/.idea/boru.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/borusystem.iml" filepath="$PROJECT_DIR$/.idea/borusystem.iml" />
     </modules>
   </component>
 </project>

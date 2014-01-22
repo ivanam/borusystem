@@ -1,20 +1,18 @@
 from django.contrib.auth.decorators import permission_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.core.urlresolvers import reverse
-from gestiones.Producto.modificarplato.forms import modificarPlato
+from gestiones.Producto.stockplato.forms import stockPlato
 from gestiones.Producto.producto.models import Plato
-
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 @permission_required('Administrador.is_admin', login_url="login")
-def modificarplato(request, id_plato=None):
+def stockplato(request, id_plato=None):
     #rescato todos los platos
     platos = Plato.objects.all().order_by('-activo')
 
     try:
-        #obtengo en el caso de que venga el id por GET, al pl
-        # ato
+        #obtengo en el caso de que venga el id por GET, al plato
         plato_id = Plato.objects.get(pk=id_plato)
 
         #creo diccionario con los datos del plato para mostrarlos ne el formulario
@@ -30,46 +28,40 @@ def modificarplato(request, id_plato=None):
     if request.method == 'POST' and plato_id != None:
 
         #le indico al form que tome los datos del request y le paso la instancia de user que obtuve mas arriba
-        formulario = modificarPlato(request.POST, instance=plato_id)
+        formulario = stockPlato(request.POST, instance=plato_id)
+
 
         #si el formulario es valido
         if formulario.is_valid():
-            #rescato los datos de cada cmapo y los limpio
-            nombre = formulario.cleaned_data['nombre']
-            precio = formulario.cleaned_data['precio']
             stock = formulario.cleaned_data['stock']
-            descripcion = formulario.cleaned_data['descripcion']
-            promocion = formulario.cleaned_data['enPromocion']
-            descuento = formulario.cleaned_data['descuento']
-            seccion = formulario.cleaned_data['seccion']
-            activo = formulario.cleaned_data['activo']
 
-            plato_id.nombre = nombre
-            plato_id.precio = precio
+
+
+            plato_id.nombre = datosPlato.nombre
+            plato_id.precio = datosPlato.precio
             plato_id.stock = stock
-            plato_id.descripcion = descripcion
-            plato_id.enPromocion = promocion
-            plato_id.descuento = descuento
-            plato_id.seccion = seccion
-            plato_id.activo = activo
+            plato_id.descripcion = datosPlato.descripcion
+            plato_id.enPromocion = datosPlato.promocion
+            plato_id.descuento = datosPlato.descuento
+            plato_id.seccion = datosPlato.seccion
+            plato_id.activo = datosPlato.activo
             plato_id.save()
             #mostramos que la operacion fue exitosa
-            return render_to_response('Producto/modificarplato/modificarplatoexito.html',
+            return render_to_response('Producto/stockplato/stockplatoexito.html',
                                       {'formulario': formulario, 'platos': platos},
                                       context_instance=RequestContext(request))
 
         #si no es valido el formulario lo vuelvo a mostrar con los datos ingresados
-        return render_to_response('Producto/modificarplato/modificarplato.html',
+        return render_to_response('Producto/stockplato/stockplato.html',
                                   {'formulario': formulario, 'platos': platos},
                                   context_instance=RequestContext(request))
 
     else:
         #si no paretamos el boton modificar mozo y seleccionamos algun mozo mostramos sus datos, sino mostramos el form vacio
-        formulario = modificarPlato(initial=datosPlato)
-        return render_to_response('Producto/modificarplato/modificarplato.html',
-                                  {'formulario': formulario, 'platos': platos},
+        formulario = stockPlato(initial=datosPlato)
+        return render_to_response('Producto/stockplato/stockplato.html',
+                                  {'formulario': formulario, 'platos': platos, 'datosPlato': datosPlato},
                                   context_instance=RequestContext(request))
-
 
 @permission_required('Administrador.is_admin', login_url="login")
 def modificarplatodel(request, id_plato):
@@ -84,4 +76,6 @@ def modificarplatodel(request, id_plato):
         unPlato.cambiarEstado()
         unPlato.save()
 
-    return HttpResponseRedirect(reverse('modificarplato'))
+    return HttpResponseRedirect(reverse('stockplato'))
+
+
