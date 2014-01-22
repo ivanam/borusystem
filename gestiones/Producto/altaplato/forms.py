@@ -1,3 +1,4 @@
+from django import forms
 from django.forms import ModelForm, Textarea
 from django.forms.widgets import Select
 from gestiones.Carta.altacarta.models import SeccionCarta
@@ -10,6 +11,15 @@ class altaPlatoForm(ModelForm):
         fields = (
             'nombre', 'precio', 'stock', 'descripcion', 'enPromocion', 'descuento', 'seccion','activo')
 
+    def clean_precio(self):
+        diccionario_limpio = self.cleaned_data
+
+        precio = diccionario_limpio.get('precio')
+
+        if precio < 0:
+            raise forms.ValidationError("El precio no puede ser menor a cero.")
+
+        return precio
 
     def __init__(self, *args, **kwargs):
         super(altaPlatoForm, self).__init__(*args, **kwargs)
