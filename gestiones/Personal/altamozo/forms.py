@@ -22,6 +22,7 @@ class altaMozoForm(ModelForm):
         #formateando los inputs
         ACTIVO = ((True, 'Activo'), (False, 'Inactivo'))
         self.fields['is_active'].widget = Select(choices=ACTIVO)
+
         self.fields['password'].widget = PasswordInput()
 
         #agregando max-length

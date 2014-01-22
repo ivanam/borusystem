@@ -37,7 +37,7 @@
 
                     <input type="hidden" name="id_plato" class="id_plato" value="{{m.id}}">
 
-                    <div class="listado_item_campo_base listado_item_campo_06 flotar_iz"
+                    <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz"
                          title="{{m.nombre|capfirst}}: {{m.descripcion}}">
                         {{m.nombre|capfirst|truncatechars:20}}
                     </div>
@@ -219,7 +219,7 @@ function buscarresultados(){
 
     $.ajax({
         type: "GET",
-        url: "{% url 'buscador_producto_ajax_resultados' %}",
+        url: "{% url 'buscador_producto_ajax_resultados_md' %}",
         data: "q="+busqueda,
         success: function(datos){
 
@@ -239,7 +239,7 @@ function agregarPlato(data){
 
     $.ajax({
                 type: "GET",
-                url: "{% url 'agregar_producto_lista_ajax' %}",
+                url: "{% url 'agregar_producto_lista_ajax_md' %}",
                 data: "id_prod="+id_plato,
                 success: function(datos){
                     $(".platos").html(datos);
@@ -252,7 +252,7 @@ function paginarProductos(pagina){
 
     $.ajax({
                 type: "GET",
-                url: "{% url 'paginador_ajax_resultados' %}",
+                url: "{% url 'paginador_ajax_resultados_md' %}",
                 data: "pagina="+pagina,
                 success: function(datos){
                     $(".ajax_resultados").html(datos);
@@ -308,7 +308,7 @@ $(document).ready(function(){
 
             $.ajax({
                 type: "GET",
-                url: "{% url 'buscador_producto_ajax' %}",
+                url: "{% url 'buscador_producto_ajax_md' %}",
                 data: "q="+busqueda,
                 success: function(datos){
 

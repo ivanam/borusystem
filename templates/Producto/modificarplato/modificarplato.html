@@ -6,11 +6,20 @@
     <div class="listado_modificar_mozos cont_redondeado">
         <div class="label label-inverse titulo_menu">Listado de Platos</div>
 
+        <!-- inicio buscador platos//-->
+        <div class="input-append">
+            <input class="span2 buscador_productos" id="appendedInputButton" type="text" name="q">
+            <button class="btn" id="buscarresultados" type="submit" name="buscar" value="buscar">Buscar</button>
+        </div>
+        <div class="cont_resultado_busqueda_productos">
+        </div>
+        <!-- fin buscador platos//-->
+
         <!-- inicio listado de mozos //-->
         <!-- inicio encabezados del listado //-->
         <div class="listado_item_campo_header label label-inverse">
 
-            <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz texto_iz" title="Nombre">
+            <div class="listado_item_campo_base listado_item_campo_05 flotar_iz texto_iz" title="Nombre">
                 Nombre
             </div>
 
@@ -19,19 +28,19 @@
                 Precio
             </div>
 
+            <!--
+                        <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz" title="Stock">
+                            Stk
+                        </div>//-->
 
-            <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz" title="Stock">
-                Stk
+
+            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz" title="Seccion">
+                Sección
             </div>
-
-
-            <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Seccion">
-                Secc
-            </div>
-
-            <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="En Promocion">
-                Promo
-            </div>
+            <!--
+                        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="En Promocion">
+                            Promo
+                        </div>//-->
 
 
             <div class="listado_item_campo_base listado_item_campo_00">
@@ -40,50 +49,78 @@
         </div>
         <!-- fin de encabezados del listado //-->
 
-        {% for p in platos %}
-        <div class="listado_modificar_mozo_item {% if not p.activo %}inactivo{% endif %}">
+        <div class="ajax_resultados">
+            <div class="item">
+                {% for p in platos %}
+                <div class="listado_modificar_mozo_item {% if not p.activo %}inactivo{% endif %}">
 
-            <div class="cargar_modificar_mozo" href="{% url 'modificarplato_id' p.id %}">
+                    <div class="cargar_modificar_mozo" href="{% url 'modificarplato_id' p.id %}">
 
 
-                <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz texto_iz"
-                     title="Nombre: {{p.nombre}}">
-                    {{p.nombre|truncatechars:11}}
+                        <div class="listado_item_campo_base listado_item_campo_05 flotar_iz texto_iz"
+                             title="Nombre: {{p.nombre}}">
+                            {{p.nombre|truncatechars:14}}
+                        </div>
+
+                        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz"
+                             title="Precio. {{p.precio}}">
+                            {{p.precio}}
+                        </div>
+
+                        <!--
+                                        <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz" title="Stock: {{p.stock}}">
+                                            {{p.stock}}
+                                        </div>//-->
+
+                        <div class="listado_item_campo_base listado_item_campo_04 flotar_iz"
+                             title="Seccion: {{p.seccion}}">
+                            {{p.seccion|truncatechars:13}}
+                        </div>
+
+                        <!--
+                                        <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz"
+                                             title="En Promocion: {{p.enPromocion}}">
+                                            {{p.get_enPromocion_display}}
+                                        </div>//-->
+
+
+                    </div>
+
+                    <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+                        <img src="{{STATIC_URL}}img/conf/{% if p.activo %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
+                             urldel="{% url 'modificarplato_id_del' p.id %}" estado="{{p.activo}}" class="eliminar_mesa"
+                             nombre="{{p.nombre}}"
+                             title="{% if not p.activo %}Acivar{% else %}Desactivar{% endif %} plato: {{p.id}}">
+                    </div>
+
+
                 </div>
+                {% endfor %}
+                <!-- fin listado de mozos//-->
 
-                <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Precio. {{p.precio}}">
-                    {{p.precio}}
+                <!-- inicio paginador //-->
+                {% if platos.paginator %}
+                <div class="pagination">
+            <span class="step-links">
+                {% if platos.has_previous %}
+                    <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
+                                                          onclick="paginarProductos({{ platos.previous_page_number }});"></a>
+                {% endif %}
+
+                <span class="current">
+                    {{ platos.number }}<span class="paginado_de"> de {{ platos.paginator.num_pages }}</span>
+                </span>
+
+                {% if platos.has_next %}
+                    <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"
+                                                           onclick="paginarProductos({{ platos.next_page_number }});"></a>
+                {% endif %}
+            </span>
                 </div>
-
-
-                <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz" title="Stock: {{p.stock}}">
-                    {{p.stock}}
-                </div>
-
-                <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Seccion: {{p.seccion}}">
-                    {{p.seccion|truncatechars:11}}
-                </div>
-
-
-                <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz"
-                     title="En Promocion: {{p.enPromocion}}">
-                    {{p.get_enPromocion_display}}
-                </div>
-
-
+                {% endif %}
+                <!-- fin paginador //-->
             </div>
-
-            <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
-                <img src="{{STATIC_URL}}img/conf/{% if p.activo %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
-                     urldel="{% url 'modificarplato_id_del' p.id %}" estado="{{p.activo}}" class="eliminar_mesa"
-                     nombre="{{p.nombre}}"
-                     title="{% if not p.activo %}Acivar{% else %}Desactivar{% endif %} plato: {{p.id}}">
-            </div>
-
-
         </div>
-        {% endfor %}
-        <!-- fin listado de mozos//-->
     </div>
 </div>
 
@@ -104,9 +141,9 @@
 
                     <div class="contenedor_texto"><span class="form_error_msg">*</span> Nombre</div>
                     <div class="contenedor_input">
-                        <!--<input type="text" name="username" value="" class="validar_campo">-->
+
                         {{ formulario.nombre }}
-                        <div class="form_error_msg">{{ formulario.tipo.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -116,7 +153,7 @@
                     <div class="contenedor_input">
 
                         {{ formulario.precio }}
-                        <div class="form_error_msg">{{ formulario.capacidad.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -126,7 +163,7 @@
                     <div class="contenedor_input">
 
                         {{ formulario.stock }}
-                        <div class="form_error_msg">{{ formulario.ocupada.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -135,7 +172,7 @@
                     <div class="contenedor_texto"><span class="form_error_msg"></span> Descripcion</div>
                     <div class="contenedor_input">
                         {{ formulario.descripcion }}
-                        <div class="form_error_msg">{{ formulario.activo.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.descripcion.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -143,7 +180,7 @@
                     <div class="contenedor_texto"><span class="form_error_msg"></span> Promocion</div>
                     <div class="contenedor_input">
                         {{ formulario.enPromocion }}
-                        <div class="form_error_msg">{{ formulario.sector.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.enPromocion.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -151,7 +188,7 @@
                     <div class="contenedor_texto"><span class="form_error_msg"></span> Descuento</div>
                     <div class="contenedor_input">
                         {{ formulario.descuento }}
-                        <div class="form_error_msg">{{ formulario.sector.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.descuento.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -159,7 +196,7 @@
                     <div class="contenedor_texto"><span class="form_error_msg">*</span> Seccion</div>
                     <div class="contenedor_input">
                         {{ formulario.seccion }}
-                        <div class="form_error_msg">{{ formulario.sector.errors|striptags }}</div>
+                        <div class="form_error_msg">{{ formulario.seccion.errors|striptags }}</div>
                     </div>
                 </div>
 
@@ -192,8 +229,55 @@
 
 {% block script %}
 <script>
-$(document).ready(function(){
 
+function enviarForm(msg){
+    $(".buscador_productos").val(msg);
+    buscarresultados();
+}
+
+function reemplazarCadena(cad, q){
+var re = new RegExp(q,"gi");
+    return cad.replace(re,"<span class='resaltado resaltarBusqueda'>"+q+"</span>");
+}
+
+function buscarresultados(){
+
+    var busqueda=$(".buscador_productos").val();
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'buscador_producto_ajax_resultados_mod' %}",
+        data: "q="+busqueda,
+        success: function(datos){
+
+            if(datos.length > 0){
+                $(".ajax_resultados").html(datos);
+                $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                agregarFuncionalidad();
+            }
+          }
+    });
+
+}
+
+
+
+
+function paginarProductos(pagina){
+
+    $.ajax({
+                type: "GET",
+                url: "{% url 'paginador_ajax_resultados_mod' %}",
+                data: "pagina="+pagina,
+                success: function(datos){
+                    $(".ajax_resultados").html(datos);
+                    agregarFuncionalidad();
+                }
+            });
+}
+
+
+function agregarFuncionalidad(){
 	 $(".cargar_modificar_mozo").each(function(i){
 	 	$(this).css("cursor","pointer");
 			$(this).click(function(event){
@@ -215,9 +299,78 @@ $(document).ready(function(){
 			});
 	 });
 
-	$('.dropdown-toggle').dropdownHover(options);
+}
+
+
+
+
+
+$(document).ready(function(){
+
+    agregarFuncionalidad();
+
+
+        $("#buscarresultados").click(function(event){
+        buscarresultados();
+    });
+
+
+
+        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+
+    //cuando presiono una tecla en la caja de busqueda
+    $(".buscador_productos").keyup(function(event){
+
+        var busqueda=$(this).val();
+
+        if( busqueda.length >= 2){
+
+            $.ajax({
+                type: "GET",
+                url: "{% url 'buscador_producto_ajax_mod' %}",
+                data: "q="+busqueda,
+                success: function(datos){
+
+                    if(datos.length > 0){
+                        $(".cont_resultado_busqueda_productos").html(datos);
+                        $(".cont_resultado_busqueda_productos").css("visibility","visible");
+
+                        $(".busqueda_item").each(function(i){
+                            var cad=$(this).text();
+                            $(this).html(reemplazarCadena(cad, busqueda));
+                            $(".resaltado").addClass("resaltarBusqueda");
+                        });
+
+                    }
+                    else{
+                        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                    }
+
+                  }
+            });
+        }
+        else
+        {
+            $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+        }
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+          if(keycode == '13'){
+
+                buscarresultados();
+          }
+
+
+    });
+
+
+
+
+
 
 });
+
 
 </script>
 {% endblock %}

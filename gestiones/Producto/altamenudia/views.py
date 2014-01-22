@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
@@ -12,7 +13,7 @@ from gestiones.Producto.producto.models import DelDia, Plato
 @permission_required('Administrador.is_admin', login_url="login")
 def altamenudia(request):
 
-    platos_lista = Plato.objects.all().order_by('-activo')
+    platos_lista = Plato.objects.all().order_by('nombre')
     paginator = Paginator(platos_lista, PAGINADO_PRODUCTOS)
     platos = paginator.page(1)
 
@@ -76,7 +77,7 @@ def altamenudia(request):
 def buscarproductoajax(request):
     if request.method == 'GET':
         q = request.GET['q']
-        listado = Plato.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by('-activo')[:30]
+        listado = Plato.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by('nombre')[:30]
 
         return render_to_response('Producto/altamenudia/busquedaresultados.html', {'listado': listado},
                                   context_instance=RequestContext(request))
@@ -88,9 +89,9 @@ def buscarproductoajaxResultados(request):
         q = request.GET['q']
 
         if q != "":
-            platos = Plato.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q) ).order_by('-activo')
+            platos = Plato.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q) ).order_by('nombre')
         else:
-            platos_lista = Plato.objects.all().order_by("-activo")
+            platos_lista = Plato.objects.all().order_by("nombre")
             paginator = Paginator(platos_lista, PAGINADO_PRODUCTOS)
             platos = paginator.page(1)
 
@@ -105,7 +106,7 @@ def paginadorajaxResultados(request):
     if request.method == 'GET':
 
         pagina = request.GET['pagina']
-        platos_lista = Plato.objects.all().order_by('-activo')
+        platos_lista = Plato.objects.all().order_by('nombre')
         paginator = Paginator(platos_lista, PAGINADO_PRODUCTOS)
 
         try:
