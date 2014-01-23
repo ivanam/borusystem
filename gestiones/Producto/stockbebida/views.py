@@ -41,20 +41,29 @@ def stockbebida (request, id_bebida = None):
         if formulario.is_valid():
             stock = formulario.cleaned_data['stock']
 
+            unaBebida.nombre = datosBebida.nombre
+            unaBebida.precio = datosBebida.precio
+            unaBebida.stock = datosBebida.stock
+            unaBebida.activo = datosBebida.activo
+            unaBebida.marca = datosBebida.marca
+            unaBebida.enPromocion = datosBebida.enPromocion
+            unaBebida.descuento = datosBebida.descuento
+            unaBebida.seccion = datosBebida.seccion
+            unaBebida.save()
+
 
             #seteo los nuevos datos en el objeto unaBebida que obtuvimos al principio
 
-            unaBebida.stock = stock
             unaBebida.save()
 
             #mostramos que la operacion fue exitosa
             return render_to_response('Producto/stockbebida/stockbebidaexito.html',
-                                      {'formulario': formulario, 'bebidas': bebidas ,'datosBebida': datosBebida},
+                                      {'formulario': formulario, 'bebidas': bebidas },
                                       context_instance=RequestContext(request))
 
         #si no es valido el formulario lo vuelvo a mostrar con los datos ingresados
         return render_to_response('Producto/stockbebida/stockbebida.html',
-                                  {'formulario': formulario, 'bebidas': bebidas ,'datosBebida': datosBebida},
+                                  {'formulario': formulario, 'bebidas': bebidas},
                                   context_instance=RequestContext(request))
 
     else:
@@ -115,4 +124,19 @@ def paginadorajaxResultados(request):
 
         return render_to_response('Producto/stockbebida/busquedaresultados_items.html', {'bebidas': bebidas},
                                   context_instance=RequestContext(request))
+
+@permission_required('Administrador.is_admin', login_url="login")
+def modificarbebidadel(request, id_bebida):
+    try:
+        #obtengo en el caso de que venga el id por GET, al usuario
+        unaBebida = Bebida.objects.get(pk=id_bebida)
+    except:
+        unaBebida = None
+
+    #si se apreto el boton de modificar
+    if request.method == 'GET' and unaBebida != None:
+        unaBebida.cambiarEstado()
+        unaBebida.save()
+
+    return HttpResponseRedirect(reverse('stockbebida'))
 

@@ -1,0 +1,62 @@
+{% for p in plato %}
+
+<div class="item">
+
+    <div class="listado_modificar_mozo_item {% if not p.activo %}inactivo{% endif %}">
+
+            <div class="cargar_modificar_mozo" href="{% url 'modificarplato_id' p.id %}">
+
+
+                <div class="listado_item_campo_base listado_item_campo_05 flotar_iz texto_iz"
+                     title="Nombre: {{p.nombre}}">
+                    {{p.nombre|truncatechars:20}}
+                </div>
+
+                <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Precio. {{p.precio}}">
+                    {{p.precio}}
+                </div>
+
+<!-
+
+<!--
+                <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz"
+                     title="En Promocion: {{p.enPromocion}}">
+                    {{p.get_enPromocion_display}}
+                </div>//-->
+
+
+            </div>
+
+            <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+                <img src="{{STATIC_URL}}img/conf/{% if p.activo %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
+                     urldel="{% url 'modificarplato_id_del' p.id %}" estado="{{p.activo}}" class="eliminar_mesa"
+                     nombre="{{p.nombre}}"
+                     title="{% if not p.activo %}Acivar{% else %}Desactivar{% endif %} plato: {{p.id}}">
+            </div>
+
+
+        </div>
+
+</div>
+{% endfor %}
+<!-- inicio paginador //-->
+{% if plato.paginator %}
+<div class="pagination">
+    <span class="step-links">
+        {% if plato.has_previous %}
+            <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
+                                                  onclick="paginarProductos({{ plato.previous_page_number }});"></a>
+        {% endif %}
+
+        <span class="current">
+            {{ plato.number }}<span class="paginado_de"> de {{ plato.paginator.num_pages }}</span>
+        </span>
+
+        {% if plato.has_next %}
+            <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"
+                                                   onclick="paginarProductos({{ plato.next_page_number }});"></a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+<!-- fin paginador //-->
