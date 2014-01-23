@@ -1,26 +1,28 @@
 {% for m in plato %}
 <div class="item">
-    <div class="listado_eliminar_mozo_item {% if not m.activo %}inactivo{% endif %}">
+                <div class="listado_eliminar_mozo_item {% if not m.activo or m.stock == 0 %}inactivo{% endif %}">
 
-        <input type="hidden" name="id_plato" class="id_plato" value="{{m.id}}">
+                    <input type="hidden" name="id_plato" class="id_plato" value="{{m.id}}"  activo="{{m.activo}}" stock="{{m.stock}}">
 
-        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz" title="{{m.nombre|capfirst}}: {{m.descripcion}}">
-           {{m.nombre|capfirst|truncatechars:20}}
-        </div>
+                    <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz"
+                         title="Seccion: {{m.seccion}}
+{{m.nombre|capfirst}}: {{m.descripcion}}">
+                        {{m.nombre|capfirst|truncatechars:20}}
+                    </div>
 
-        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.precio}}">
-            {{m.precio}}
-        </div>
+                    <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.precio}}">
+                        {{m.precio}}
+                    </div>
 
-        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.stock}}">
-            {{m.stock}}
-        </div>
+                    <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.stock}}">
+                        {{m.stock}}
+                    </div>
 
-    </div>
-</div>
+                </div>
+            </div>
 {% endfor %}
 <!-- inicio paginador //-->
-{% if platos.paginator %}
+{% if plato.paginator %}
 <div class="pagination">
     <span class="step-links">
         {% if plato.has_previous %}

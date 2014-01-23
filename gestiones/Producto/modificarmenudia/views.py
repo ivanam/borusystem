@@ -1,14 +1,15 @@
-from _ast import unaryop
+# -*- encoding: utf-8 -*-
 from django.contrib.auth.decorators import permission_required
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Context
 from django.template.loader import get_template
-from boru.settings import PAGINADO_PRODUCTOS
+from boru.settings import PAGINADO_PRODUCTOS_MENUES
 from gestiones.Producto.modificarmenudia.forms import modificarMenuDiaForm
 from gestiones.Producto.producto.models import DelDia, Plato
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 
 
 @permission_required('Administrador.is_admin', login_url="login")
@@ -16,7 +17,7 @@ def modificarmenudia(request, id_menu=None):
 
     #rescato los platos
     platos_lista = Plato.objects.all().order_by('nombre')
-    paginator = Paginator(platos_lista, 4)
+    paginator = Paginator(platos_lista, PAGINADO_PRODUCTOS_MENUES)
     platos = paginator.page(1)
 
     #rescato los menues
@@ -30,13 +31,42 @@ def modificarmenudia(request, id_menu=None):
         datosMenu = {'id': unMenu.id, 'nombre': unMenu.nombre, 'precio': unMenu.precio, 'stock': unMenu.stock,
                      'descripcion': unMenu.descripcion,'fecha_Inicio': unMenu.fecha_Inicio
                     ,'seccion': unMenu.seccion, 'activo': unMenu.activo, 'platos': unMenu.platos}
-
     except:
         datosMenu = ''
         unMenu = None
 
 
-        #si se apreto el boton de modificar
+
+    #compruebo si existe sesion y si hay seleccionado algun menu
+    platos_selec = get_template('Producto/modificarmenudia/menudia_platos.html')
+    platos_selec_sesion = get_template('Producto/modificarmenudia/menudia_platos_ajax.html')
+    listaPlatos = []
+    listaPlatos_sesion = []
+
+    try:
+
+        #platos originales
+        for p in unMenu.platos.all():
+            listaPlatos.append(Plato.objects.get(pk=p.id))
+
+        try:
+            lista = request.session['listaProductosModificarMenuDia']
+            #platos que selecciones si hay
+            for s in lista:
+                listaPlatos_sesion.append(Plato.objects.get(pk=s))
+        except:
+            pass
+
+        platosLista = listaPlatos
+        platosLista_sesion = listaPlatos_sesion
+
+    except:
+        platosLista = []
+        platosLista_sesion = []
+
+
+
+    #si se apreto el boton de modificar
     if request.method == 'POST' and unMenu != None:
 
         #le indico al form que tome los datos del request y le paso la instancia del menu  que obtuve mas arriba
@@ -52,8 +82,11 @@ def modificarmenudia(request, id_menu=None):
             fecha_Inicio = formulario.cleaned_data['fecha_Inicio']
             seccion = formulario.cleaned_data['seccion']
             activo = formulario.cleaned_data['activo']
-            #platos = formulario.cleaned_data['platos']
 
+            #recupero las ids de los platos que quiero agregar al menu
+            lista_platos_seleccionado = request.POST.getlist('platos')
+            #para guardar la lista de platos
+            prod = []
 
             #seteo los nuevos datos en el objeto unMenu que obtuvimos al principio
             unMenu.nombre = nombre
@@ -62,45 +95,49 @@ def modificarmenudia(request, id_menu=None):
             unMenu.descripcion = descripcion
             unMenu.fecha_Inicio = fecha_Inicio
             unMenu.seccion = seccion
+
+            #miro los platos para asegurarme que todos estan en regla(con stock y activos)
+            for p in lista_platos_seleccionado:
+                aux = Plato.objects.get(pk=p)
+
+                if aux.stock == 0 or aux.activo == False:
+                    activo=False
+
+                prod.append(aux)
+
+            #seteo el estado del menu
             unMenu.activo = activo
-           #     unMenu.platos = platos
             unMenu.save()
+
+            #limpio la lista de platos
+            unMenu.limpiar_platos()
+            #las recorro y rescato los platos y los asigno al menu
+            for p in prod:
+                unMenu.agregar_plato(p)
 
             #mostramos que la operacion fue exitosa
             return render_to_response('Producto/modificarmenudia/modificarmenudiaExito.html',
                                       {'formulario': formulario, 'menues': menues},
                                       context_instance=RequestContext(request))
 
+
         #si no es valido el formulario lo vuelvo a mostrar con los datos ingresados
         return render_to_response('Producto/modificarmenudia/modificarmenudia.html',
-                                  {'formulario': formulario, 'menues': menues, 'plato':platos},
-                                  context_instance=RequestContext(request))
+                                  {'id_menu':id_menu,'formulario': formulario, 'menues': menues, 'plato': platos,
+                                   'lista_platos': platos_selec.render(Context({'platos': platosLista})),
+                                   'lista_platos_sesion': platos_selec_sesion.render(
+                                       Context({'platos': platosLista_sesion}))
+                                  }, context_instance=RequestContext(request))
+
 
     else:
         #si no apretamos el boton modificar menu y seleccionamos algun menu, mostramos sus datos, sino mostramos el form vacio
         formulario = modificarMenuDiaForm(initial=datosMenu)
-        platos_selec = get_template('Producto/modificarmenudia/menudia_platos.html')
-
-        try:
-            listaPlatos = []
-            #lista = request.session['listaProductosModificarMenuDia']
-
-            for p in unMenu.platos.all():
-
-                listaPlatos.append(Plato.objects.get(pk=p.id))
-                #request.session['listaProductosModificarMenuDia'].append(p.id)
-
-            platosLista = listaPlatos
-            #request.session['listaProductosModificarMenuDia'] = lista
-
-        except:
-            platosLista = []
-
         return render_to_response('Producto/modificarmenudia/modificarmenudia.html',
-                                  {'formulario': formulario, 'menues': menues, 'plato':platos,
-                                   'lista_platos': platos_selec.render(Context({'platos': platosLista}))
-                                  },
-                                  context_instance=RequestContext(request))
+                                  {'id_menu':id_menu,'formulario': formulario, 'menues': menues, 'plato':platos,
+                                   'lista_platos': platos_selec.render(Context({'platos': platosLista})),
+                                   'lista_platos_sesion': platos_selec_sesion.render(Context({'platos': platosLista_sesion}))
+                                  }, context_instance=RequestContext(request))
 
 
 @permission_required('Administrador.is_admin', login_url="login")
@@ -158,5 +195,72 @@ def agregarProductoListaAjax(request):
 
             platos = listaPlatos
 
-    return render_to_response('Producto/modificarmenudia/menudia_platos.html', {'platos': platos},
+    return render_to_response('Producto/modificarmenudia/menudia_platos_ajax.html', {'platos': platos},
                               context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_admin', login_url="login")
+def paginadorajaxResultados(request):
+
+    if request.method == 'GET':
+
+        pagina = request.GET['pagina']
+        platos_lista = Plato.objects.all().order_by('nombre')
+        paginator = Paginator(platos_lista, PAGINADO_PRODUCTOS_MENUES)
+
+        try:
+            platos = paginator.page(pagina)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            platos = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            platos = paginator.page(paginator.num_pages)
+
+        return render_to_response('Producto/modificarmenudia/busquedaresultados_items.html', {'plato': platos},
+                                  context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_admin', login_url="login")
+def borrarSesionAjax(request):
+
+    if request.method == 'GET':
+
+        try:
+            request.session['listaProductosModificarMenuDia']=[]
+        except:
+            return HttpResponse("500")
+
+        return HttpResponse("200")
+
+    else:
+        return HttpResponse("500")
+
+
+
+@permission_required('Administrador.is_admin', login_url="login")
+def buscarproductoajax(request):
+    if request.method == 'GET':
+        q = request.GET['q']
+        listado = Plato.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by('nombre')[:30]
+
+        return render_to_response('Producto/modificarmenudia/busquedaresultados.html', {'listado': listado},
+                                  context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_admin', login_url="login")
+def buscarproductoajaxResultados(request):
+    if request.method == 'GET':
+        q = request.GET['q']
+
+        if q != "":
+            platos = Plato.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q) ).order_by('nombre')
+        else:
+            platos_lista = Plato.objects.all().order_by("nombre")
+            paginator = Paginator(platos_lista, PAGINADO_PRODUCTOS_MENUES)
+            platos = paginator.page(1)
+
+        return render_to_response('Producto/modificarmenudia/busquedaresultados_items.html', {'plato': platos},
+                                  context_instance=RequestContext(request))
+
+
