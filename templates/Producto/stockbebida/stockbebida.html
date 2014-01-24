@@ -1,5 +1,5 @@
 {% extends "base_administrador.html" %}
-{% block titulo %}Boru - Modificar Stock Bebida{% endblock %}
+{% block titulo %}Boru -  Modificar Stock Bebida{% endblock %}
 {% block contenido %}
 <div class="izquierda">
     <div class="listado_modificar_mozos cont_redondeado">
@@ -26,27 +26,16 @@
             <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="Precio">
                 Precio
             </div>
-
-<!--
-            <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz" title="Stock">
-                Stk
-            </div>//-->
-
-
-            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz" title="Seccion">
-                Sección
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="Precio">
+                Seccion
             </div>
-<!--
-            <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="En Promocion">
-                Promo
-            </div>//-->
 
 
             <div class="listado_item_campo_base listado_item_campo_00">
                 &nbsp
             </div>
         </div>
-        <!-- fin de encabezados del listado //-->
+
 
         <div class="ajax_resultados">
             <div class="item">
@@ -65,26 +54,15 @@
                              title="Precio. {{p.precio}}">
                             {{p.precio}}
                         </div>
-
-                        <!--
-                        <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz"
-                             title="Stock: {{p.stock}}">
-                            {{p.stock}}
-                        </div>//-->
-
-                        <div class="listado_item_campo_base listado_item_campo_04_2 flotar_iz"
-                             title="Seccion: {{p.seccion}}">
-                            {{p.seccion|truncatechars:12}}
+                        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz"
+                             title="Seccion. {{p.seccion}}">
+                            {{p.seccion|truncatechars:10}}
                         </div>
 
-                        <!--
-                        <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz"
-                             title="En Promocion: {{p.enPromocion}}">
-                            {{p.get_enPromocion_display}}
-                        </div>//-->
 
 
                     </div>
+
 
 
 
@@ -129,43 +107,66 @@
             <div class="salto_linea"></div>
 
             <!--Aca inicio contenido//-->
-
-
-                <div class="contenefor_form_row">
-
-                    <div class="contenedor_texto"></span> Nombre: {{ datosPlato.nombre }} </div>
-                </div>
-
+            <form action="" method="post" name="add_mesa" id="id_add_mesa">
+                {{ formulario.non_field_errors }}
 
                 <div class="contenefor_form_row">
 
-                    <div class="contenedor_texto"> Precio :  {{datosPlato.precio }}</div>
-
-                </div>
-
-                <div class="contenefor_form_row">
-
-                    <div class="contenedor_texto"> Stock : {{ formulario.stock }} </div>
-
-             </div>
-
-                <div class="contenefor_form_row">
-
-                    <div class="contenedor_texto"><span class="form_error_msg"></span> Descripcion</div>
+                    <div class="contenedor_texto">Nombre</div>
                     <div class="contenedor_input">
-                        {{ datosPlato.descripcion }}
+                        {{ datosBebida.nombre }}
 
+                    </div>
+                </div>
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"> Precio</div>
+                    <div class="contenedor_input">
+                        {{ datosBebida.precio }}
+                    </div>
+                </div>
+
+
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"> Marca</div>
+                    <div class="contenedor_input">
+                        {{ datosBebida.marca }}
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"> Stock Actual</div>
+                    <div class="contenedor_input">
+
+                        {{datosBebida.stock }}
+                         </div>
+                </div>
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto">Agregar o quitar Stock: </div>
+                    <div class="contenedor_input">
+
+                        {{formulario.stock }}
+                        <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
                     </div>
                 </div>
 
                 {% csrf_token %}
                 <div class="salto_linea"></div>
-                <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Stock"
+                <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Stock Bebida"
                        class="btn btn-large btn-primary">
 
             </form>
             <!-- Aca fin de contenido//-->
 
+        </div>
+        <!-- fin bloke de mesas//-->
+        <div class="salto_linea"></div>
+    </div>
+    <!-- fin contenedor principal//-->
 
 </div><!-- derecha fin//-->
 {% endblock %}

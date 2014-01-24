@@ -55,6 +55,7 @@ class Bebida(Producto):
     descuento = models.DecimalField("Descuento", null=True, blank=True, choices=DESCUENTO_CHOICES, default=0,
                                     max_digits=11, decimal_places=0)
 
+
     def importe(self):
 
         if self.enPromocion:
@@ -63,6 +64,10 @@ class Bebida(Producto):
             importe_descontado = 0
 
         return self.precio - importe_descontado
+
+
+
+
 
 
 class Menu(Producto):

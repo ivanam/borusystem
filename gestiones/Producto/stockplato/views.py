@@ -1,15 +1,20 @@
 from django.contrib.auth.decorators import permission_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.core.urlresolvers import reverse
+from boru.settings import PAGINADO_PRODUCTOS
 from gestiones.Producto.stockplato.forms import stockPlato
 from gestiones.Producto.producto.models import Plato
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
 
 @permission_required('Administrador.is_admin', login_url="login")
 def stockplato(request, id_plato=None):
     #rescato todos los platos
-    platos = Plato.objects.all().order_by('-activo')
+    platos_lista = Plato.objects.all().order_by('nombre')
+    paginator = Paginator(platos_lista, PAGINADO_PRODUCTOS)
+    platos = paginator.page(1)
 
     try:
         #obtengo en el caso de que venga el id por GET, al plato
@@ -17,9 +22,7 @@ def stockplato(request, id_plato=None):
 
         #creo diccionario con los datos del plato para mostrarlos ne el formulario
         datosPlato = {'nombre': plato_id.nombre, 'precio': plato_id.precio,
-                      'stock': plato_id.stock, 'descripcion': plato_id.descripcion,
-                      'enPromocion': plato_id.enPromocion, 'descuento': plato_id.descuento,
-                      'seccion': plato_id.seccion, 'activo': plato_id.activo}
+                      'stock': plato_id.stock,'descripcion':plato_id.descripcion}
     except:
         datosPlato = ''
         plato_id = None
@@ -33,18 +36,10 @@ def stockplato(request, id_plato=None):
 
         #si el formulario es valido
         if formulario.is_valid():
-            stock = formulario.cleaned_data['stock']
 
 
 
-            plato_id.nombre = datosPlato.nombre
-            plato_id.precio = datosPlato.precio
-            plato_id.stock = stock
-            plato_id.descripcion = datosPlato.descripcion
-            plato_id.enPromocion = datosPlato.promocion
-            plato_id.descuento = datosPlato.descuento
-            plato_id.seccion = datosPlato.seccion
-            plato_id.activo = datosPlato.activo
+
             plato_id.save()
             #mostramos que la operacion fue exitosa
             return render_to_response('Producto/stockplato/stockplatoexito.html',
@@ -77,5 +72,60 @@ def modificarplatodel(request, id_plato):
         unPlato.save()
 
     return HttpResponseRedirect(reverse('stockplato'))
+
+
+
+@permission_required('Administrador.is_admin', login_url="login")
+def buscarproductoajax(request):
+    if request.method == 'GET':
+        q = request.GET['q']
+        listado = Plato.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by('nombre')[:30]
+
+        return render_to_response('Producto/stockplato/busquedaresultados.html', {'listado': listado},
+                                  context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_admin', login_url="login")
+def buscarproductoajaxResultados(request):
+    if request.method == 'GET':
+        q = request.GET['q']
+
+        if q != "":
+            platos = Plato.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q) ).order_by('nombre')
+        else:
+            platos_lista = Plato.objects.all().order_by("nombre")
+            paginator = Paginator(platos_lista, PAGINADO_PRODUCTOS)
+            platos = paginator.page(1)
+
+        return render_to_response('Producto/stockplato/busquedaresultados_items.html', {'plato': platos},
+                                  context_instance=RequestContext(request))
+
+
+
+
+
+@permission_required('Administrador.is_admin', login_url="login")
+def paginadorajaxResultados(request):
+
+    if request.method == 'GET':
+
+        pagina = request.GET['pagina']
+        platos_lista = Plato.objects.all().order_by('nombre')
+        paginator = Paginator(platos_lista, PAGINADO_PRODUCTOS)
+
+        try:
+            platos = paginator.page(pagina)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            platos = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            platos = paginator.page(paginator.num_pages)
+
+        return render_to_response('Producto/stockplato/busquedaresultados_items.html', {'plato': platos},
+                                  context_instance=RequestContext(request))
+
+
+
 
 
