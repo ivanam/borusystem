@@ -81,6 +81,29 @@ class Menu(Producto):
     def importe(self):
         return self.precio
 
+    def limpiar_platos(self):
+        self.platos = []
+        self.save()
+
+    def agregar_plato(self, plato):
+        #no puede haber platos repetidos
+        try:
+            self.platos.remove(plato)
+        except:
+            pass
+
+        self.platos.add(plato)
+        self.save()
+
+    def eliminar_plato(self, plato):
+        try:
+            self.platos.remove(plato)
+        except:
+            pass
+
+        self.save()
+
+
 class DelDia(Menu):
     pass
 

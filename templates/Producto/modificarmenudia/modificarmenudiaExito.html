@@ -3,7 +3,7 @@
 {% block contenido %}
 
 	  <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
-        <div class="label label-inverse titulo_menu">Modificar Mesas</div>
+        <div class="label label-inverse titulo_menu">Modificar Menu del Día</div>
         <br>
         <div class="salto_linea"></div>
         <div id="mesas_libres" class="bloque_mesas">
@@ -23,7 +23,7 @@
 <script>
 $(document).ready(function(){
 	
-	$('.dropdown-toggle').dropdownHover(options);
+	volver("{% url 'modificarmenudia' %}",1250);
 });
 </script>
 {% endblock %}

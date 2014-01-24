@@ -52,7 +52,7 @@
         <div class="ajax_resultados">
             <div class="item">
                 {% for p in platos %}
-                <div class="listado_modificar_mozo_item {% if not p.activo %}inactivo{% endif %}">
+                <div class="listado_modificar_mozo_item {% if not p.activo or m.stock == 0 %}inactivo{% endif %}">
 
                     <div class="cargar_modificar_mozo" href="{% url 'modificarplato_id' p.id %}">
 
