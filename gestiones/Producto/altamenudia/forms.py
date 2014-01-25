@@ -9,7 +9,7 @@ class altaMenuDiaForm(ModelForm):
     class Meta:
         model = DelDia
         fields = (
-            'nombre', 'precio', 'stock', 'descripcion', 'fecha_Inicio', 'seccion', 'platos')
+            'nombre', 'precio', 'stock', 'descripcion', 'fecha_Inicio', 'seccion', 'platos','activo')
 
 
     def clean_precio(self):

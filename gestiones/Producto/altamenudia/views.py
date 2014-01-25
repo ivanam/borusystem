@@ -29,6 +29,8 @@ def altamenudia(request):
             descripcion = formulario.cleaned_data['descripcion']
             fecha = formulario.cleaned_data['fecha_Inicio']
             seccion = formulario.cleaned_data['seccion']
+            activo = formulario.cleaned_data['activo']
+
             menu = DelDia.objects.create(nombre=nombre, precio=precio, stock=stock, descripcion=descripcion,
                                          fecha_Inicio=fecha, seccion=seccion)
 
@@ -37,12 +39,36 @@ def altamenudia(request):
 
             #recupero las ids de los platos que quiero agregar al menu
             lista_platos_seleccionado = request.POST.getlist('platos')
+            #para guardar la lista de platos
+            prod = []
+
+            #miro los platos para asegurarme que todos estan en regla(con stock y activos)
+            for p in lista_platos_seleccionado:
+                aux = Plato.objects.get(pk=p)
+
+                if aux.stock == 0 or aux.activo == False:
+                    activo = False
+
+                prod.append(aux)
+
+            """
+            #recupero las ids de los platos que quiero agregar al menu
+            lista_platos_seleccionado = request.POST.getlist('platos')
             #las recorro y rescato los platos y los asigno al menu
             for p in lista_platos_seleccionado:
                 menu.platos.add(Plato.objects.get(pk=p))
 
             #guardo los cambios
+            menu.save()"""
+
+            #seteo el estado del menu
+            menu.activo = activo
             menu.save()
+
+            #las recorro y rescato los platos y los asigno al menu
+            for p in prod:
+                menu.agregar_plato(p)
+
             #mostramos que la operacion fue exitosa
             return render_to_response('Producto/altamenudia/altamenudiaexito.html', {'formulario': formulario, 'plato': platos},
                                       context_instance=RequestContext(request))
