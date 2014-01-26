@@ -17,8 +17,11 @@ def Cajero(request,pagina=1):
     if pagina == None:
         pagina = 1
 
-    #TODO tratar de filtrar las comandas y dejar las de hoy y ayer nomas
-    comandas_lista = Comanda.objects.filter(tipo_comanda__exact="C", finalizada = True).order_by("-fecha", "-hora")
+    #calculo fecha para filtrar las comandas y dejar las de hoy y ayer nomas
+    hoy = datetime.date.today();
+    ayer = datetime.date.today()-datetime.timedelta(days=1)
+
+    comandas_lista = Comanda.objects.filter(tipo_comanda__exact="C", finalizada = True,fecha__range=(ayer,hoy),preticket__exact =None).order_by("-fecha", "-hora")
     paginator = Paginator(comandas_lista, PAGINADO_PRODUCTOS)
     comandas = paginator.page(pagina)
 
@@ -33,8 +36,12 @@ def pretickets(request,pretickets_page=1):
     if pretickets_page == None:
         pretickets_page = 1
 
-    #TODO tratar de filtrar los pretickets y dejar las de hoy y ayer nomas
-    pretickets_lista = Preticket.objects.all().order_by("-fecha", "-hora")
+
+    #calculo fecha para filtrar los pedidos y dejar los de hoy y ayer nomas
+    hoy = datetime.date.today();
+    ayer = datetime.date.today() - datetime.timedelta(days=1)
+
+    pretickets_lista = Preticket.objects.filter(fecha__range=(ayer,hoy)).order_by("-fecha", "-hora")
     paginator = Paginator(pretickets_lista, PAGINADO_PRODUCTOS)
     pretickets = paginator.page(pretickets_page)
 
@@ -101,7 +108,12 @@ def buscar_mesa(request):
         numero = request.POST['numero']
 
         if numero.isdigit():
-            lista_comandas=Comanda.objects.filter(mesas__id=numero).order_by("-fecha", "-hora")
+
+            #calculo fecha para filtrar las comandas
+            hoy = datetime.date.today();
+            ayer = datetime.date.today() - datetime.timedelta(days=1)
+
+            lista_comandas=Comanda.objects.filter(mesas__id=numero,fecha__range=(ayer,hoy)).order_by("-fecha", "-hora")
 
             #abro los modelos
             detalle_generico = get_template('Cajero/resultados_buscador.html')
@@ -179,8 +191,10 @@ def pedidos_pub(request, pedidos_page=1):
     if pedidos_page == None:
         pedidos_page = 1
 
-    #TODO tratar de filtrar los pedidos y dejar las de hoy y ayer nomas
-    pedidos_lista = pedidos= Comanda.objects.filter(tipo_comanda__exact="P", finalizada = True).order_by("-fecha", "-hora")
+    hoy = datetime.date.today();
+    ayer = datetime.date.today() - datetime.timedelta(days=1)
+
+    pedidos_lista = Comanda.objects.filter(tipo_comanda__exact="P", finalizada = True, fecha__range=(ayer, hoy)).order_by("-fecha", "-hora")
 
     paginator = Paginator(pedidos_lista, PAGINADO_PRODUCTOS)
     pedidos = paginator.page(pedidos_page)
@@ -197,8 +211,12 @@ def pedidos_pub(request, pedidos_page=1):
 @permission_required('Administrador.is_cajero', login_url="login")
 def polling_comandas(request):
     if request.method == "GET":
-        comandas_nuevas=Comanda.objects.filter(tipo_comanda__exact="C",vista=False,finalizada=True,cerrada=False).count()
-        pedidos_nuevos =Comanda.objects.filter(tipo_comanda__exact="P",vista=False,finalizada=True,cerrada=True).count()
+
+        hoy = datetime.date.today()
+        ayer = datetime.date.today() - datetime.timedelta(days=1)
+
+        comandas_nuevas=Comanda.objects.filter(tipo_comanda__exact="C",vista=False,finalizada=True,cerrada=False, fecha__range=(ayer, hoy)).count()
+        pedidos_nuevos =Comanda.objects.filter(tipo_comanda__exact="P",vista=False,finalizada=True,cerrada=True, fecha__range=(ayer, hoy)).count()
 
     return render_to_response('Cajero/comandas_nuevas.html',{'numero':comandas_nuevas,'numero_pedido':pedidos_nuevos},context_instance=RequestContext(request))
 
@@ -220,6 +238,7 @@ def cerrar_comanda(request, id_comanda=None):
     comanda = Comanda.objects.get(pk=id_comanda)
     comanda.cerrada = True
     comanda.save()
+    generar_preticket(request,id_comanda)
     return HttpResponseRedirect(reverse('una_comanda',args=[id_comanda]))
 
 
