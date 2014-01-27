@@ -25,7 +25,7 @@ def stockbebida (request, id_bebida = None):
         datosBebida = {'id': unaBebida.id, 'nombre': unaBebida.nombre, 'precio': unaBebida.precio,
                        'stock': unaBebida.stock, 'activo': unaBebida.activo, 'marca': unaBebida.marca,
                        'enPromocion': unaBebida.enPromocion, 'descuento': unaBebida.descuento,
-                       'seccion': unaBebida.seccion}
+                       'seccion': unaBebida.seccion, 'stockAgregado': unaBebida.stockAgregado}
 
     except:
         datosBebida = ''
@@ -39,8 +39,17 @@ def stockbebida (request, id_bebida = None):
 
         #si el formulario es valido
         if formulario.is_valid():
+             #rescato los datos de cada campo y los limpio
+            nombre = formulario.cleaned_data['nombre']
+            precio = formulario.cleaned_data['precio']
             stock = formulario.cleaned_data['stock']
+            activo = formulario.cleaned_data['activo']
+            marca = formulario.cleaned_data['marca']
+            enPromocion = formulario.cleaned_data['enPromocion']
+            descuento = formulario.cleaned_data['descuento']
+            seccion = formulario.cleaned_data['seccion']
 
+            #seteo los nuevos datos en el objeto unaBebida que obtuvimos al principio
             unaBebida.nombre = datosBebida.nombre
             unaBebida.precio = datosBebida.precio
             unaBebida.stock = datosBebida.stock
@@ -52,10 +61,6 @@ def stockbebida (request, id_bebida = None):
             unaBebida.save()
 
 
-            #seteo los nuevos datos en el objeto unaBebida que obtuvimos al principio
-
-            unaBebida.save()
-
             #mostramos que la operacion fue exitosa
             return render_to_response('Producto/stockbebida/stockbebidaexito.html',
                                       {'formulario': formulario, 'bebidas': bebidas },
@@ -63,7 +68,7 @@ def stockbebida (request, id_bebida = None):
 
         #si no es valido el formulario lo vuelvo a mostrar con los datos ingresados
         return render_to_response('Producto/stockbebida/stockbebida.html',
-                                  {'formulario': formulario, 'bebidas': bebidas},
+                                  {'formulario': formulario, 'bebidas': bebidas, 'datosBebida': datosBebida},
                                   context_instance=RequestContext(request))
 
     else:

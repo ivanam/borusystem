@@ -8,7 +8,7 @@ class stockPlato(ModelForm):
     class Meta:
         model = Plato
         fields = (
-            'nombre','stock' ,'precio', 'descripcion')
+            'nombre', 'precio', 'stock', 'descripcion', 'enPromocion', 'descuento', 'seccion', 'activo' ,'stockAgregado')
 
     def clean_stock(self):
         diccionario_limpio = self.cleaned_data

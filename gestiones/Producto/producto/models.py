@@ -32,6 +32,7 @@ class Plato(Producto):
     enPromocion = models.BooleanField("En_Promocion", default=False, null=False, blank=True, choices=PROMOCION_CHOICES)
     descuento = models.DecimalField("Descuento", null=True, blank=True, choices=DESCUENTO_CHOICES, default=0,
                                     max_digits=11, decimal_places=0)
+    stockAgregado = models.PositiveIntegerField("Stock", max_length=3, null = True)
 
     def importe(self):
 
@@ -55,6 +56,7 @@ class Bebida(Producto):
     descuento = models.DecimalField("Descuento", null=True, blank=True, choices=DESCUENTO_CHOICES, default=0,
                                     max_digits=11, decimal_places=0)
 
+    stockAgregado = models.PositiveIntegerField("Stock", max_length=3, null = True)
 
     def importe(self):
 

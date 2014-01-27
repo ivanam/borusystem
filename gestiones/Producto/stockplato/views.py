@@ -21,8 +21,12 @@ def stockplato(request, id_plato=None):
         plato_id = Plato.objects.get(pk=id_plato)
 
         #creo diccionario con los datos del plato para mostrarlos ne el formulario
-        datosPlato = {'nombre': plato_id.nombre, 'precio': plato_id.precio,
-                      'stock': plato_id.stock,'descripcion':plato_id.descripcion}
+        datosPlato =  {'nombre': plato_id.nombre, 'precio': plato_id.precio,
+                      'stock': plato_id.stock, 'descripcion': plato_id.descripcion,
+                      'enPromocion': plato_id.enPromocion, 'descuento': plato_id.descuento,
+                      'seccion': plato_id.seccion, 'activo': plato_id.activo, 'stockAgregado': plato_id.stockAgregado}
+
+        stockAgregado= ''
     except:
         datosPlato = ''
         plato_id = None
@@ -39,6 +43,15 @@ def stockplato(request, id_plato=None):
 
 
 
+            plato_id.nombre = datosPlato.nombre
+            plato_id.precio = datosPlato.precio
+            plato_id.stock = datosPlato.stock + datosPlato.stockAgregado
+            plato_id.descripcion = datosPlato.descripcion
+            plato_id.enPromocion = datosPlato.promocion
+            plato_id.descuento = datosPlato.descuento
+            plato_id.seccion = datosPlato.seccion
+            plato_id.activo = datosPlato.activo
+            plato_id.save()
 
             plato_id.save()
             #mostramos que la operacion fue exitosa
@@ -48,7 +61,7 @@ def stockplato(request, id_plato=None):
 
         #si no es valido el formulario lo vuelvo a mostrar con los datos ingresados
         return render_to_response('Producto/stockplato/stockplato.html',
-                                  {'formulario': formulario, 'platos': platos},
+                                  {'formulario': formulario, 'platos': platos,'datosPlato': datosPlato, 'stockAgregado' : stockAgregado },
                                   context_instance=RequestContext(request))
 
     else:

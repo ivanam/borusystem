@@ -8,7 +8,7 @@ class stockBebida(ModelForm):
     class Meta:
         model = Bebida
         fields = (
-          'nombre', 'precio', 'stock', 'enPromocion', 'descuento', 'seccion', 'activo')
+          'nombre', 'precio', 'stock', 'enPromocion', 'descuento', 'seccion', 'activo','stockAgregado')
 
     def clean_stock(self):
         diccionario_limpio = self.cleaned_data
