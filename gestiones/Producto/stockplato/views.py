@@ -42,10 +42,13 @@ def stockplato(request, id_plato=None):
         if formulario.is_valid():
 
 
+            formulario.cleaned_data['stock']
+
+
 
             plato_id.nombre = datosPlato.nombre
             plato_id.precio = datosPlato.precio
-            plato_id.stock = datosPlato.stock + datosPlato.stockAgregado
+            plato_id.stock = (datosPlato.stock + datosPlato.stockAgregado)
             plato_id.descripcion = datosPlato.descripcion
             plato_id.enPromocion = datosPlato.promocion
             plato_id.descuento = datosPlato.descuento
@@ -56,13 +59,15 @@ def stockplato(request, id_plato=None):
             plato_id.save()
             #mostramos que la operacion fue exitosa
             return render_to_response('Producto/stockplato/stockplatoexito.html',
-                                      {'formulario': formulario, 'platos': platos},
+                                      {'formulario': formulario, 'platos': platos, 'datosPlato': datosPlato, 'stockAgregado' : stockAgregado},
                                       context_instance=RequestContext(request))
+
 
         #si no es valido el formulario lo vuelvo a mostrar con los datos ingresados
         return render_to_response('Producto/stockplato/stockplato.html',
                                   {'formulario': formulario, 'platos': platos,'datosPlato': datosPlato, 'stockAgregado' : stockAgregado },
                                   context_instance=RequestContext(request))
+
 
     else:
         #si no paretamos el boton modificar mozo y seleccionamos algun mozo mostramos sus datos, sino mostramos el form vacio
