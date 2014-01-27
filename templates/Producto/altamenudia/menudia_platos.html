@@ -1,6 +1,6 @@
 {% for m in platos %}
 <div class="items_seleccionados">
-    <div class="listado_eliminar_mozo_item {% if not m.activo %}inactivo{% endif %}">
+    <div class="listado_eliminar_mozo_item {% if not m.activo or m.stock == 0 %}inactivo{% endif %}">
 
 
             <input type="checkbox" name="platos" class="check_add_plato" value="{{m.id}}" multiple checked>

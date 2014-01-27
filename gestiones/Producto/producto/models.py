@@ -14,11 +14,64 @@ class Producto(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return self.nombre
+
     def cambiarEstado(self):
         if self.activo:
             self.activo = False
+
+            #rescato los menues del dia en los que esta el plato
+            menuDia = self.estoyEnMenuDia()
+            #los recorro para desactivarlos
+            for md in menuDia:
+                md.activo = False
+                md.save()
+
+            #lo mismo para los menues ejecutivos
+            menuEje = self.estoyEnMenuEjecutivo()
+            #los recorro para desactivarlos
+            for me in menuEje:
+                me.activo = False
+                me.save()
+
+
         else:
             self.activo = True
+
+    def estoyEnMenuDia(self):
+        #lista de menues donde estoy
+        listaMenus = []
+        #busco los menues del dia
+        menuDia = DelDia.objects.all()
+        #los recorro
+        for m in menuDia:
+            #rescato los platos del menu
+            menuPlatos = m.platos.all()
+            #me fijo si estoy en la lista de platos del menu
+            if self in menuPlatos.all():
+                #si estoy agrego el menu en la lista
+                listaMenus.append(m)
+
+        #si estoy en algun menu devuelvo una lista de menues donde estoy
+        return listaMenus
+
+    def estoyEnMenuEjecutivo(self):
+        #lista de menues donde estoy
+        listaMenus = []
+        #busco los menues ejecutivos
+        menuEjecutivo = Ejecutivo.objects.all()
+        #los recorro
+        for m in menuEjecutivo:
+            #rescato los platos del menu
+            menuPlatos = m.platos.all()
+            #me fijo si estoy en la lista de platos del menu
+            if self in menuPlatos.all():
+                #si estoy agrego el menu en la lista
+                listaMenus.append(m)
+
+        #si estoy en algun menu devuelvo una lista de menues donde estoy
+        return listaMenus
 
 
 class Plato(Producto):

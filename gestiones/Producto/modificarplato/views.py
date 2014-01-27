@@ -29,6 +29,7 @@ def modificarplato(request, id_plato=None):
                       'stock': plato_id.stock, 'descripcion': plato_id.descripcion,
                       'enPromocion': plato_id.enPromocion, 'descuento': plato_id.descuento,
                       'seccion': plato_id.seccion, 'activo': plato_id.activo}
+
     except:
         datosPlato = ''
         plato_id = None
@@ -60,6 +61,23 @@ def modificarplato(request, id_plato=None):
             plato_id.seccion = seccion
             plato_id.activo = activo
             plato_id.save()
+
+            #si el plato no tiene stock o se desactivo
+            if stock == 0 or activo == False:
+                #rescato los menues del dia en los que esta el plato
+                menuDia = plato_id.estoyEnMenuDia()
+                #los recorro para desactivarlos
+                for md in menuDia:
+                    md.activo = False
+                    md.save()
+
+                #lo mismo para los menues ejecutivos
+                menuEje = plato_id.estoyEnMenuEjecutivo()
+                #los recorro para desactivarlos
+                for me in menuEje:
+                    me.activo = False
+                    me.save()
+
             #mostramos que la operacion fue exitosa
             return render_to_response('Producto/modificarplato/modificarplatoexito.html',
                                       {'formulario': formulario, 'platos': platos},

@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/html">
+<html lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>{% block titulo %}{% endblock %}</title>
@@ -29,7 +29,7 @@
                 </div>
                 <ul class="nav">
 
-                    <li class="dropdown {%if activar_comandas %}active{% endif %}"><a href="{% url 'cajero' %}"> Comandas
+                    <li class="dropdown {%if activar_comandas %}active{% endif %}"><a href="{% url 'cajero' %}"> Comandas Abiertas
                         {%if activar_comandas %}
                         <b class="caret"></b>
                         {% endif %}
@@ -54,7 +54,7 @@
                     </li>
 
                     <li><a href="#" onclick="alert('En construccion...');">Facturas</a></li>
-                    <li><a href="#" onclick="alert('En construccion...');">Listados</a></li>
+                    <li><a href="#" onclick="alert('En construccion...');">Listado Comandas/Pedidos</a></li>
                 </ul>
                 <div class="cerrar_sesion_fix" id="cerrar_sescion_actual">
                     <a href="{% url 'logout' %}" target="_self">
