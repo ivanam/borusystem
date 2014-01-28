@@ -1,6 +1,6 @@
 {% for m in listado%}
 <div class="cont_resultado_busqueda_item">
-    <a class="busqueda_item" onclick="enviarForm('{{m.nombre}}');" title="{{m.nombre|capfirst}}: {{m.marca}}">
+    <a class="busqueda_item" onclick="enviarForm('{{m.nombre}}');" title="{{m.nombre|capfirst}}: {{m.seccion}}">
         {{m.nombre|capfirst}}
     </a>
 </div>

@@ -1,15 +1,18 @@
-{% for p in bebidas %}
-
-<div class="item">
-
-    <div class="listado_modificar_mozo_item {% if not p.activo %}inactivo{% endif %}">
+{% for p in plato %}
+            <div class="item">
+                <div class="listado_modificar_mozo_item {% if not p.activo %}inactivo{% endif %}">
 
                     <div class="cargar_modificar_mozo" href="{% url 'stockbebida_id' p.id %}">
 
 
-                        <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
+                        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz"
                              title="Nombre: {{p.nombre}}">
-                            {{p.nombre|truncatechars:10}}
+                            {{p.nombre|truncatechars:15}}
+                        </div>
+
+                        <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz"
+                             title="Stock: {{p.stock}}">
+                            {{p.stock}}
                         </div>
 
                         <div class="listado_item_campo_base listado_item_campo_03 flotar_iz"
@@ -18,42 +21,31 @@
                         </div>
 
 
-
-
                     </div>
-
-                    <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
-                        <img src="{{STATIC_URL}}img/conf/{% if p.activo %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
-                             urldel="{% url 'modificarbebida_id_del' p.id %}" estado="{{p.activo}}"
-                             class="eliminar_mesa"
-                             nombre="{{p.nombre}}"
-                             title="{% if not p.activo %}Acivar{% else %}Desactivar{% endif %} plato: {{p.id}}">
-                    </div>
-
 
                 </div>
+            </div>
+            {% endfor %}
+            <!-- fin listado de mozos//-->
 
-
-</div>
-{% endfor %}
 <!-- inicio paginador //-->
-{% if bebidas.paginator %}
+{% if plato.paginator %}
 <div class="pagination">
-    <span class="step-links">
-        {% if bebidas.has_previous %}
-            <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
-                                                  onclick="paginarBebidas({{ bebidas.previous_page_number }});"></a>
-        {% endif %}
+            <span class="step-links">
+                {% if plato.has_previous %}
+                    <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
+                                                          onclick="paginarProductos({{ plato.previous_page_number }});"></a>
+                {% endif %}
 
-        <span class="current">
-            {{ bebidas.number }}<span class="paginado_de"> de {{ bebidas.paginator.num_pages }}</span>
-        </span>
+                <span class="current">
+                    {{ plato.number }}<span class="paginado_de"> de {{ plato.paginator.num_pages }}</span>
+                </span>
 
-        {% if bebidas.has_next %}
-            <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"
-                                                   onclick="paginarBebidas({{ bebidas.next_page_number }});"></a>
-        {% endif %}
-    </span>
+                {% if plato.has_next %}
+                    <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"
+                                                           onclick="paginarProductos({{ plato.next_page_number }});"></a>
+                {% endif %}
+            </span>
 </div>
 {% endif %}
 <!-- fin paginador //-->

@@ -1,16 +1,16 @@
 {% extends "base_administrador.html" %}
-{% block titulo %}Boru - Modificar Plato - Modificacion Exitosa{% endblock %}
+{% block titulo %}Boru - Modificar Stock Plato - Modificacion Exitosa{% endblock %}
 {% block contenido %}
 
 	  <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
-        <div class="label label-inverse titulo_menu">Modificar Plato</div>
+        <div class="label label-inverse titulo_menu">Modificar Stock Plato</div>
         <br>
         <div class="salto_linea"></div>
         <div id="mesas_libres" class="bloque_mesas">
         <div class="salto_linea"></div>
 		
 		<!--Aca inicio contenido//-->
-		<h4>Plato modificada con exito!!!</h4>
+		<h4>Stock modificado con exito!!!</h4>
 		<br>
 		<a href="{% url 'stockplato' %}"><div class="label label-inverse pull-right">Volver</div></a>
 		<!-- Aca fin de contenido//-->
@@ -23,7 +23,7 @@
 <script>
 $(document).ready(function(){
 	
-	volver("{% url 'modificarplato' %}",1250);
+	volver("{% url 'stockplato' %}",1250);
 });
 </script>
 {% endblock %}

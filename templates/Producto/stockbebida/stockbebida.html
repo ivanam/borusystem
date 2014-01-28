@@ -1,98 +1,101 @@
 {% extends "base_administrador.html" %}
-{% block titulo %}Boru -  Modificar Stock Bebida{% endblock %}
+{% block titulo %}Boru - Modificar Stock Bebida{% endblock %}
 {% block contenido %}
+
 <div class="izquierda">
     <div class="listado_modificar_mozos cont_redondeado">
         <div class="label label-inverse titulo_menu">Listado de Bebidas</div>
 
-        <!-- inicio buscador bebidas//-->
+        <!-- inicio buscador platos//-->
         <div class="input-append">
-            <input class="span2 buscador_productos buscador_bebidas" id="appendedInputButton" type="text" name="q">
+            <input class="span2 buscador_productos" id="appendedInputButton" type="text" name="q">
             <button class="btn" id="buscarresultados" type="submit" name="buscar" value="buscar">Buscar</button>
         </div>
         <div class="cont_resultado_busqueda_productos">
         </div>
-        <!-- fin buscador bebidas//-->
+        <!-- fin buscador platos//-->
 
         <!-- inicio listado de mozos //-->
         <!-- inicio encabezados del listado //-->
         <div class="listado_item_campo_header label label-inverse">
 
-            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz" title="Nombre">
+            <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz" title="Nombre">
                 Nombre
             </div>
 
 
+            <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz" title="Stock">
+                Stock
+            </div>
+
             <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="Precio">
                 Precio
             </div>
-            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="Precio">
-                Seccion
-            </div>
+            <!--
+                        <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz" title="Stock">
+                            Stk
+                        </div>//-->
 
 
             <div class="listado_item_campo_base listado_item_campo_00">
                 &nbsp
             </div>
         </div>
-
+        <!-- fin de encabezados del listado //-->
 
         <div class="ajax_resultados">
+            {% for p in platos %}
             <div class="item">
-                {% for p in bebidas %}
                 <div class="listado_modificar_mozo_item {% if not p.activo %}inactivo{% endif %}">
 
                     <div class="cargar_modificar_mozo" href="{% url 'stockbebida_id' p.id %}">
 
 
-                        <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz"
+                        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz"
                              title="Nombre: {{p.nombre}}">
-                            {{p.nombre|truncatechars:10}}
+                            {{p.nombre|truncatechars:15}}
+                        </div>
+
+                        <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz"
+                             title="Stock: {{p.stock}}">
+                            {{p.stock}}
                         </div>
 
                         <div class="listado_item_campo_base listado_item_campo_03 flotar_iz"
                              title="Precio. {{p.precio}}">
                             {{p.precio}}
                         </div>
-                        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz"
-                             title="Seccion. {{p.seccion}}">
-                            {{p.seccion|truncatechars:10}}
-                        </div>
-
 
 
                     </div>
 
-
-
-
                 </div>
-                {% endfor %}
-                <!-- fin listado de mozos//-->
-                <!-- inicio paginador //-->
-                {% if bebidas.paginator %}
-                <div class="pagination">
+            </div>
+            {% endfor %}
+            <!-- fin listado de mozos//-->
+
+            <!-- inicio paginador //-->
+            {% if platos.paginator %}
+            <div class="pagination">
             <span class="step-links">
-                {% if bebidas.has_previous %}
+                {% if platos.has_previous %}
                     <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
-                                                          onclick="paginarBebidas({{ bebidas.previous_page_number }});"></a>
+                                                          onclick="paginarProductos({{ platos.previous_page_number }});"></a>
                 {% endif %}
 
                 <span class="current">
-                    {{ bebidas.number }}<span class="paginado_de"> de {{ bebidas.paginator.num_pages }}</span>
+                    {{ platos.number }}<span class="paginado_de"> de {{ platos.paginator.num_pages }}</span>
                 </span>
 
-                {% if bebidas.has_next %}
+                {% if platos.has_next %}
                     <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"
-                                                           onclick="paginarBebidas({{ bebidas.next_page_number }});"></a>
+                                                           onclick="paginarProductos({{ platos.next_page_number }});"></a>
                 {% endif %}
             </span>
-                </div>
-                {% endif %}
-                <!-- fin paginador //-->
-
-
             </div>
+            {% endif %}
+            <!-- fin paginador //-->
+
         </div>
     </div>
 </div>
@@ -112,9 +115,10 @@
 
                 <div class="contenefor_form_row">
 
-                    <div class="contenedor_texto">Nombre</div>
+                    <div class="contenedor_texto"> Nombre</div>
                     <div class="contenedor_input">
-                        {{ datosBebida.nombre }}
+
+                        {{ formulario.nombre }}
 
                     </div>
                 </div>
@@ -123,36 +127,34 @@
 
                     <div class="contenedor_texto"> Precio</div>
                     <div class="contenedor_input">
-                        {{ datosBebida.precio }}
+
+                        {{ formulario.precio }}
+
                     </div>
                 </div>
 
 
-
-                <div class="contenefor_form_row">
-
-                    <div class="contenedor_texto"> Marca</div>
-                    <div class="contenedor_input">
-                        {{ datosBebida.marca }}
-                    </div>
-                </div>
                 <div class="contenefor_form_row">
 
                     <div class="contenedor_texto"> Stock Actual</div>
                     <div class="contenedor_input">
 
-                        {{datosBebida.stock }}
-                         </div>
-                </div>
-                <div class="contenefor_form_row">
-
-                    <div class="contenedor_texto">Agregar o quitar Stock: </div>
-                    <div class="contenedor_input">
-
-                        {{formulario.stockAgregado }}
+                        {{formulario.stock }}
 
                     </div>
                 </div>
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"> Agregar/Quitar Stock:</div>
+                    <div class="contenedor_input">
+
+                        <input type="text" name="addProducto" id="addProducto" value="0">
+
+                        <div class="form_error_msg">{{ error }}</div>
+                    </div>
+                </div>
+                <div class="salto_linea"></div>
 
                 {% csrf_token %}
                 <div class="salto_linea"></div>
@@ -165,6 +167,7 @@
         </div>
         <!-- fin bloke de mesas//-->
         <div class="salto_linea"></div>
+
     </div>
     <!-- fin contenedor principal//-->
 
@@ -175,7 +178,7 @@
 <script>
 
 function enviarForm(msg){
-    $(".buscador_bebidas").val(msg);
+    $(".buscador_productos").val(msg);
     buscarresultados();
 }
 
@@ -186,11 +189,11 @@ var re = new RegExp(q,"gi");
 
 function buscarresultados(){
 
-    var busqueda=$(".buscador_bebidas").val();
+    var busqueda=$(".buscador_productos").val();
 
     $.ajax({
         type: "GET",
-        url: "{% url 'buscador_bebidas_ajax_resultados' %}",
+        url: "{% url 'buscador_producto_ajax_resultados_stockb' %}",
         data: "q="+busqueda,
         success: function(datos){
 
@@ -207,11 +210,11 @@ function buscarresultados(){
 
 
 
-function paginarBebidas(pagina){
+function paginarProductos(pagina){
 
     $.ajax({
                 type: "GET",
-                url: "{% url 'paginador_ajax_resultados_bebidas' %}",
+                url: "{% url 'paginador_ajax_resultados_stockb' %}",
                 data: "pagina="+pagina,
                 success: function(datos){
                     $(".ajax_resultados").html(datos);
@@ -222,8 +225,7 @@ function paginarBebidas(pagina){
 
 
 function agregarFuncionalidad(){
-
-    $(".cargar_modificar_mozo").each(function(i){
+	 $(".cargar_modificar_mozo").each(function(i){
 	 	$(this).css("cursor","pointer");
 			$(this).click(function(event){
 				var uri=$(this).attr("href");
@@ -237,7 +239,7 @@ function agregarFuncionalidad(){
 			$(this).click(function(event){
 				var mozo = $(this).attr("nombre");
 				var estado = $(this).attr("estado");
-				var msg = (estado == "True")?"Usted desea dejar inactiva la bebida ":"Usted desea activar la bebida ";
+				var msg = (estado == "True")?"Usted desea dejar inactivo al plato ":"Usted desea activar el plato ";
                 if( confirm(msg+mozo+"?") ){
                    $(location).attr('href', $(this).attr("urldel") );
                 }
@@ -246,17 +248,25 @@ function agregarFuncionalidad(){
 
 }
 
+
+
+
+
 $(document).ready(function(){
+
+    agregarFuncionalidad();
+
 
         $("#buscarresultados").click(function(event){
         buscarresultados();
-        });
+    });
+
 
 
         $(".cont_resultado_busqueda_productos").css("visibility","hidden");
 
     //cuando presiono una tecla en la caja de busqueda
-    $(".buscador_bebidas").keyup(function(event){
+    $(".buscador_productos").keyup(function(event){
 
         var busqueda=$(this).val();
 
@@ -264,7 +274,7 @@ $(document).ready(function(){
 
             $.ajax({
                 type: "GET",
-                url: "{% url 'buscador_bebidas_ajax' %}",
+                url: "{% url 'buscador_producto_ajax_stockb' %}",
                 data: "q="+busqueda,
                 success: function(datos){
 
@@ -301,8 +311,10 @@ $(document).ready(function(){
 
     });
 
-     agregarFuncionalidad();
+
 });
+
+
 
 
 </script>
