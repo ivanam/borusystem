@@ -8,5 +8,5 @@ class stockBebida(ModelForm):
     class Meta:
         model = Bebida
         fields = (
-          'nombre', 'precio', 'stock', 'enPromocion', 'descuento', 'seccion', 'activo','stockAgregado')
+          'nombre', 'precio', 'stock', 'enPromocion', 'descuento', 'seccion', 'activo')
 

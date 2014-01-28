@@ -19,24 +19,22 @@
         <!-- inicio encabezados del listado //-->
         <div class="listado_item_campo_header label label-inverse">
 
-            <div class="listado_item_campo_base listado_item_campo_05 flotar_iz texto_iz" title="Nombre">
+            <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz" title="Nombre">
                 Nombre
             </div>
 
 
-            <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz" title="Precio">
-                Precio
+            <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz" title="Stock">
+                Stock
             </div>
 
             <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="Precio">
-                Seccion
+                Precio
             </div>
             <!--
                         <div class="listado_item_campo_base listado_item_campo_01_2 flotar_iz" title="Stock">
                             Stk
                         </div>//-->
-
-
 
 
             <div class="listado_item_campo_base listado_item_campo_00">
@@ -46,37 +44,39 @@
         <!-- fin de encabezados del listado //-->
 
         <div class="ajax_resultados">
+            {% for p in platos %}
             <div class="item">
-                {% for p in platos %}
                 <div class="listado_modificar_mozo_item {% if not p.activo %}inactivo{% endif %}">
 
                     <div class="cargar_modificar_mozo" href="{% url 'stockplato_id' p.id %}">
 
 
-                        <div class="listado_item_campo_base listado_item_campo_05 flotar_iz texto_iz"
+                        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz"
                              title="Nombre: {{p.nombre}}">
-                            {{p.nombre|truncatechars:14}}
+                            {{p.nombre|truncatechars:15}}
                         </div>
 
-                        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz"
+                        <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz"
+                             title="Stock: {{p.stock}}">
+                            {{p.stock}}
+                        </div>
+
+                        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz"
                              title="Precio. {{p.precio}}">
                             {{p.precio}}
                         </div>
-                        <div class="listado_item_campo_base listado_item_campo_05 flotar_iz texto_iz"
-                             title="Seccion: {{p.seccion}}">
-                            {{p.seccion|truncatechars:14}}
-                        </div>
+
 
                     </div>
 
-
                 </div>
-                {% endfor %}
-                <!-- fin listado de mozos//-->
+            </div>
+            {% endfor %}
+            <!-- fin listado de mozos//-->
 
-                <!-- inicio paginador //-->
-                {% if platos.paginator %}
-                <div class="pagination">
+            <!-- inicio paginador //-->
+            {% if platos.paginator %}
+            <div class="pagination">
             <span class="step-links">
                 {% if platos.has_previous %}
                     <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
@@ -92,10 +92,10 @@
                                                            onclick="paginarProductos({{ platos.next_page_number }});"></a>
                 {% endif %}
             </span>
-                </div>
-                {% endif %}
-                <!-- fin paginador //-->
             </div>
+            {% endif %}
+            <!-- fin paginador //-->
+
         </div>
     </div>
 </div>
@@ -118,7 +118,7 @@
                     <div class="contenedor_texto"> Nombre</div>
                     <div class="contenedor_input">
 
-                        {{ datosPlato.nombre }}
+                        {{ formulario.nombre }}
 
                     </div>
                 </div>
@@ -128,7 +128,7 @@
                     <div class="contenedor_texto"> Precio</div>
                     <div class="contenedor_input">
 
-                        {{  datosPlato.precio }}
+                        {{ formulario.precio }}
 
                     </div>
                 </div>
@@ -138,33 +138,32 @@
 
                     <div class="contenedor_texto"> Descripcion</div>
                     <div class="contenedor_input">
-                        {{  datosPlato.descripcion }}
-
-                    </div>
-                </div>
-
-                 <div class="contenefor_form_row">
-
-                    <div class="contenedor_texto"> Stock Actual</div>
-                    <div class="contenedor_input">
-
-                        {{datosPlato.stock }}
+                        {{ formulario.descripcion }}
 
                     </div>
                 </div>
 
                 <div class="contenefor_form_row">
 
-                    <div class="contenedor_texto"> Agregar o quitar Stock: </div>
+                    <div class="contenedor_texto"> Stock Actual</div>
                     <div class="contenedor_input">
 
-                        {{formulario.stockAgregado}}
+                        {{formulario.stock }}
 
                     </div>
                 </div>
 
+                <div class="contenefor_form_row">
 
+                    <div class="contenedor_texto"> Agregar/Quitar Stock:</div>
+                    <div class="contenedor_input">
 
+                        <input type="text" name="addProducto" id="addProducto" value="0">
+
+                        <div class="form_error_msg">{{ error }}</div>
+                    </div>
+                </div>
+                <div class="salto_linea"></div>
 
                 {% csrf_token %}
                 <div class="salto_linea"></div>
@@ -203,7 +202,7 @@ function buscarresultados(){
 
     $.ajax({
         type: "GET",
-        url: "{% url 'buscador_producto_ajax_resultados_mod' %}",
+        url: "{% url 'buscador_producto_ajax_resultados_stock' %}",
         data: "q="+busqueda,
         success: function(datos){
 
@@ -224,7 +223,7 @@ function paginarProductos(pagina){
 
     $.ajax({
                 type: "GET",
-                url: "{% url 'paginador_ajax_resultados_mod' %}",
+                url: "{% url 'paginador_ajax_resultados_stock' %}",
                 data: "pagina="+pagina,
                 success: function(datos){
                     $(".ajax_resultados").html(datos);
@@ -284,7 +283,7 @@ $(document).ready(function(){
 
             $.ajax({
                 type: "GET",
-                url: "{% url 'buscador_producto_ajax_mod' %}",
+                url: "{% url 'buscador_producto_ajax_stock' %}",
                 data: "q="+busqueda,
                 success: function(datos){
 
@@ -322,11 +321,9 @@ $(document).ready(function(){
     });
 
 
-
-
-
-
 });
+
+
 
 
 </script>

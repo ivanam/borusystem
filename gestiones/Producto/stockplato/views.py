@@ -16,17 +16,17 @@ def stockplato(request, id_plato=None):
     paginator = Paginator(platos_lista, PAGINADO_PRODUCTOS)
     platos = paginator.page(1)
 
+    error = ''
+    stock_valido = True
+
     try:
         #obtengo en el caso de que venga el id por GET, al plato
         plato_id = Plato.objects.get(pk=id_plato)
 
         #creo diccionario con los datos del plato para mostrarlos ne el formulario
         datosPlato =  {'nombre': plato_id.nombre, 'precio': plato_id.precio,
-                      'stock': plato_id.stock, 'descripcion': plato_id.descripcion,
-                      'enPromocion': plato_id.enPromocion, 'descuento': plato_id.descuento,
-                      'seccion': plato_id.seccion, 'activo': plato_id.activo, 'stockAgregado': plato_id.stockAgregado}
+                      'stock': plato_id.stock, 'descripcion': plato_id.descripcion}
 
-        stockAgregado= ''
     except:
         datosPlato = ''
         plato_id = None
@@ -37,35 +37,55 @@ def stockplato(request, id_plato=None):
         #le indico al form que tome los datos del request y le paso la instancia de user que obtuve mas arriba
         formulario = stockPlato(request.POST, instance=plato_id)
 
+        try:
+            #rescato el valor que queiro agregar al stock y tato de converirlo en entero
+            addProducto = int(request.POST.get('addProducto'))
+        except:
+            #si lo que ingresaron no fue un entero indico el error
+            error = 'El stock ingresado debe ser un numero entero.'
+            stock_valido = False
 
         #si el formulario es valido
-        if formulario.is_valid():
+        if formulario.is_valid() and stock_valido:
+
+            #calculo nuevo stock
+            stockNuevo = plato_id.stock+addProducto
+
+            #si el nuevo stock es menor o igual a 0
+            if stockNuevo <= 0:
+
+                #si es menor a 0 lo pongo en 0
+                plato_id.stock = 0
+                plato_id.save()
+
+                #rescato los menues del dia en los que esta el plato
+                menuDia = plato_id.estoyEnMenuDia()
+                #los recorro para desactivarlos
+                for md in menuDia:
+                    md.activo = False
+                    md.save()
+
+                #lo mismo para los menues ejecutivos
+                menuEje = plato_id.estoyEnMenuEjecutivo()
+                #los recorro para desactivarlos
+                for me in menuEje:
+                    me.activo = False
+                    me.save()
+            else:
+                plato_id.stock = stockNuevo
+                plato_id.save()
 
 
-            formulario.cleaned_data['stock']
-
-
-
-            plato_id.nombre = datosPlato.nombre
-            plato_id.precio = datosPlato.precio
-            plato_id.stock = (datosPlato.stock + datosPlato.stockAgregado)
-            plato_id.descripcion = datosPlato.descripcion
-            plato_id.enPromocion = datosPlato.promocion
-            plato_id.descuento = datosPlato.descuento
-            plato_id.seccion = datosPlato.seccion
-            plato_id.activo = datosPlato.activo
-            plato_id.save()
-
-            plato_id.save()
             #mostramos que la operacion fue exitosa
             return render_to_response('Producto/stockplato/stockplatoexito.html',
-                                      {'formulario': formulario, 'platos': platos, 'datosPlato': datosPlato, 'stockAgregado' : stockAgregado},
+                                      {'formulario': formulario, 'platos': platos, 'datosPlato': datosPlato},
                                       context_instance=RequestContext(request))
+
 
 
         #si no es valido el formulario lo vuelvo a mostrar con los datos ingresados
         return render_to_response('Producto/stockplato/stockplato.html',
-                                  {'formulario': formulario, 'platos': platos,'datosPlato': datosPlato, 'stockAgregado' : stockAgregado },
+                                  {'formulario': formulario, 'platos': platos,'datosPlato': datosPlato,'error':error},
                                   context_instance=RequestContext(request))
 
 
@@ -73,7 +93,7 @@ def stockplato(request, id_plato=None):
         #si no paretamos el boton modificar mozo y seleccionamos algun mozo mostramos sus datos, sino mostramos el form vacio
         formulario = stockPlato(initial=datosPlato)
         return render_to_response('Producto/stockplato/stockplato.html',
-                                  {'formulario': formulario, 'platos': platos, 'datosPlato': datosPlato},
+                                  {'formulario': formulario, 'platos': platos, 'datosPlato': datosPlato,'error':error},
                                   context_instance=RequestContext(request))
 
 @permission_required('Administrador.is_admin', login_url="login")

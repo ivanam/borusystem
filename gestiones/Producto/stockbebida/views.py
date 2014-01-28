@@ -25,7 +25,7 @@ def stockbebida (request, id_bebida = None):
         datosBebida = {'id': unaBebida.id, 'nombre': unaBebida.nombre, 'precio': unaBebida.precio,
                        'stock': unaBebida.stock, 'activo': unaBebida.activo, 'marca': unaBebida.marca,
                        'enPromocion': unaBebida.enPromocion, 'descuento': unaBebida.descuento,
-                       'seccion': unaBebida.seccion, 'stockAgregado': unaBebida.stockAgregado}
+                       'seccion': unaBebida.seccion}
 
     except:
         datosBebida = ''
