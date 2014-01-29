@@ -2,184 +2,461 @@
 {% block titulo %}Boru - Modificar Menu Ejecutivo{% endblock %}
 {% block contenido %}
 
-	<div class="izquierda">
-	  <div class="listado_modificar_mozos cont_redondeado">
+<div class="izquierda">
+    <!-- buscador menues code //-->
+    <div class="listado_modificar_mozos cont_redondeado">
         <div class="label label-inverse titulo_menu">Listado de Menues</div>
+        <!-- inicio listado de menues //-->
+        <select name="id_menu" id="id_menu" class="combo">
+            <option class="listado_eliminar_mozo_item" value="None" select_id="None" title="Seleccionar un menu.">
+                Seleccionar Menu...
+            </option>
+            {% for m in menues %}
+            <option class="listado_eliminar_mozo_item {% if not m.activo %}inactivo{% endif %}"
+                    value="{% url 'modificarmenu_id' m.id %}"
+                    select_id="{{id_menu}}" title="{{m.nombre|capfirst}}: {{m.descripcion}}">
+                {{m.nombre|capfirst|truncatechars:20}}
+            </option>
 
-       <!-- inicio listado de mozos //-->
-          <!-- inicio encabezados del listado //-->
-          <div class="listado_item_campo_header label label-inverse">
-              <div class="listado_item_campo_base listado_item_campo_02">
-                 &nbsp
-              </div>
-              <div class="listado_item_campo_base listado_item_campo_04" title="Nombre">
-                  Nombre
-              </div>
-
-              <div class="listado_item_campo_base listado_item_campo_02" title="Precio">
-                  Precio
-              </div>
-
-              <div class="listado_item_campo_base listado_item_campo_02" title="Stock">
-                  Stock
-              </div>
-
-              <div class="listado_item_campo_base listado_item_campo_02" title="Activo">
-                  Activo
-              </div>
-
-
-          </div>
-          <!-- fin de encabezados del listado //-->
-
-          {% for m in menues %}
-          <div class="listado_modificar_mozo_item {% if not m.activo %}inactivo{% endif %}">
-
-              <div class="listado_item_campo_base listado_item_campo_02">
-                  <img src="{{STATIC_URL}}img/conf/{% if m.activo %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
-                       urldel="{% url 'modificarmenu_id_del' m.id %}" estado="{{m.activo}}" class="eliminar_menu"
-                       nombre="{{m.id}}"
-                       title="{% if not m.activo %}Acivar{% else %}Desactivar{% endif %} menu: {{m.id}}">
-              </div>
-
-
-              <div class="cargar_modificar_mozo" href="{% url 'modificarmenu_id' m.id %}">
-
-                  <div class="listado_item_campo_base listado_item_campo_04" title="Nombre: {{m.nombre}}">
-                      {{m.nombre|capfirst|truncatechars:10}}
-                  </div>
-
-                  <div class="listado_item_campo_base listado_item_campo_02" title="Precio: {{m.precio}}">
-                      {{m.precio}}
-                  </div>
-
-                  <div class="listado_item_campo_base listado_item_campo_02" title="Stock: {{m.stock}}">
-                      {{m.capacidad}}
-                  </div>
-
-                  <div class="listado_item_campo_base listado_item_campo_02" title="{{m.activo}}">
-                      {{m.activo|truncatechars:6}}
-                  </div>
-
-
-
-              </div>
-          </div>
-          {% endfor %}
-		 <!-- fin listado de mozos//-->
-      </div>
-   </div>
-
-	<div class="derecha">
-	  <div id="con_menu_mesa" class="cont_redondeado contenedor_principal_big">
-    <div class="label label-inverse titulo_menu">Modificar Menues</div>
-    <br>
-
-    <div class="salto_linea"></div>
-    <div id="menues" class="bloque_menues">
-        <div class="salto_linea"></div>
-
-        <!--Aca inicio contenido//-->
-        <form action="" method="post" name="add_menu" id="id_add_menu">
-            {{ formulario.non_field_errors }}
-
-
-
-             <div class="contenefor_form_row">
-
-                <div class="contenedor_texto"><span class="form_error_msg">*</span> Nombre </div>
-                <div class="contenedor_input">
-                    <!--<input type="text" name="username" value="" class="validar_campo">-->
-                    {{ formulario.nombre }}
-                    <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
-                </div>
-            </div>
-
-             <div class="contenefor_form_row">
-
-                <div class="contenedor_texto"><span class="form_error_msg">*</span> Precio </div>
-                <div class="contenedor_input">
-                    <!--<input type="text" name="username" value="" class="validar_campo">-->
-                    {{ formulario.precio }}
-                    <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
-                </div>
-            </div>
-
-            <div class="contenefor_form_row">
-
-                <div class="contenedor_texto"><span class="form_error_msg">*</span> Stock </div>
-                <div class="contenedor_input">
-                    <!--<input type="text" name="username" value="" class="validar_campo">-->
-                    {{ formulario.stock }}
-                    <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
-                </div>
-            </div>
-
-            <div class="contenefor_form_row">
-
-                <div class="contenedor_texto"><span class="form_error_msg">*</span> Descripcion</div>
-                <div class="contenedor_input">
-                    <!--<input type="text" name="username" value="" class="validar_campo">-->
-                    {{ formulario.descripcion }}
-                    <div class="form_error_msg">{{ formulario.descripcion.errors|striptags }}</div>
-                </div>
-            </div>
-
-            <div class="contenefor_form_row">
-
-                <div class="contenedor_texto"><span class="form_error_msg">*</span> Fecha Inicio</div>
-                <div class="contenedor_input">
-                    <!--<input type="password" name="password" value="" class="validar_campo">-->
-                    {{ formulario.fecha_Inicio }}
-                    <div class="form_error_msg">{{ formulario.fecha_Inicio.errors|striptags }}</div>
-                </div>
-            </div>
-
-
-                                    {% csrf_token %}
-                                    <div class="salto_linea"></div>
-                                    <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Menu"
-                                           class="btn btn-large btn-primary">
-
-        </form>
-        <!-- Aca fin de contenido//-->
-
+            {% endfor %}
+        </select>
+        <!-- fin listado de menues//-->
     </div>
-    <!-- fin bloke de mesas//-->
-    <div class="salto_linea"></div>
-    <span class="form_error_msg">* Campos Obligatorios</span>
-</div><!-- fin contenedor principal//-->
 
-    </div><!-- derecha fin//-->
+    <div class="salto"></div>
+
+    <!-- buscador platos code //-->
+    <div class="listado_modificar_mozos cont_redondeado">
+        <div class="label label-inverse titulo_menu">Listado de Platos</div>
+        <!-- inicio buscador de platos //-->
+
+        <!-- inicio buscador platos//-->
+        <div class="input-append">
+            <input class="span2 buscador_productos" id="appendedInputButton" type="text" name="q">
+            <button class="btn" id="buscarresultados" type="submit" name="buscar" value="buscar">Buscar</button>
+        </div>
+        <div class="cont_resultado_busqueda_productos">
+        </div>
+        <!-- fin buscador platos//-->
+        <!-- inicio listado de platos //-->
+
+        <div class="listado_eliminar_mozo_item_checkbox label label-inverse">
+
+            <div class="listado_item_campo_base listado_item_campo_06 flotar_iz">Nombre</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Precio</div>
+            <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Stock</div>
+
+        </div>
+
+
+        <div class="ajax_resultados">
+            {% for m in plato %}
+            <div class="item">
+                <div class="listado_eliminar_mozo_item {% if not m.activo or m.stock == 0 %}inactivo{% endif %}">
+
+                    <input type="hidden" name="id_plato" class="id_plato" value="{{m.id}}" activo="{{m.activo}}"
+                           stock="{{m.stock}}">
+
+                    <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz"
+                         title="Seccion: {{m.seccion}}
+{{m.nombre|capfirst}}: {{m.descripcion}}">
+                        {{m.nombre|capfirst|truncatechars:20}}
+                    </div>
+
+                    <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.precio}}">
+                        {{m.precio}}
+                    </div>
+
+                    <div class="listado_item_campo_base listado_item_campo_03 flotar_iz" title="{{m.stock}}">
+                        {{m.stock}}
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+            <!-- inicio paginador //-->
+            <div class="pagination">
+            <span class="step-links">
+                {% if plato.has_previous %}
+                    <a href="#" title=" < Anterior "><img src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"
+                                                          onclick="paginarProductos({{ plato.previous_page_number }});"></a>
+                {% endif %}
+
+                <span class="current">
+                    {{ plato.number }}<span class="paginado_de"> de {{ plato.paginator.num_pages }}</span>
+                </span>
+
+                {% if plato.has_next %}
+                    <a href="#" title=" Siguiente > "><img src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"
+                                                           onclick="paginarProductos({{ plato.next_page_number }});"></a>
+                {% endif %}
+            </span>
+            </div>
+            <!-- fin paginador //-->
+
+
+        </div>
+        <!-- fin listado de platos //-->
+        <!-- fin buscador de platos//-->
+    </div>
+</div>
+<form action="" method="post" name="add_menu_dia" id="id_add_menu_dia">
+    <div class="centro">
+        <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
+            <div class="label label-inverse titulo_menu">Modificar Menu Ejecutivo</div>
+            <br>
+
+            <div class="salto_linea"></div>
+            <div id="mesas_libres" class="bloque_mesas">
+                <div class="salto_linea"></div>
+
+                <!--Aca inicio contenido//-->
+
+                {{ formulario.non_field_errors }}
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Nombre</div>
+                    <div class="contenedor_input">
+
+                        {{ formulario.nombre }}
+                        <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
+                    </div>
+                </div>
+
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Precio</div>
+                    <div class="contenedor_input">
+                        {{ formulario.precio }}
+                        <div class="form_error_msg">{{ formulario.precio.errors|striptags }}</div>
+                    </div>
+                </div>
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Stock</div>
+                    <div class="contenedor_input">
+                        {{ formulario.stock }}
+                        <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
+                    </div>
+                </div>
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg"></span> Descripcion</div>
+                    <div class="contenedor_input">
+                        {{ formulario.descripcion}}
+                        <div class="form_error_msg">{{ formulario.descripcion.errors|striptags }}</div>
+                    </div>
+                </div>
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Fecha Inicio</div>
+                    <div class="contenedor_input">
+                        {{ formulario.fecha_Inicio }}
+                        <div class="form_error_msg">{{ formulario.fecha_Inicio.errors|striptags }}</div>
+                    </div>
+                </div>
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span> Fecha Fin</div>
+                    <div class="contenedor_input">
+                        {{ formulario.fecha_fin }}
+                        <div class="form_error_msg">{{ formulario.fecha_fin.errors|striptags }}</div>
+                    </div>
+                </div>
+
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span>Seccion</div>
+                    <div class="contenedor_input">
+                        {{ formulario.seccion }}
+                        <div class="form_error_msg">{{ formulario.seccion.errors|striptags }}</div>
+                    </div>
+                </div>
+
+
+                <div class="contenefor_form_row">
+                    <div class="contenedor_texto_small"><span class="form_error_msg">*</span>Activo</div>
+                    <div class="contenedor_input">
+                        {{ formulario.activo }}
+                        <div class="form_error_msg">{{ formulario.activo.errors|striptags }}</div>
+                    </div>
+                </div>
+
+                {% csrf_token %}
+
+                <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Menu del Día"
+                       class="btn btn-large btn-primary">
+
+                <!-- Aca fin de contenido//-->
+
+            </div>
+            <!-- fin bloke de mesas//-->
+
+            <span class="form_error_msg">* Campos Obligatorios</span>
+            <br>
+
+
+        </div>
+        <!-- fin contenedor principal//-->
+    </div>
+    <div class="izquierda">
+        <div class="listado_modificar_mozos cont_redondeado">
+            <div class="label label-inverse titulo_menu">Platos Agregados al Menu</div>
+            <!-- inicio buscador de platos //-->
+            <div class="listado_eliminar_mozo_item_checkbox label label-inverse">
+
+                <div class="listado_item_campo_base listado_item_campo_06 flotar_iz">Nombre</div>
+                <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Precio</div>
+                <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Stock</div>
+
+            </div>
+
+            <div class="platos_originales">
+                {{lista_platos}}
+            </div>
+            <div class="platos">
+                {{lista_platos_sesion}}
+            </div>
+            <div class="form_error_msg">{{ formulario.platos.errors|striptags }}</div>
+
+            <!-- fin buscador de platos//-->
+        </div>
+    </div>
+</form>
+
 {% endblock %}
 
 {% block script %}
 <script>
+// Traducción al español
+$(function($){
+    $.datepicker.regional['es'] = {
+        closeText: 'Cerrar',
+        prevText: '<Ant',
+        nextText: 'Sig>',
+        currentText: 'Hoy',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+        weekHeader: 'Sm',
+        dateFormat: 'dd/mm/yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.setDefaults($.datepicker.regional['es']);
+});
+
+function enviarForm(msg){
+    $(".buscador_productos").val(msg);
+    buscarresultados();
+}
+
+function reemplazarCadena(cad, q){
+var re = new RegExp(q,"gi");
+    return cad.replace(re,"<span class='resaltado resaltarBusqueda'>"+q+"</span>");
+}
+
+function buscarresultados(){
+
+    var busqueda=$(".buscador_productos").val();
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'buscador_producto_ajax_resultados_mdm' %}",
+        data: "q="+busqueda,
+        success: function(datos){
+
+            if(datos.length > 0){
+                $(".ajax_resultados").html(datos);
+                $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                agregarFuncionalidad();
+            }
+          }
+    });
+
+}
+
+function agregarPlato(data){
+
+    var id_plato = $(".id_plato", data).val();
+    var stock = $(".id_plato", data).attr("stock");
+    var activo = $(".id_plato", data).attr("activo");
+    var flag=true;
+    var msg="Atencion: \n";
+    var confirmacion = true;
+
+    if(stock == 0){
+        msg=msg+"El plato seleccionado no tine stock.\n";
+        flag=false;
+    }
+    if(activo == "False"){
+        msg=msg+"El plato seleccionado esta inactivo.\n";
+        flag=false;
+    }
+
+    if(flag == false){
+        $("#id_activo option[value=False]").attr("selected",true);
+        msg=msg+"Al agregar este plato el menu quedara inactivo.\n";
+        confirmacion = confirm(msg);
+    }
+
+    if(confirmacion){
+
+        $.ajax({
+                    type: "GET",
+                    url: "{% url 'agregar_producto_lista_ajax_mdm' %}",
+                    data: "id_prod="+id_plato,
+                    success: function(datos){
+                        $(".platos").html(datos);
+                    }
+        });
+    }
+}
+
+
+function paginarProductos(pagina){
+
+    $.ajax({
+                type: "GET",
+                url: "{% url 'paginador_ajax_resultados_mdm' %}",
+                data: "pagina="+pagina,
+                success: function(datos){
+                    $(".ajax_resultados").html(datos);
+                    agregarFuncionalidad();
+                }
+            });
+}
+
+
+
+
+function agregarFuncionalidad(){
+    //agrego la funcionalidad de agregar a la lista de platos
+    $(".item").each(function(i){
+
+        $(this).css("cursor","pointer");
+
+        $(this).click(function(event){
+            agregarPlato($(this).html());
+        });
+
+    });
+}
+
+function borraSesionAjax(){
+        $.ajax({
+                type: "GET",
+                url: "{% url 'borrarSesionAjax' %}",
+                async: false,
+                success: function(datos){
+                  if(datos == "500")
+                    alert("Error al borrar la Sesion!");
+                }
+            });
+}
+
+function modificarMenu(){
+    borraSesionAjax();
+    var uri = $(".combo").val();
+    if( uri != "None" )
+        location.href=uri;
+}
+
+function comboSelect(){
+
+    var hostPage = location.host;
+    var hrefPage = location.href;
+    var protocolPage = location.protocol;
+
+    var uri = hrefPage.replace(protocolPage,"");
+    uri = uri.replace(hostPage,"");
+    uri = uri.replace("//","");
+
+    $(".combo option[value='"+uri+"']").attr("selected",true);
+}
+
 $(document).ready(function(){
 
-	 $(".cargar_modificar_mozo").each(function(i){
-	 	$(this).css("cursor","pointer");
-			$(this).click(function(event){
-				var uri=$(this).attr("href");
-				$(location).attr('href',uri);
-			});
-	 });
+    comboSelect();
+    $(".combo").on('change',modificarMenu);
 
-	 $(".eliminar_menu").each(function(i){
-	 	$(this).css("cursor","pointer");
 
-			$(this).click(function(event){
-				var mozo = $(this).attr("nombre");
-				var estado = $(this).attr("estado");
-				var msg = (estado == "True")?"Usted desea desactivar el menu ":"Usted desea activar un menu ";
-                if( confirm(msg+mozo+"?") ){
-                   $(location).attr('href', $(this).attr("urldel") );
-                }
-			});
-	 });
+    agregarFuncionalidad();
 
-	$('.dropdown-toggle').dropdownHover(options);
+    $("#buscarresultados").click(function(event){
+        buscarresultados();
+    });
 
+
+
+    //checkbox
+    $("input[name=checktodos]").change(function(){
+        $('input[type=checkbox]').each( function() {
+            if($("input[name=checktodos]:checked").length == 1){
+                this.checked = true;
+            } else {
+                this.checked = false;
+            }
+        });
+    });
+
+    $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+
+    //cuando presiono una tecla en la caja de busqueda
+    $(".buscador_productos").keyup(function(event){
+
+        var busqueda=$(this).val();
+
+        if( busqueda.length >= 2){
+
+            $.ajax({
+                type: "GET",
+                url: "{% url 'buscador_producto_ajax_mdm' %}",
+                data: "q="+busqueda,
+                success: function(datos){
+
+                    if(datos.length > 0){
+                        $(".cont_resultado_busqueda_productos").html(datos);
+                        $(".cont_resultado_busqueda_productos").css("visibility","visible");
+
+                        $(".busqueda_item").each(function(i){
+                            var cad=$(this).text();
+                            $(this).html(reemplazarCadena(cad, busqueda));
+                            $(".resaltado").addClass("resaltarBusqueda");
+                        });
+
+                    }
+                    else{
+                        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                    }
+
+                  }
+            });
+        }
+        else
+        {
+            $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+        }
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+          if(keycode == '13'){
+
+                buscarresultados();
+          }
+
+
+    });
+
+    $("#id_fecha_Inicio").attr("readonly",true);
+    $("#id_fecha_Inicio").datepicker();
+
+    $("#id_fecha_fin").attr("readonly",true);
+    $("#id_fecha_fin").datepicker();
 });
+
 </script>
 {% endblock %}
