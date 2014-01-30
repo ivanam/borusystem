@@ -40,7 +40,7 @@
 
             {% if p.factura and not p.factura.pago %}
             <input type="button" class="btn btn-small" value="Relizar pago"
-                   onClick="ir('{% url 'pagar_factura' p.factura.id p.id %}');">
+                   onClick="ir('{% url 'pagar_factura' p.factura.id p.id %}','&bull; Generando Pago<br><br>');">
             {% endif %}
             {% if p.factura and p.factura.pago %}
             <input type="button" class="btn btn-small factura_pagada_btn" value="Factura Pagada" disabled>

@@ -7,8 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Context
 from django.template.loader import get_template
-#import estrategia
-from gestiones.Comanda.comanda.models import Comanda, EstrategiaPedido, Preticket, Factura
+from gestiones.Comanda.comanda.models import Comanda, Preticket, Factura
 
 
 @permission_required('Administrador.is_cajero', login_url="login")
@@ -74,17 +73,17 @@ def una_comanda(request,id_comanda=None):
             plantillas.append(detalle_pedido.render(
                 Context({'pedidos': comandas_lista, 'STATIC_URL': STATIC_URL, 'fecha_del_dia': una_comanda.fecha})))
         else:
-            #si es una comanda
-            comandas_lista.append(una_comanda)
-            plantillas.append(detalle_comanda_abierta.render(
-                Context({'comandas': comandas_lista, 'STATIC_URL': STATIC_URL, 'fecha_del_dia': una_comanda.fecha})))
             #si hay preticket asociado lo muestro
             if una_comanda.preticket != None:
                 comandas_lista = []
                 comandas_lista.append(una_comanda.preticket)
-
                 plantillas.append(
                     detalle_preticket.render(Context({'pretickets': comandas_lista, 'STATIC_URL': STATIC_URL})))
+            else:
+                comandas_lista.append(una_comanda)
+                plantillas.append(detalle_comanda_abierta.render(
+                    Context(
+                        {'comandas': comandas_lista, 'STATIC_URL': STATIC_URL, 'fecha_del_dia': una_comanda.fecha})))
 
         return render_to_response('Cajero/cajero.html',
                               {"una_comanda": detalle_generico.render(Context({'plantillas': plantillas})),
@@ -130,16 +129,15 @@ def buscar_mesa(request):
                     comandas_lista.append(c)
                     plantillas.append(detalle_pedido.render(Context({'pedidos': comandas_lista, 'STATIC_URL': STATIC_URL, 'fecha_del_dia': c.fecha})))
                 else:
-                    #si es una comanda
-                    comandas_lista.append(c)
-                    plantillas.append(detalle_comanda_abierta.render(Context({'comandas': comandas_lista, 'STATIC_URL': STATIC_URL,'fecha_del_dia':c.fecha})))
                     #si hay preticket asociado lo muestro
                     if c.preticket != None:
                         comandas_lista=[]
                         comandas_lista.append(c.preticket)
-
                         plantillas.append(detalle_preticket.render(Context({'pretickets': comandas_lista, 'STATIC_URL': STATIC_URL})))
-
+                    else: #si no hay reticket y no es un pedido, es una comanda abierta
+                        comandas_lista.append(c)
+                        plantillas.append(detalle_comanda_abierta.render(
+                            Context({'comandas': comandas_lista, 'STATIC_URL': STATIC_URL, 'fecha_del_dia': c.fecha})))
 
             return render_to_response('Cajero/cajero.html',
                                       {"resultados_busqueda": detalle_generico.render(Context({'plantillas': plantillas})), "titulo": "Resultados de la Busqueda"},context_instance=RequestContext(request))

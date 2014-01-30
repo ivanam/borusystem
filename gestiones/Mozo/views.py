@@ -81,10 +81,12 @@ def seleccionarproductos(request):
     comanda = Comanda.objects.get(pk=idcomanda)
     seccion = comanda.filtrar_secciones()
     total = request.session["total"]
+    #TODO mi no enteder esto
     try:
         pass
     except:
         print("Excepcion en seleccionar productos")
+
     lista = request.session['listaProductosComanda']
     listaPlatos = []
     for producto in lista:
@@ -319,6 +321,7 @@ def guardarComanda(request):
         mesa = Mesa.objects.get(pk=id_mesa)
         comanda.mesas.add(mesa)
         comanda.save()
+    #TODO no usamos la estrategia para cargar productos:def cargarProductos(self, comanda, producto, cantidad)
     for producto in lista:
             print(producto)
             datos = producto.split('_')
@@ -327,16 +330,16 @@ def guardarComanda(request):
             categoria = datos[2]
             if categoria == 'P':
                 plato = Plato.objects.get(pk=id_prod)
-                detalle = DetalleComanda.objects.create(cantidadP=cantidad, platos= plato, precioXunidad=plato.importe(),descuento=plato.descuento)
+                detalle = DetalleComanda.objects.create(nombre=plato.nombre,cantidadP=cantidad, platos= plato, precioXunidad=plato.importe(),descuento=plato.descuento)
             if categoria == 'B':
                 bebida = Bebida.objects.get(pk=id_prod)
-                detalle = DetalleComanda.objects.create(cantidadP=cantidad, bebidas= bebida , precioXunidad=bebida.importe(),descuento=bebida.descuento)
+                detalle = DetalleComanda.objects.create(nombre=bebida.nombre,cantidadP=cantidad, bebidas= bebida , precioXunidad=bebida.importe(),descuento=bebida.descuento)
             if categoria == 'D':
                 dia = DelDia.objects.get(pk=id_prod)
-                detalle = DetalleComanda.objects.create(cantidadP=cantidad, menuD= dia, precioXunidad=dia.precio,descuento=0)
+                detalle = DetalleComanda.objects.create(nombre=dia.nombre,cantidadP=cantidad, menuD= dia, precioXunidad=dia.precio,descuento=0)
             if categoria == 'E':
                 ejecutivo = Ejecutivo.objects.get(pk=id_prod)
-                detalle = DetalleComanda.objects.create(cantidadP=cantidad, menuE= ejecutivo, precioXunidad=ejecutivo.precio,descuento=0)
+                detalle = DetalleComanda.objects.create(nombre=ejecutivo.nombre,cantidadP=cantidad, menuE= ejecutivo, precioXunidad=ejecutivo.precio,descuento=0)
             comanda.detalles.add(detalle)
             comanda.save()
     comanda.finalizar()

@@ -13,7 +13,7 @@
             </option>
             {% for m in menues %}
             <option class="listado_eliminar_mozo_item {% if not m.activo %}inactivo{% endif %}"
-                    value="{% url 'modificarmenu_id' m.id %}"
+                    value="{% url 'modificarmenu_id_eje' m.id %}"
                     select_id="{{id_menu}}" title="{{m.nombre|capfirst}}: {{m.descripcion}}">
                 {{m.nombre|capfirst|truncatechars:20}}
             </option>
@@ -265,7 +265,7 @@ function buscarresultados(){
 
     $.ajax({
         type: "GET",
-        url: "{% url 'buscador_producto_ajax_resultados_mdm' %}",
+        url: "{% url 'buscador_producto_ajax_resultados_eje' %}",
         data: "q="+busqueda,
         success: function(datos){
 
@@ -307,7 +307,7 @@ function agregarPlato(data){
 
         $.ajax({
                     type: "GET",
-                    url: "{% url 'agregar_producto_lista_ajax_mdm' %}",
+                    url: "{% url 'agregar_producto_lista_ajax_eje' %}",
                     data: "id_prod="+id_plato,
                     success: function(datos){
                         $(".platos").html(datos);
@@ -321,7 +321,7 @@ function paginarProductos(pagina){
 
     $.ajax({
                 type: "GET",
-                url: "{% url 'paginador_ajax_resultados_mdm' %}",
+                url: "{% url 'paginador_ajax_resultados_eje' %}",
                 data: "pagina="+pagina,
                 success: function(datos){
                     $(".ajax_resultados").html(datos);
@@ -349,7 +349,7 @@ function agregarFuncionalidad(){
 function borraSesionAjax(){
         $.ajax({
                 type: "GET",
-                url: "{% url 'borrarSesionAjax' %}",
+                url: "{% url 'borrarSesionAjax_eje' %}",
                 async: false,
                 success: function(datos){
                   if(datos == "500")
@@ -414,7 +414,7 @@ $(document).ready(function(){
 
             $.ajax({
                 type: "GET",
-                url: "{% url 'buscador_producto_ajax_mdm' %}",
+                url: "{% url 'buscador_producto_ajax_eje' %}",
                 data: "q="+busqueda,
                 success: function(datos){
 

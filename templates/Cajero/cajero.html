@@ -40,8 +40,9 @@
 {% block script %}
 <script>
 
-function ir(uri){
+function ir(uri,msg){
     $("#modalCargando").modal("show");
+    $(".mensajeModal").html(msg);
     document.location.href = uri;
 }
 
@@ -127,11 +128,11 @@ function pollingComandas(){
 
             if(cantComandas != 0){
                 $("#comandas_nuevas").html(comanda_arreglo[0]);
-                titulo(" - ("+cantComandas+")Comandas");
+                titulo(" - Comanda\\s ("+cantComandas+")");
             }
             if(cantPedidos != 0){
                 $("#pedidos_nuevos").html(comanda_arreglo[1]);
-                titulo(" - ("+cantPedidos+")Pedidos");
+                titulo(" - Pedido\\s ("+cantPedidos+")");
             }
 
             if(cantComandas == 0 && cantPedidos == 0){

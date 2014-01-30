@@ -41,7 +41,7 @@
 
             {% if not c.cerrada %}
             <input type="button" class="btn btn-small" value="Cerrar Comanda"
-                   onClick="ir('{% url 'cerrar_comanda' c.id %}');">
+                   onClick="ir('{% url 'cerrar_comanda' c.id %}','&bull; Cerrando Comanda<br><br>&bull; Generando Preticket<br><br>');">
             {% else %}
 
                 {% if not c.preticket %}

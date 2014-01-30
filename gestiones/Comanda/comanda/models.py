@@ -73,6 +73,9 @@ class EstrategiaComanda(EstrategiaServicio):
                 else:
                     detalle.menuE = producto
 
+        #TODO nombre prod
+        detalle.nombre = producto.nombre
+        detalle.save()
         comanda.detalles.add(detalle)
         comanda.save()
 
@@ -118,6 +121,9 @@ class EstrategiaComanda(EstrategiaServicio):
                         else:
                             detalle_preticket.menuE = d.menuE
 
+
+                #TODO nombre prod
+                detalle_preticket.nombre = d.nombre
                 detalle_preticket.save()
 
                 preticket.detalles.add(detalle_preticket)
@@ -128,14 +134,21 @@ class EstrategiaComanda(EstrategiaServicio):
 class EstrategiaPedido(EstrategiaServicio):
 
     def cargarProductos(self, comanda, producto, cantidad):
-        detalle = DetalleComanda.objects.create(cantidadP=cantidad)
+
         if type(producto) is Bebida:
+
+            detalle = DetalleComanda.objects.create(cantidadP=cantidad)
             detalle.bebidas = producto
+            #TODO nombre prod
+            detalle.nombre = producto.nombre
+            detalle.save()
+            comanda.detalles.add(detalle)
+            comanda.save()
+
         else:
             print("El producto no se puede cargar")
 
-        comanda.detalles.add(detalle)
-        comanda.save()
+
 
 
     def facturar(self, comanda):
@@ -162,7 +175,7 @@ class EstrategiaPedido(EstrategiaServicio):
         factura = Factura.objects.create(fecha=fecha, hora=hora, tipo='C', total_factura=total, comanda=comanda)
 
         for detalles in comanda.detalles.all():
-            #total = total + detalles.importe()
+
             detalleF = detalles.covertir_factura()
             factura.detalle.add(detalleF)
 
@@ -179,6 +192,7 @@ ESTRATEGIAS.append(EstrategiaComanda("Resto", datetime.time(7, 0, 0), datetime.t
 
 
 class DetalleComanda(models.Model):
+    nombre = models.CharField("Nombre",max_length=50,null=False,blank=False)
     cantidadP = models.DecimalField("CantidadP", max_digits=11, decimal_places=0)
     entregado = models.BooleanField("Entregado", default=False)
     platos = models.ForeignKey(Plato, null=True, blank=True)
@@ -191,37 +205,13 @@ class DetalleComanda(models.Model):
     descuento=models.DecimalField("Descuento_comanda", max_digits=3, decimal_places=0, null=True, blank=True)
 
     def importe(self):
-        """detalleImporte = 0
-
-        if (self.platos) != None:
-            detalleImporte = self.platos.importe() * self.cantidadP
-        else:
-            if (self.bebidas) != None:
-                detalleImporte = self.bebidas.importe() * self.cantidadP
-            else:
-                if (self.menuD) != None:
-                    detalleImporte = self.menuD.precio * self.cantidadP
-                else:
-                    detalleImporte = self.menuE.precio * self.cantidadP
-        """
         return self.precioXunidad * self.cantidadP
 
     def covertir_factura(self):
-        """if (self.platos) != None:
-            precio = self.platos.importe()
-        else:
-            if (self.bebidas) != None:
-                precio = self.bebidas.importe()
-            else:
-                if (self.menuD) != None:
-                    precio = self.menuD.precio()
-                else:
-                    if (self.menuE) != None:
-                        precio = self.menuE.precio()
-        """
-
-        #detalle = DetalleFactura.objects.create(cantidad=self.cantidadP, precioXunidad=precio, detalleComanda=self)
         detalle = DetalleFactura.objects.create(cantidad=self.cantidadP, precioXunidad=self.precioXunidad,descuento=self.descuento, detalleComanda=self)
+        #TODO nombre prod
+        detalle.nombre = self.nombre
+        detalle.save()
         return detalle
 
 
@@ -284,6 +274,7 @@ class Comanda(models.Model):
 
 
 class DetallePreticket(models.Model):
+    nombre = models.CharField("Nombre", max_length=50, null=False, blank=False)
     cantidad = models.DecimalField("CantidadP", max_digits=11, decimal_places=0)
     precioXunidad = models.DecimalField("Precio", max_digits=11, decimal_places=2)
     platos = models.ForeignKey(Plato, null=True, blank=True)
@@ -318,10 +309,11 @@ class Preticket(models.Model):
         total = 0
 
         factura_nueva = Factura.objects.create(fecha=fecha, hora=hora, tipo='C', total_factura=total, preticket=self)
+
         for d in self.detalles.all():
 
             total = total + d.importe()
-            detalleFactura = DetalleFactura.objects.create(cantidad=d.cantidad,precioXunidad=d.precioXunidad,descuento=d.descuento,detallePreticket=d)
+            detalleFactura = DetalleFactura.objects.create(nombre=d.nombre,cantidad=d.cantidad,precioXunidad=d.precioXunidad,descuento=d.descuento,detallePreticket=d)
             factura_nueva.detalle.add(detalleFactura)
 
         factura_nueva.total_factura = total
@@ -345,6 +337,7 @@ class Pago(models.Model):
 
 
 class DetalleFactura(models.Model):
+    nombre = models.CharField("Nombre", max_length=50, null=False, blank=False)
     cantidad = models.DecimalField("CantidadP", max_digits=11, decimal_places=0)
     precioXunidad = models.DecimalField("Precio", max_digits=11, decimal_places=2)
     #solo en los pedidos
