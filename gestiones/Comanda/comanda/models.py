@@ -301,6 +301,17 @@ class Preticket(models.Model):
         for c in self.detalles.all():
             aux = aux + c.importe()
 
+
+    def agregarDetalle(self, producto):
+        pass
+
+    def eliminarDetalle(self, producto):
+        pass
+
+    def actualizarDetalle(self, producto):
+        pass
+
+
     def generar_factura(self):
 
         fecha = datetime.date.today()

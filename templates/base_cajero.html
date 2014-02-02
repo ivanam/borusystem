@@ -130,15 +130,14 @@
     </div>
     <div class="modal-body"></div>
     <div class="modal-footer">
-
-        <button class="btn" data-dismiss="modal" aria-hidden="true" title="Imprimir" onclick="print();"><img width="20"
-                                                                                                             src="{{STATIC_URL}}img/conf/glyphicons_015_print.png"
-                                                                                                             title="Imprimir">
+        <button class="btn" data-dismiss="modal" aria-hidden="true" title="Imprimir" onclick="print();">
+            <img width="20" src="{{STATIC_URL}}img/conf/glyphicons_015_print.png" title="Imprimir">
         </button>
         <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
     </div>
 </div>
 <!-- Fin Modal -->
+
 {% block script %}{% endblock %}
 </body>
 </html>

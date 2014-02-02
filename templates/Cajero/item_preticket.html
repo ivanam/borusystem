@@ -56,9 +56,10 @@
                    onClick="mostrarDetalleComanda({{p.comanda.id}});">
             <input type="button" class="btn btn-small" value="Detalle Preticket"
                    onClick="mostrarDetallePreticket({{p.id}});">
+            {% if not p.factura %}
             <button class="btn btn-small" value="Editar"
-                   onClick="editarDetallePreticket({{p.id}});alert('En construccion...');" title="Editar Preticket"><img width="17" src="{{STATIC_URL}}img/conf/glyphicons_150_edit.png"></button>
-
+                   onClick="editarDetallePreticket({{p.id}});" title="Editar Preticket"><img width="17" src="{{STATIC_URL}}img/conf/glyphicons_150_edit.png"></button>
+            {% endif %}
         </div>
     </div>
 </div>

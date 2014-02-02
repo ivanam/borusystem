@@ -1,3 +1,20 @@
+input[type=checkbox].checkModificado {display: none;}
+input[type=checkbox].checkModificado + label {
+background: #fff;
+display: inline-block;
+width: 26px;
+height:26px;
+background: url(../img/conf/glyphicons_193_circle_ok.png) 0px 0px no-repeat;
+opacity:0.5;
+filter: alpha(opacity = 50);
+}
+
+input[type=checkbox].checkModificado:checked + label {
+opacity:1;
+filter: alpha(opacity = 100);
+background: url(../img/conf/glyphicons_192_circle_remove.png) 0px 0px no-repeat;
+}
+
 .mensajeModal{
 font-size:20px;
 font-weight:bold;
@@ -575,6 +592,17 @@ width:188px !important;
 margin:0px auto;
 }
 
+.buscador_editar_preticket{
+width:310px !important;
+margin:0px auto;
+}
+
+.cont_resultado_busqueda_productos_preticket{
+top:96px !important;
+left:35px !important;
+width:308px !important;
+}
+
 .cont_resultado_busqueda_productos{
 background:#FFFFFF;
 position:absolute;
@@ -842,14 +870,49 @@ font-size:12px;
 }
 
 .header_detalle_cajero{
-width:90%;
+width:95%;
 height:auto;
+overflow:hidden;
 }
 
 .detalle_info{
 width:90%;
 height:auto;
 font-size:12px;
+overflow:hidden;
+}
+
+.header_editar_detalle_cajero{
+width:98%;
+height:auto;
+overflow:hidden;
+}
+
+
+.editar_detalle_info_eliminar{
+background:#F5A9A9;
+width:100%;
+height:auto;
+font-size:12px;
+overflow:hidden;
+-webkit-border-radius:4px 4px;
+-moz-border-radius:4px 4px;
+border-radius:4px 4px;
+}
+
+.editar_detalle_info{
+background:#F5F7F8;
+width:100%;
+height:auto;
+font-size:12px;
+overflow:hidden;
+-webkit-border-radius:4px 4px;
+-moz-border-radius:4px 4px;
+border-radius:4px 4px;
+}
+
+.editar_detalle_info:hover{
+background:#C8C9CA;
 }
 
 .detalle_cajero{

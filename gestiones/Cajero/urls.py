@@ -28,4 +28,8 @@ urlpatterns = patterns('',
 
     url(r'^una_comanda/(?P<id_comanda>\d+)$', 'gestiones.Cajero.views.una_comanda', name="una_comanda"),
 
+    url(r'^editar_detalle_preticket$', 'gestiones.Cajero.views.editar_detalle_preticket_ajax', name="editar_detalle_preticket_ajax"),
+
+    url(r'^guardar_detalle_preticket$', 'gestiones.Cajero.views.guardar_detalle_preticket_ajax', name="guardar_detalle_preticket_ajax"),
+
 )

@@ -78,7 +78,7 @@ def una_comanda(request,id_comanda=None):
                 comandas_lista = []
                 comandas_lista.append(una_comanda.preticket)
                 plantillas.append(
-                    detalle_preticket.render(Context({'pretickets': comandas_lista, 'STATIC_URL': STATIC_URL})))
+                    detalle_preticket.render(Context({'pretickets': comandas_lista, 'STATIC_URL': STATIC_URL, 'fecha_del_dia': una_comanda.fecha})))
             else:
                 comandas_lista.append(una_comanda)
                 plantillas.append(detalle_comanda_abierta.render(
@@ -133,7 +133,7 @@ def buscar_mesa(request):
                     if c.preticket != None:
                         comandas_lista=[]
                         comandas_lista.append(c.preticket)
-                        plantillas.append(detalle_preticket.render(Context({'pretickets': comandas_lista, 'STATIC_URL': STATIC_URL})))
+                        plantillas.append(detalle_preticket.render(Context({'pretickets': comandas_lista, 'STATIC_URL': STATIC_URL, 'fecha_del_dia': c.fecha})))
                     else: #si no hay reticket y no es un pedido, es una comanda abierta
                         comandas_lista.append(c)
                         plantillas.append(detalle_comanda_abierta.render(
@@ -167,6 +167,17 @@ def detalle_preticket_ajax(request):
         total = preticket.total_preticket
 
         return render_to_response('Cajero/detalle_preticket.html', {'preticket': preticket,'total':total},
+                                  context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_cajero', login_url="login")
+def editar_detalle_preticket_ajax(request):
+    if request.method == "GET":
+        id_preticket = request.GET["id_preticket"]
+        preticket = Preticket.objects.get(pk=id_preticket)
+        total = preticket.total_preticket
+
+        return render_to_response('Cajero/editar_detalle_preticket.html', {'preticket': preticket,'total':total},
                                   context_instance=RequestContext(request))
 
 
@@ -268,3 +279,26 @@ def pagar_factura(request, id_factura=None,id_comanda=None):
 
         return HttpResponseRedirect(reverse('una_comanda', args=[id_comanda]))
 
+
+def guardar_detalle_preticket_ajax(request):
+
+    if request.method == "POST":
+
+        #recupero las ids de los platos que quiero agregar al menu
+        lista_productos= request.POST.getlist('producto')
+        id_prod=0
+        categoria=''
+        cantidad=0
+        #las recorro y rescato los platos y los asigno al menu
+        for p in lista_productos:
+            #menu.platos.add(Plato.objects.get(pk=p))
+            cad = p.split("_")
+            id_prod = cad[0]
+            categoria = cad[1]
+            cantidad = cad[2]
+
+            print id_prod
+            print categoria
+            print cantidad
+
+    return HttpResponseRedirect(reverse('pretickets'))

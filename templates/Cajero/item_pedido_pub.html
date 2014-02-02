@@ -21,6 +21,7 @@
 <!-- fin paginador //-->
 {% for p in pedidos %}
 <!--inicio pedido item //-->
+<div class="fecha_buscador">{{fecha_del_dia}}</div>
 <div class="contenedor_comanda_item pedidos_nuevos" rel="{{p.id}}" estado="{{p.vista}}">
     <div class="comanda_numero">Pedido Nº {{p.id}}</div>
     <div class="contenedor_comanda_data">

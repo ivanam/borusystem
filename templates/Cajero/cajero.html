@@ -40,6 +40,27 @@
 {% block script %}
 <script>
 
+function checkEstado(id_check){
+
+    if( $("#"+id_check).is(":checked") ){
+            $("#lb_"+id_check).attr("title","Agregar producto al Preticket");
+
+            $("#detalle_"+id_check).removeClass("editar_detalle_info");
+            $("#detalle_"+id_check).addClass("editar_detalle_info_eliminar");
+
+
+    }
+    else{
+            $("#lb_"+id_check).attr("title","Eliminar producto del Preticket");
+
+            $("#detalle_"+id_check).removeClass("editar_detalle_info_eliminar");
+            $("#detalle_"+id_check).addClass("editar_detalle_info");
+
+    }
+
+}
+
+
 function ir(uri,msg){
     $("#modalCargando").modal("show");
     $(".mensajeModal").html(msg);
@@ -93,6 +114,18 @@ function mostrarDetallePreticket(id_preticket){
 
 
 function editarDetallePreticket(id_preticket){
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'editar_detalle_preticket_ajax' %}",
+        data: "id_preticket="+id_preticket,
+        success: function(datos){
+
+            $('.modal-titulo').html("Editar Preticket Nº "+id_preticket);
+            $('.modal-body').html(datos);
+            $('#myModal').modal("show")
+          }
+    });
 
 }
 

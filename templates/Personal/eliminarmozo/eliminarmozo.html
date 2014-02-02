@@ -47,7 +47,8 @@
                 {{m.username|capfirst|truncatechars:10}}
             </div>
 
-            <div class="listado_mozo_item_campo campo_texto_03 campo_texto_formato" title="{{m.first_name|capfirst}} {{m.last_name|capfirst}}">
+            <div class="listado_mozo_item_campo campo_texto_03 campo_texto_formato"
+                 title="{{m.first_name|capfirst}} {{m.last_name|capfirst}}">
                 {{m.first_name|capfirst|truncatechars:10}} {{m.last_name|capfirst|truncatechars:10}}
             </div>
 
@@ -171,6 +172,7 @@ $(document).ready(function(){
 
 	$('.dropdown-toggle').dropdownHover(options);
 });
+
 
 
 </script>
