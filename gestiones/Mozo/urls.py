@@ -15,4 +15,5 @@ urlpatterns = patterns('',
                        url(r'^guardarComanda$', 'gestiones.Mozo.views.guardarComanda', name="guardarComanda"),
                        url(r'^miscomandas$', 'gestiones.Mozo.views.miscomandas', name="miscomandas"),
                        url(r'^polling', 'gestiones.Mozo.views.polling_comandas', name="polling_comandas"),
+                       url(r'^eliminarproductos', 'gestiones.Mozo.views.eliminarProductosAjaxSeleccionado', name="eliminar_producto_ajax_seleccionado"),
 )

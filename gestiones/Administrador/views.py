@@ -102,7 +102,7 @@ def AltaCajero(request):
 @permission_required('Administrador.is_admin', login_url="login")
 def ModificarUsuario(request, id_user=None):
     #rescato los    usarios que son mozos
-    usuarios_lista = User.objects.all().order_by('-username')
+    usuarios_lista = User.objects.all().order_by('username')
     paginator = Paginator(usuarios_lista, PAGINADO_USUARIOS)
     usuarios = paginator.page(1)
 
@@ -179,7 +179,7 @@ def modificarUsuariodel(request, id_user):
 def buscarUsuariosajax(request):
     if request.method == 'GET':
         q = request.GET['q']
-        listado = User.objects.filter((Q(username__icontains=q) )).order_by('username', '-is_active')[:30]
+        listado = User.objects.filter((Q(username__icontains=q) )).order_by('username')[:30]
         return render_to_response('Administrador/modificarUsuarioBusquedaResultados.html', {'listado': listado},
                                   context_instance=RequestContext(request))
 
@@ -190,9 +190,9 @@ def buscarUsuariosajaxResultados(request):
         q = request.GET['q']
 
         if q != "":
-            usuarios = User.objects.filter((Q(username__icontains=q) )).order_by('-is_active')
+            usuarios = User.objects.filter((Q(username__icontains=q) )).order_by('username')
         else:
-            usuarios_lista = User.objects.filter().order_by('username', '-is_active')
+            usuarios_lista = User.objects.filter().order_by('username')
             paginator = Paginator(usuarios_lista, PAGINADO_USUARIOS)
             usuarios = paginator.page(1)
 
@@ -205,7 +205,7 @@ def paginadorajaxResultados(request):
     if request.method == 'GET':
 
         pagina = request.GET['pagina']
-        usuario_lista = User.objects.filter().order_by('username', '-is_active')
+        usuario_lista = User.objects.filter().order_by('username')
         paginator = Paginator(usuario_lista, PAGINADO_USUARIOS)
 
         try:

@@ -5,8 +5,11 @@
           <!-- inicio menus selecionados //-->
           {% for p in producto %}
           <div class="label label-info mesa_seleccionada_item">
+              <img src="{{STATIC_URL}}img/conf/glyphicons_192_circle_remove.png" class="flotar_der" onclick="modificarlistado({{p.id}})">
+              <!--<input type="checkbox" name="id_plato" class="id_plato flotar_der" value="{{p.id}}" id_prod="{{p.id}}" checked onclick="modificarlistado({{p.id}})" >//-->
               <div class="badge badge-warning flotar_der">{{p.precio}}</div>
-              <div class="label label-info  flotar_der" title="{{p.nombre|capfirst}}:{{p.precio}}">{{p.nombre|capfirst|truncatechars:13}}</div>
+              <div class="label label-info  flotar_der" title="{{p.nombre|capfirst}}:{{p.precio}}">{{p.nombre|capfirst|truncatechars:8}}</div>
+
 
           </div>
           <div class="salto_linea"></div>
@@ -21,3 +24,8 @@
             <!--</span>//-->
         </div>
       </div>
+
+<script>
+
+
+</script>

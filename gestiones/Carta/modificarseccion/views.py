@@ -34,14 +34,14 @@ def modificarseccion (request, id_seccion=None):
         if formulario.is_valid():
             #rescato los datos de cada cmapo y los limpio
             nombre = formulario.cleaned_data['nombre']
-            categoria = formulario.cleaned_data['categoria']
+            #categoria = formulario.cleaned_data['categoria']
             imagen = formulario.cleaned_data['imagen']
 
 
 
             #seteo los nuevos datos en el objeto usuarioMozo que obtuvimos al principio
             unaSeccion.nombre = nombre
-            unaSeccion.categoria = categoria
+            #unaSeccion.categoria = categoria
             unaSeccion.imagen = imagen
             unaSeccion.save()
 
@@ -50,7 +50,7 @@ def modificarseccion (request, id_seccion=None):
                                       {'formulario': formulario, 'secciones': secciones},
                                       context_instance=RequestContext(request))
 
-        #si no es valido el formulario lo vuelvo a mostrar con los datos ingresados
+        #si no es valido el formulario lo vuelvo a mostrar con los datos ingresado
         return render_to_response('Carta/modificarseccion.html',
                                   {'formulario': formulario, 'secciones': secciones},
                                   context_instance=RequestContext(request))

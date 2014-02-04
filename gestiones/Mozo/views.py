@@ -345,6 +345,60 @@ def guardarComanda(request):
     comanda.finalizar()
     return HttpResponseRedirect(reverse('mozo'))
 
+@permission_required('Administrador.is_mozo', login_url="login")
+def eliminarProductosAjaxSeleccionado(request):
+    id_prod = request.GET['id']
+    lista = request.session['listaProductosComanda']
+    for producto in lista:
+        datos = producto.split('_')
+        id = datos[0]
+        cantidad = datos[1]
+        categoria = datos[2]
+        if (id == id_prod):
+            ubicacion = lista.index(producto)
+            del lista[ubicacion]
+            if categoria == 'P':
+                prod = (Plato.objects.get(pk=id))
+            if categoria == 'B':
+                prod = (Bebida.objects.get(pk=id))
+            if categoria == 'D':
+                prod = (DelDia.objects.get(pk=id))
+            if categoria == 'E':
+                prod = (Ejecutivo.objects.get(pk=id))
+
+            prod.stock = prod.stock + Decimal(cantidad)
+            prod.save()
+            subtotal = prod.importe() * Decimal(cantidad)
+            total = request.session['total'] - subtotal
+            request.session['total']= total
+            request.session['listaProductosComanda'] = lista
+            print ("producto eliminado con exito")
+            break
+
+    listaPlatos = []
+    for producto in lista:
+        print(producto)
+        datos = producto.split('_')
+        id_prod = datos[0]
+        categoria = datos[2]
+        if categoria == 'P':
+            listaPlatos.append(Plato.objects.get(pk=id_prod))
+        if categoria == 'B':
+            listaPlatos.append(Bebida.objects.get(pk=id_prod))
+        if categoria == 'D':
+            listaPlatos.append(DelDia.objects.get(pk=id_prod))
+        if categoria == 'E':
+            listaPlatos.append(Ejecutivo.objects.get(pk=id_prod))
+
+
+    return render_to_response('Mozo/panel_menu_seleccionado.html', {'producto': listaPlatos, 'total':total},
+                              context_instance=RequestContext(request))
+
+
+
+
+
+
 #------------------------------------------Inicio de Mis comandas--------------------------------------------------------
 
 
