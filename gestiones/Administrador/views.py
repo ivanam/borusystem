@@ -1,21 +1,21 @@
 from django.contrib.auth.decorators import permission_required
-#from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, response, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from fpdf import FPDF
+import webapp2
 
-
-#@login_required()
-#from gestiones.Comanda.comanda.models import EstrategiaComanda
 from boru.settings import PAGINADO_USUARIOS
 from gestiones.Administrador.forms import altaUsuarioForm
 from gestiones.Administrador.models import permisosVistas
+from gestiones.Carta.altacarta.models import SeccionCarta
+from gestiones.Producto.producto.models import Plato
 
 
 @permission_required('Administrador.is_admin', login_url="logout")
@@ -219,3 +219,44 @@ def paginadorajaxResultados(request):
 
         return render_to_response('Administrador/modificarUsuarioBusquedaResultados_items.html', {'usuarios': usuarios},
                                   context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_admin', login_url="login")
+def listarImprimir(request):
+
+    #vari = webapp2.RequestHandler.response.headers['Content-Type'] = 'application/pdf'
+
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font('Arial', 'B', 16)
+    pdf.cell(40, 10, 'Carta Boru!')
+    clients = Plato.objects.all()
+    pdf.ln()
+    for client in clients:
+        pdf.set_font('Arial', 'B', 16)
+        pdf.cell(20, 10, client.nombre)
+        pdf.ln()
+        pdf.set_font('Arial', 'I', 12)
+        pdf.cell(150, 10, str(client.precio))
+        pdf.ln()
+    #pdf.output('tuto1.pdf', 'F')
+
+    return HttpResponse(pdf.output('tuto1.pdf', 'F'))
+"""
+class ReporttestPDF(webapp2.RequestHandler):
+
+    def get(self):
+        #self.response.write("pdf")
+        self.response.headers['Content-Type']='application/pdf'
+        pdf=FPDF()
+        pdf.add_page()
+        pdf.set_font('Arial','B',16)
+        pdf.cell(40,10,'Hola Mundo!')
+        clients = Plato.objects.all()
+        pdf.ln()
+        for client in clients :
+            pdf.cell(20,10,client.nombre)
+            pdf.cell(150,10,client.precio)
+            pdf.ln()
+        self.response.write(pdf.output(dest='S'))
+"""

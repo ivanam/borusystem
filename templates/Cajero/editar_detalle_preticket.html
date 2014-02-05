@@ -25,6 +25,14 @@
             <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">Descuento</div>
         </div>
         <div class="salto_linea"></div>
+
+        <!-- inicio productos agregados //-->
+        <div class="ajax_resultados">
+
+        </div>
+        <!-- fin de agregado productos //-->
+
+
         {% for p in preticket.detalles.all %}
 
         {% if p.platos %}
@@ -38,7 +46,7 @@
             </div>
 
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
-                <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png" title="Más Producto}">
+                <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png" title="Más Producto">
             </div>
 
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
@@ -78,7 +86,7 @@
             </div>
 
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
-                <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png" title="Más Producto}">
+                <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png" title="Más Producto">
             </div>
 
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
@@ -118,7 +126,7 @@
             </div>
 
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
-                <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png" title="Más Producto}">
+                <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png" title="Más Producto">
             </div>
 
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
@@ -158,7 +166,7 @@
             </div>
 
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
-                <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png" title="Más Producto}">
+                <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png" title="Más Producto">
             </div>
 
             <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
@@ -196,3 +204,122 @@
     </form>
 </div>
 <!-- Fin Modal cuerpo //-->
+<script>
+
+function enviarForm(msg){
+    $(".buscador_productos").val(msg);
+    buscarresultados();
+}
+
+function reemplazarCadena(cad, q){
+var re = new RegExp(q,"gi");
+    return cad.replace(re,"<span class='resaltado resaltarBusqueda'>"+q+"</span>");
+}
+
+function buscarresultados(){
+
+    var busqueda=$(".buscador_productos").val();
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'buscador_producto_ajax_resultados_pre' %}",
+        data: "q="+busqueda,
+        success: function(datos){
+
+            if(datos.length > 0){
+                var ajax_resultados = $(".ajax_resultados").html()+datos;
+                $(".ajax_resultados").html(ajax_resultados);
+                $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                agregarFuncionalidad();
+            }
+          }
+    });
+
+}
+
+
+
+
+function paginarProductos(pagina){
+
+    $.ajax({
+                type: "GET",
+                url: "{% url 'paginador_ajax_resultados_pre' %}",
+                data: "pagina="+pagina,
+                success: function(datos){
+                    $(".ajax_resultados").html(datos);
+                    agregarFuncionalidad();
+                }
+            });
+}
+
+
+function agregarFuncionalidad(){
+    //agrego la funcionalidad de agregar a la lista de platos
+    $(".item").each(function(i){
+
+        $(this).css("cursor","pointer");
+
+        $(this).click(function(event){
+            //funcionalidad --------- > agregarPlato($(this).html());
+        });
+
+    });
+}
+
+
+$(document).ready(function(){
+
+    $("#buscarresultados").click(function(event){
+        buscarresultados();
+    });
+
+    $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+
+    //cuando presiono una tecla en la caja de busqueda
+    $(".buscador_productos").keyup(function(event){
+
+        var busqueda=$(this).val();
+
+        if( busqueda.length >= 2){
+
+            $.ajax({
+                type: "GET",
+                url: "{% url 'buscador_producto_ajax_pre' %}",
+                data: "q="+busqueda,
+                success: function(datos){
+
+                    if(datos.length > 0){
+                        $(".cont_resultado_busqueda_productos").html(datos);
+                        $(".cont_resultado_busqueda_productos").css("visibility","visible");
+
+                        $(".busqueda_item").each(function(i){
+                            var cad=$(this).text();
+                            $(this).html(reemplazarCadena(cad, busqueda));
+                            $(".resaltado").addClass("resaltarBusqueda");
+                        });
+
+                    }
+                    else{
+                        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                    }
+
+                  }
+            });
+        }
+        else
+        {
+            $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+        }
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+          if(keycode == '13'){
+
+                buscarresultados();
+          }
+    });
+
+});
+
+</script>

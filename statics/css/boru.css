@@ -889,6 +889,22 @@ overflow:hidden;
 }
 
 
+.editar_detalle_info_agregar{
+background:#80FF00;
+width:100%;
+height:auto;
+font-size:12px;
+overflow:hidden;
+-webkit-border-radius:4px 4px;
+-moz-border-radius:4px 4px;
+border-radius:4px 4px;
+text-decoration:none;
+}
+
+.editar_detalle_info_agregar:hover{
+background:#D7DF01;
+}
+
 .editar_detalle_info_eliminar{
 background:#F5A9A9;
 width:100%;
@@ -898,6 +914,7 @@ overflow:hidden;
 -webkit-border-radius:4px 4px;
 -moz-border-radius:4px 4px;
 border-radius:4px 4px;
+text-decoration:line-through;
 }
 
 .editar_detalle_info{
@@ -909,6 +926,7 @@ overflow:hidden;
 -webkit-border-radius:4px 4px;
 -moz-border-radius:4px 4px;
 border-radius:4px 4px;
+text-decoration:none;
 }
 
 .editar_detalle_info:hover{

@@ -1,13 +1,15 @@
 import datetime
 from django.contrib.auth.decorators import permission_required
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from boru.settings import PAGINADO_PRODUCTOS, STATIC_URL
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Context
 from django.template.loader import get_template
 from gestiones.Comanda.comanda.models import Comanda, Preticket, Factura
+from gestiones.Producto.producto.models import Plato, Bebida, DelDia, Ejecutivo
 
 
 @permission_required('Administrador.is_cajero', login_url="login")
@@ -271,7 +273,7 @@ def generar_factura(request, id_preticket=None,id_comanda=None):
 
     return HttpResponseRedirect(reverse('una_comanda', args=[id_comanda]))
 
-
+@permission_required('Administrador.is_cajero', login_url="login")
 def pagar_factura(request, id_factura=None,id_comanda=None):
 
         factura = Factura.objects.get(pk=id_factura)
@@ -279,7 +281,7 @@ def pagar_factura(request, id_factura=None,id_comanda=None):
 
         return HttpResponseRedirect(reverse('una_comanda', args=[id_comanda]))
 
-
+@permission_required('Administrador.is_cajero', login_url="login")
 def guardar_detalle_preticket_ajax(request):
 
     if request.method == "POST":
@@ -302,3 +304,80 @@ def guardar_detalle_preticket_ajax(request):
             print cantidad
 
     return HttpResponseRedirect(reverse('pretickets'))
+
+
+
+@permission_required('Administrador.is_cajero', login_url="login")
+def buscarproductoajax(request):
+    if request.method == 'GET':
+        q = request.GET['q']
+        #listado = Plato.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by('nombre').filter(activo = True)
+
+        resultados=[]
+
+        platos = Plato.objects.filter(Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by(
+            'nombre').filter(activo=True)
+
+        bebidas = Bebida.objects.filter(Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by(
+            'nombre').filter(activo=True)
+
+        delDia = DelDia.objects.filter(Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by(
+            'nombre').filter(activo=True)
+
+        ejecutivo = Ejecutivo.objects.filter(Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by(
+            'nombre').filter(activo=True)
+
+        resultados.extend(platos)
+        resultados.extend(bebidas)
+        resultados.extend(delDia)
+        resultados.extend(ejecutivo)
+
+        return render_to_response('Cajero/busquedaresultados.html', {'listado': resultados},
+                                  context_instance=RequestContext(request))
+
+@permission_required('Administrador.is_cajero', login_url="login")
+def buscarproductoajaxResultados(request):
+    if request.method == 'GET':
+        q = request.GET['q']
+
+        resultados = []
+
+        if q != "":
+            platos = Plato.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q) ).order_by('nombre').filter(activo = True)
+
+            bebidas = Bebida.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q) ).order_by('nombre').filter(activo = True)
+
+            delDia = DelDia.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q) ).order_by('nombre').filter(activo = True)
+
+            ejecutivo = Ejecutivo.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q) ).order_by('nombre').filter(activo = True)
+
+            resultados.extend(platos)
+            resultados.extend(bebidas)
+            resultados.extend(delDia)
+            resultados.extend(ejecutivo)
+
+
+        return render_to_response('Cajero/busquedaresultados_items.html', {'plato': resultados},
+                                  context_instance=RequestContext(request))
+
+@permission_required('Administrador.is_cajero', login_url="login")
+def paginadorajaxResultados(request):
+
+    if request.method == 'GET':
+
+        pagina = request.GET['pagina']
+        platos_lista = Plato.objects.all().order_by('-activo')
+        paginator = Paginator(platos_lista, PAGINADO_PRODUCTOS)
+
+        try:
+            platos = paginator.page(pagina)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            platos = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            platos = paginator.page(paginator.num_pages)
+
+        return render_to_response('Cajero/busquedaresultados_items.html', {'plato': platos},
+                                  context_instance=RequestContext(request))
+

@@ -32,4 +32,16 @@ urlpatterns = patterns('',
 
     url(r'^guardar_detalle_preticket$', 'gestiones.Cajero.views.guardar_detalle_preticket_ajax', name="guardar_detalle_preticket_ajax"),
 
+
+
+    url(r'^buscar$', 'gestiones.Cajero.views.buscarproductoajax',
+        name="buscador_producto_ajax_pre"),
+
+    url(r'^buscarresultados$', 'gestiones.Cajero.views.buscarproductoajaxResultados',
+        name="buscador_producto_ajax_resultados_pre"),
+
+    url(r'^paginar', 'gestiones.Cajero.views.paginadorajaxResultados',
+        name="paginador_ajax_resultados_pre"),
+
+
 )
