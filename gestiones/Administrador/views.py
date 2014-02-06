@@ -1,3 +1,5 @@
+from cookielib import http2time
+import datetime
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User, Permission
@@ -11,7 +13,7 @@ from django.template import RequestContext
 from fpdf import FPDF
 import webapp2
 
-from boru.settings import PAGINADO_USUARIOS
+from boru.settings import PAGINADO_USUARIOS, STATIC_URL, RUTA_PROYECTO
 from gestiones.Administrador.forms import altaUsuarioForm
 from gestiones.Administrador.models import permisosVistas
 from gestiones.Carta.altacarta.models import SeccionCarta
@@ -223,40 +225,23 @@ def paginadorajaxResultados(request):
 
 @permission_required('Administrador.is_admin', login_url="login")
 def listarImprimir(request):
-
-    #vari = webapp2.RequestHandler.response.headers['Content-Type'] = 'application/pdf'
-
+    fecha = datetime.date.today()
+    now = datetime.datetime.now()
+    nombre = str(fecha)+str(now.hour)+str(now.minute)+str(now.second)+'.pdf'
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font('Arial', 'B', 16)
-    pdf.cell(40, 10, 'Carta Boru!')
-    clients = Plato.objects.all()
+    pdf.set_font('Arial', 'B', 25)
+    pdf.cell(40, 10, ')____---- Carta Boru ----____(')
+    platos = Plato.objects.all()
     pdf.ln()
-    for client in clients:
+    for p in platos:
         pdf.set_font('Arial', 'B', 16)
-        pdf.cell(20, 10, client.nombre)
+        pdf.cell(20, 10, p.nombre)
         pdf.ln()
         pdf.set_font('Arial', 'I', 12)
-        pdf.cell(150, 10, str(client.precio))
+        pdf.cell(150, 10, str(p.precio))
         pdf.ln()
-    #pdf.output('tuto1.pdf', 'F')
-
-    return HttpResponse(pdf.output('tuto1.pdf', 'F'))
-"""
-class ReporttestPDF(webapp2.RequestHandler):
-
-    def get(self):
-        #self.response.write("pdf")
-        self.response.headers['Content-Type']='application/pdf'
-        pdf=FPDF()
-        pdf.add_page()
-        pdf.set_font('Arial','B',16)
-        pdf.cell(40,10,'Hola Mundo!')
-        clients = Plato.objects.all()
-        pdf.ln()
-        for client in clients :
-            pdf.cell(20,10,client.nombre)
-            pdf.cell(150,10,client.precio)
-            pdf.ln()
-        self.response.write(pdf.output(dest='S'))
-"""
+    nombre = RUTA_PROYECTO+"\\"+STATIC_URL+"pdf\\"+nombre
+    nombreWeb = STATIC_URL+"pdf\\"+nombre
+    pdf.output(name=nombre, dest='F')
+    return render_to_response('Administrador/visorPdf.html', {'nombre': nombreWeb},context_instance=RequestContext(request))
