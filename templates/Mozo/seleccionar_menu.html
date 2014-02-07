@@ -136,7 +136,6 @@ function btn_aceptar(){
 }
 
 function modificarlistado(plato){
-        alert('voy a ingresar');
         $.ajax({
         type: "GET",
         url: "{% url 'eliminar_producto_ajax_seleccionado' %}",
