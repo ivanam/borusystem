@@ -8,6 +8,8 @@ urlpatterns = patterns('',
 url(r'^$', 'gestiones.Administrador.views.Administrador', name="administrador"),
 
 url(r'^listarImprimir$', 'gestiones.Administrador.views.listarImprimir', name="listarImprimir"),
+url(r'^consulta+vendidos$', 'gestiones.Administrador.views.masVendidos', name="consulta+vendidos"),
+
 #url(r'^pruebaUsuario$', 'gestiones.Administrador.views.PruebaUsuario', name="pruebaUsuario"),
 #url(r'^altaAdministrador$', 'gestiones.Administrador.views.AltaAdministrador', name="altaAdministrador"),
 #url(r'^pruebaUsuario$', 'gestiones.Administrador.views.PruebaUsuario', name="usuario"),

@@ -53,6 +53,28 @@ class SeccionCarta(models.Model):
                 else:
                     return Ejecutivo.objects.filter(seccion_id__exact=self.id)
 
+    def es_vacia_seccion(self):
+        if self.categoria == 'P':
+            producto = Plato.objects.filter(seccion_id__exact=self.id)
+        else:
+            if self.categoria == 'B':
+                producto = Bebida.objects.filter(seccion_id__exact=self.id)
+            else:
+                if self.categoria == 'D':
+                    producto = DelDia.objects.filter(seccion_id__exact=self.id)
+                else:
+                    producto = Ejecutivo.objects.filter(seccion_id__exact=self.id)
+        cont = 0
+        for p in producto:
+            cont = cont + 1
+            break
+        if cont == 0:
+            return True
+        else:
+            return False
+
+
+
 class Carta(models.Model):
     nombre = models.CharField('Nombre', max_length=30)
     vigente = models.BooleanField('Vigente')
