@@ -11,12 +11,13 @@ from django.http import HttpResponseRedirect, response, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from fpdf import FPDF
-import webapp2
+
 
 from boru.settings import PAGINADO_USUARIOS, STATIC_URL, RUTA_PROYECTO
-from gestiones.Administrador.forms import altaUsuarioForm
+from gestiones.Administrador.forms import altaUsuarioForm, fechasXconsultaForm
 from gestiones.Administrador.models import permisosVistas
 from gestiones.Carta.altacarta.models import SeccionCarta
+from gestiones.Comanda.comanda.models import Factura
 from gestiones.Producto.producto.models import Plato
 
 
@@ -231,17 +232,67 @@ def listarImprimir(request):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font('Arial', 'B', 25)
-    pdf.cell(40, 10, ')____---- Carta Boru ----____(')
-    platos = Plato.objects.all()
+    #pdf.cell(40, 10, ')____---- Carta Boru ----____(',0,1,'L')
+    pdf.cell(0,20,'Carta Boru',1,1,'C')
     pdf.ln()
-    for p in platos:
-        pdf.set_font('Arial', 'B', 16)
-        pdf.cell(20, 10, p.nombre)
-        pdf.ln()
-        pdf.set_font('Arial', 'I', 12)
-        pdf.cell(150, 10, str(p.precio))
-        pdf.ln()
+    pdf.image(RUTA_PROYECTO+"\\"+STATIC_URL+"img\\"+'boru_logo2.PNG',85,35,40,30,type='PNG')
+    pdf.ln()
+
+    secciones = SeccionCarta.objects.filter().order_by("categoria")
+    for seccion in secciones:
+        if not seccion.es_vacia_seccion():
+            pdf.set_font('Arial', 'B', 20)
+            pdf.cell(0,10,seccion.nombre,0,1,'L')
+            pdf.ln()
+            productos = seccion.dame_productos()
+            for p in productos:
+                pdf.set_font('Arial', 'B', 16)
+                pdf.cell(0, 10, p.nombre+'............Precio: '+str(p.precio))
+                pdf.ln()
+            pdf.ln()
+    #platos = Plato.objects.all()
+    #pdf.ln()
+    #for p in platos:
+        #pdf.set_font('Arial', 'B', 16)
+        #pdf.cell(20, 10, p.nombre)
+        #pdf.ln()
+        #pdf.set_font('Arial', 'I', 12)
+        #pdf.cell(150, 10, str(p.precio))
+        #pdf.ln()
     nombre = RUTA_PROYECTO+"\\"+STATIC_URL+"pdf\\"+nombre
     nombreWeb = STATIC_URL+"pdf\\"+nombre
     pdf.output(name=nombre, dest='F')
     return render_to_response('Administrador/visorPdf.html', {'nombre': nombreWeb},context_instance=RequestContext(request))
+
+@permission_required('Administrador.is_admin', login_url="login")
+def masVendidos(request):
+
+    if request.method == 'POST':
+        formulario = fechasXconsultaForm(request.POST)
+
+        if formulario.is_valid():
+            #capturamos y limpiamos datos
+            fechaI = formulario.cleaned_data['fecha_Inicio']
+            fechaF = formulario.cleaned_data['fecha_fin']
+
+            facturas = Factura.objects.filter(fecha__range=(fechaI,fechaF))
+            for f in facturas:
+                if (f.comanda != None):
+                    print (f.comanda)
+                else:
+                    print (f.preticket)
+
+            #mostramos que la operacion fue exitosa
+            return render_to_response('Administrador/consultaMasVendidoMsj.html', {},
+                                      context_instance=RequestContext(request))
+
+        return render_to_response('Administrador/consultaMasVendido.html',
+                                  {'formulario': formulario},
+                                  context_instance=RequestContext(request))
+
+    else:
+        formulario = fechasXconsultaForm()
+        return render_to_response('Administrador/consultaMasVendido.html',
+                                  {'formulario': formulario},
+                                  context_instance=RequestContext(request))
+

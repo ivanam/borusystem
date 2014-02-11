@@ -1,6 +1,8 @@
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.forms.widgets import PasswordInput, Select
+from gestiones.Producto.producto.models import Ejecutivo
+
 
 class altaUsuarioForm(ModelForm):
     class Meta:
@@ -21,3 +23,11 @@ class altaUsuarioForm(ModelForm):
         ACTIVO = ((True, 'Activo'), (False, 'Inactivo'))
         self.fields['is_active'].widget = Select(choices=ACTIVO)
         self.fields['password'].widget = PasswordInput()
+
+
+class fechasXconsultaForm(ModelForm):
+    class Meta:
+        model = Ejecutivo
+        fields = (
+            'fecha_Inicio', 'fecha_fin')
+
