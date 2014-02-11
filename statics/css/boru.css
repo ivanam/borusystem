@@ -1,3 +1,7 @@
+.adddelProducto{
+    cursor:pointer;
+}
+
 input[type=checkbox].checkModificado {display: none;}
 input[type=checkbox].checkModificado + label {
 background: #fff;
@@ -593,14 +597,14 @@ margin:0px auto;
 }
 
 .buscador_editar_preticket{
-width:310px !important;
+width:100% !important;
 margin:0px auto;
 }
 
 .cont_resultado_busqueda_productos_preticket{
 top:96px !important;
 left:35px !important;
-width:308px !important;
+width:360px !important;
 }
 
 .cont_resultado_busqueda_productos{

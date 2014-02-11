@@ -108,7 +108,7 @@ class EstrategiaComanda(EstrategiaServicio):
 
             #creo los detalles
             for d in comanda.detalles.all():
-                detalle_preticket = DetallePreticket.objects.create(cantidad=d.cantidadP, precioXunidad=d.precioXunidad,descuento=d.descuento,detalleComanda=d)
+                detalle_preticket = DetallePreticket.objects.create(preticket=preticket, cantidad=d.cantidadP, precioXunidad=d.precioXunidad,descuento=d.descuento,detalleComanda=d)
 
                 if (d.platos) != None:
                     detalle_preticket.platos=d.platos
@@ -281,11 +281,13 @@ class DetallePreticket(models.Model):
     bebidas = models.ForeignKey(Bebida, null=True, blank=True)
     menuD = models.ForeignKey(DelDia, null=True, blank=True)
     menuE = models.ForeignKey(Ejecutivo, null=True, blank=True)
-    detalleComanda = models.ForeignKey(DetalleComanda)
+    detalleComanda = models.ForeignKey(DetalleComanda, null=True, blank=True)
     descuento=models.DecimalField("Descuento_preticket", max_digits=3, decimal_places=0, null=True, blank=True)
+    preticket = models.ForeignKey("Preticket", null=False, blank=False)
 
     def importe(self):
         return self.cantidad*self.precioXunidad
+
 
 class Preticket(models.Model):
 
@@ -301,15 +303,38 @@ class Preticket(models.Model):
         for c in self.detalles.all():
             aux = aux + c.importe()
 
+        return aux
 
-    def agregarDetalle(self, producto):
-        pass
+    def limpiarDetalles(self):
+        d = DetallePreticket.objects.filter(preticket = self).delete()
 
-    def eliminarDetalle(self, producto):
-        pass
-
-    def actualizarDetalle(self, producto):
-        pass
+    def agregarDetalle(self, producto, cantidad):
+        #creo el nuevo detalle
+        detalle_preticket = DetallePreticket.objects.create(preticket=self, cantidad=cantidad, precioXunidad=producto.importe())
+        #leagrego el nombre del producto
+        detalle_preticket.nombre = producto.nombre
+        #le agrego el producto
+        if type(producto) is Plato:
+            detalle_preticket.platos = producto
+            detalle_preticket.descuento = producto.descuento
+        else:
+            if type(producto) is Bebida:
+                detalle_preticket.bebidas = producto
+                detalle_preticket.descuento = producto.descuento
+            else:
+                if type(producto) is DelDia:
+                    detalle_preticket.menuD = producto
+                else:
+                    detalle_preticket.menuE = producto
+        #guardo el detalle con los nuevos datos
+        detalle_preticket.save()
+        #agrego el detalle a la lista de detelles del preticket
+        self.detalles.add(detalle_preticket)
+        #salvo el preticket
+        self.save()
+        #actualizo total del preticket
+        self.total_preticket = self.total()
+        self.save()
 
 
     def generar_factura(self):

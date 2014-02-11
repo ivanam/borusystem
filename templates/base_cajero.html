@@ -138,6 +138,24 @@
 </div>
 <!-- Fin Modal -->
 
+
+<!-- Modal Preticket-->
+<div id="myModalPreticket" class="comanda_detalle_modal modal hide fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel2" class="modal-titulo"></h3>
+    </div>
+    <div class="modal-body modal-body-preticket"></div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true" title="Guardar" onclick="guardarPreticket();">
+        Guardar Preticket
+        </button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+    </div>
+</div>
+<!-- Fin Modal Preticket -->
+
 {% block script %}{% endblock %}
 </body>
 </html>

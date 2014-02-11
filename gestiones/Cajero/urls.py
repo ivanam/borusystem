@@ -40,8 +40,8 @@ urlpatterns = patterns('',
     url(r'^buscarresultados$', 'gestiones.Cajero.views.buscarproductoajaxResultados',
         name="buscador_producto_ajax_resultados_pre"),
 
-    url(r'^paginar', 'gestiones.Cajero.views.paginadorajaxResultados',
-        name="paginador_ajax_resultados_pre"),
+    #url(r'^paginar', 'gestiones.Cajero.views.paginadorajaxResultados',
+     #   name="paginador_ajax_resultados_pre"),
 
 
 )

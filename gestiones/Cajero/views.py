@@ -288,22 +288,49 @@ def guardar_detalle_preticket_ajax(request):
 
         #recupero las ids de los platos que quiero agregar al menu
         lista_productos= request.POST.getlist('producto')
-        id_prod=0
-        categoria=''
-        cantidad=0
-        #las recorro y rescato los platos y los asigno al menu
-        for p in lista_productos:
-            #menu.platos.add(Plato.objects.get(pk=p))
-            cad = p.split("_")
-            id_prod = cad[0]
-            categoria = cad[1]
-            cantidad = cad[2]
+        preticket_id = request.POST.get('preticket_id')
 
-            print id_prod
-            print categoria
-            print cantidad
+        try:
+            #obtengo el preticket
+            preticket = Preticket.objects.get(pk=preticket_id)
+            #solo si la lista no esta vacia la limpio para volver a agregar los productos
+            if lista_productos != []:
+                preticket.limpiarDetalles()
 
-    return HttpResponseRedirect(reverse('pretickets'))
+            #id_prod = 0
+            #categoria = ''
+            #cantidad = 0
+
+            #las recorro y rescato los platos y los asigno al menu
+            for p in lista_productos:
+
+                cad = p.split("_")
+                id_prod = cad[0]
+                categoria = cad[1]
+                cantidad = cad[2]
+
+                if categoria == "P":
+                    productoNuevo= Plato.objects.get(pk=id_prod)
+                    print "es plato " + productoNuevo.nombre
+                else:
+                    if categoria == "B":
+                        productoNuevo = Bebida.objects.get(pk=id_prod)
+                        print "es bebida " + productoNuevo.nombre
+                    else:
+                        if categoria == "D":
+                            productoNuevo = DelDia.objects.get(pk=id_prod)
+                            print "es deldia " + productoNuevo.nombre
+                        else:
+                            productoNuevo = Ejecutivo.objects.get(pk=id_prod)
+                            print "es es ejecutivo " + productoNuevo.nombre
+
+                preticket.agregarDetalle(productoNuevo,cantidad)
+
+        except:
+            print "Error, no se pudo agregar el producto al preticket!"
+
+
+    return HttpResponseRedirect(reverse('una_comanda',args=[preticket.comanda.pk]))
 
 
 
@@ -311,7 +338,6 @@ def guardar_detalle_preticket_ajax(request):
 def buscarproductoajax(request):
     if request.method == 'GET':
         q = request.GET['q']
-        #listado = Plato.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by('nombre').filter(activo = True)
 
         resultados=[]
 
@@ -343,13 +369,13 @@ def buscarproductoajaxResultados(request):
         resultados = []
 
         if q != "":
-            platos = Plato.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q) ).order_by('nombre').filter(activo = True)
+            platos = Plato.objects.filter( Q(nombre__iexact=q) | Q(seccion__nombre__iexact=q) ).order_by('nombre').filter(activo = True)
 
-            bebidas = Bebida.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q) ).order_by('nombre').filter(activo = True)
+            bebidas = Bebida.objects.filter( Q(nombre__iexact=q) | Q(seccion__nombre__iexact=q) ).order_by('nombre').filter(activo = True)
 
-            delDia = DelDia.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q) ).order_by('nombre').filter(activo = True)
+            delDia = DelDia.objects.filter( Q(nombre__iexact=q) | Q(seccion__nombre__iexact=q) ).order_by('nombre').filter(activo = True)
 
-            ejecutivo = Ejecutivo.objects.filter( Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q) ).order_by('nombre').filter(activo = True)
+            ejecutivo = Ejecutivo.objects.filter( Q(nombre__iexact=q) | Q(seccion__nombre__iexact=q) ).order_by('nombre').filter(activo = True)
 
             resultados.extend(platos)
             resultados.extend(bebidas)
@@ -359,7 +385,7 @@ def buscarproductoajaxResultados(request):
 
         return render_to_response('Cajero/busquedaresultados_items.html', {'plato': resultados},
                                   context_instance=RequestContext(request))
-
+"""
 @permission_required('Administrador.is_cajero', login_url="login")
 def paginadorajaxResultados(request):
 
@@ -381,3 +407,4 @@ def paginadorajaxResultados(request):
         return render_to_response('Cajero/busquedaresultados_items.html', {'plato': platos},
                                   context_instance=RequestContext(request))
 
+"""

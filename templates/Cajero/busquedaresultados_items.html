@@ -6,16 +6,23 @@
         <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
         <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.nombre|capfirst }}</div>
         <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precio }}</div>
-        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro">
+        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro"
+             stock="{{p.stock}}"
+             cantidad_vendida="0"
+             id="stk_producto_{{ p.id }}_{{ p.seccion.categoria }}">
             1
         </div>
 
         <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
-            <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png" title="Más Producto">
+            <img width="25" class="adddelProducto" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png"
+                 title="Más Producto"
+                 onclick="addProducto('stk_producto_{{ p.id }}_{{ p.seccion.categoria }}');">
         </div>
 
         <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
-            <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_191_circle_minus.png" title="Menos Producto">
+            <img width="25" class="adddelProducto" src="{{STATIC_URL}}img/conf/glyphicons_191_circle_minus.png"
+                 title="Menos Producto"
+                 onclick="delProducto('stk_producto_{{ p.id }}_{{ p.seccion.categoria }}');">
         </div>
 
         <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro">
@@ -37,6 +44,7 @@
                    title="Eliminar producto del Preticket">&#160;</label>
 
         </div>
+
     </div>
     <div class="salto_linea"></div>
 </div>
