@@ -231,34 +231,32 @@ def listarImprimir(request):
     nombre = str(fecha)+str(now.hour)+str(now.minute)+str(now.second)+'.pdf'
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font('Arial', 'B', 25)
-    #pdf.cell(40, 10, ')____---- Carta Boru ----____(',0,1,'L')
-    pdf.cell(0,20,'Carta Boru',1,1,'C')
-    pdf.ln()
-    pdf.image(RUTA_PROYECTO+"\\"+STATIC_URL+"img\\"+'boru_logo2.PNG',85,35,40,30,type='PNG')
-    pdf.ln()
+    pdf.set_font('Arial', 'BU', 25)
+
+
+    pdf.image(RUTA_PROYECTO+"\\"+STATIC_URL+"img\\boru_logo_pdf.png",13,13,52,23,type='PNG')
+    pdf.cell(0, 30, 'Carta Boru', 0, 1, 'C')
+    pdf.ln(10)
 
     secciones = SeccionCarta.objects.filter().order_by("categoria")
     for seccion in secciones:
         if not seccion.es_vacia_seccion():
-            pdf.set_font('Arial', 'B', 20)
-            pdf.cell(0,10,seccion.nombre,0,1,'L')
-            pdf.ln()
+            pdf.set_font('Arial', 'UB', 20)
+            pdf.cell(0,10,str(seccion.nombre).capitalize(),0,1,'L')
+
             productos = seccion.dame_productos()
             for p in productos:
                 pdf.set_font('Arial', 'B', 16)
-                pdf.cell(0, 10, p.nombre+'............Precio: '+str(p.precio))
+                pdf.cell(75, 10, str(p.nombre).capitalize(),0,0)
+
+                pdf.set_font('Arial', 'B', 16)
+                pdf.cell(90, 10,"........................................................", 0, 0,"L")
+
+                pdf.set_font('Arial', 'B', 16)
+                pdf.cell(25, 10, '$' + str(p.importe()), 0, 0,"L")
                 pdf.ln()
             pdf.ln()
-    #platos = Plato.objects.all()
-    #pdf.ln()
-    #for p in platos:
-        #pdf.set_font('Arial', 'B', 16)
-        #pdf.cell(20, 10, p.nombre)
-        #pdf.ln()
-        #pdf.set_font('Arial', 'I', 12)
-        #pdf.cell(150, 10, str(p.precio))
-        #pdf.ln()
+
     nombre = RUTA_PROYECTO+"\\"+STATIC_URL+"pdf\\"+nombre
     nombreWeb = STATIC_URL+"pdf\\"+nombre
     pdf.output(name=nombre, dest='F')
