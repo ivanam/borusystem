@@ -295,7 +295,7 @@ def guardar_detalle_preticket_ajax(request):
             preticket = Preticket.objects.get(pk=preticket_id)
             #solo si la lista no esta vacia la limpio para volver a agregar los productos
             if lista_productos != []:
-                preticket.limpiarDetalles()
+                preticket.limpiarDetalles(True)
 
             #id_prod = 0
             #categoria = ''
@@ -307,7 +307,8 @@ def guardar_detalle_preticket_ajax(request):
                 cad = p.split("_")
                 id_prod = cad[0]
                 categoria = cad[1]
-                cantidad = cad[2]
+                cantidad_vendida = cad[2]
+                cantidad = cad[3]
 
                 if categoria == "P":
                     productoNuevo= Plato.objects.get(pk=id_prod)
@@ -323,6 +324,7 @@ def guardar_detalle_preticket_ajax(request):
                         else:
                             productoNuevo = Ejecutivo.objects.get(pk=id_prod)
                             print "es es ejecutivo " + productoNuevo.nombre
+
 
                 preticket.agregarDetalle(productoNuevo,cantidad)
 

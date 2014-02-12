@@ -1,7 +1,7 @@
 {% for p in plato %}
 <div class="item">
 
-    <div class="editar_detalle_info_agregar" id="detalle_producto_{{ p.id }}_{{ p.seccion.categoria }}">
+    <div class="editar_detalle_info_agregar" id="detalle_producto_{{ p.id }}_{{ p.seccion.categoria }}_0">
 
         <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
         <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.nombre|capfirst }}</div>
@@ -9,20 +9,20 @@
         <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro"
              stock="{{p.stock}}"
              cantidad_vendida="0"
-             id="stk_producto_{{ p.id }}_{{ p.seccion.categoria }}">
+             id="stk_producto_{{ p.id }}_{{ p.seccion.categoria }}_0">
             1
         </div>
 
         <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
             <img width="25" class="adddelProducto" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png"
                  title="Más Producto"
-                 onclick="addProducto('stk_producto_{{ p.id }}_{{ p.seccion.categoria }}');">
+                 onclick="addProducto('stk_producto_{{ p.id }}_{{ p.seccion.categoria }}_0');">
         </div>
 
         <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
             <img width="25" class="adddelProducto" src="{{STATIC_URL}}img/conf/glyphicons_191_circle_minus.png"
                  title="Menos Producto"
-                 onclick="delProducto('stk_producto_{{ p.id }}_{{ p.seccion.categoria }}');">
+                 onclick="delProducto('stk_producto_{{ p.id }}_{{ p.seccion.categoria }}_0');">
         </div>
 
         <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro">
@@ -32,14 +32,14 @@
         <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
 
             <input class="checkModificado" type="checkbox" name="producto"
-                   id="producto_{{ p.id }}_{{ p.seccion.categoria }}"
-                   value="{{ p.id }}_{{ p.seccion.categoria }}_1"
+                   id="producto_{{ p.id }}_{{ p.seccion.categoria }}_0"
+                   value="{{ p.id }}_{{ p.seccion.categoria }}_0_1"
                    cantidad="1"
                    precio="{{ p.precio }}"
                    checked>
-            <label id="lb_producto_{{ p.id }}_{{ p.seccion.categoria }}"
-                   for="producto_{{ p.id }}_{{ p.seccion.categoria }}"
-                   onclick="checkEstado('producto_{{ p.id }}_{{ p.seccion.categoria }}');"
+            <label id="lb_producto_{{ p.id }}_{{ p.seccion.categoria }}_0"
+                   for="producto_{{ p.id }}_{{ p.seccion.categoria }}_0"
+                   onclick="checkEstado('producto_{{ p.id }}_{{ p.seccion.categoria }}_0');"
                    agregado="true"
                    title="Eliminar producto del Preticket">&#160;</label>
 

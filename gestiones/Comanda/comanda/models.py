@@ -305,8 +305,30 @@ class Preticket(models.Model):
 
         return aux
 
-    def limpiarDetalles(self):
-        d = DetallePreticket.objects.filter(preticket = self).delete()
+    def limpiarDetalles(self, reponerStock):
+
+        if reponerStock == True:
+            #eliminamos detalles pero reponiendo el stock de los mismos
+            detalles = DetallePreticket.objects.filter(preticket=self)
+
+            for d in detalles:
+                if d.platos is not None:
+                    d.platos.stock = int(d.platos.stock) + int(d.cantidad)
+                    d.platos.save()
+                else:
+                    if d.bebidas is not None:
+                        d.bebidas.stock = int(d.bebidas.stock) + int(d.cantidad)
+                        d.bebidas.save()
+                    else:
+                        if d.menuD is not None:
+                            d.menuD.stock = int(d.menuD.stock) + int(d.cantidad)
+                            d.menuD.save()
+                        else:
+                            d.menuE.stock = int(d.menuE.stock) + int(d.cantidad)
+                            d.menuE.save()
+
+        #elimino todos los detalles del preticket
+        del_detalles = DetallePreticket.objects.filter(preticket=self).delete()
 
     def agregarDetalle(self, producto, cantidad):
         #creo el nuevo detalle
@@ -335,6 +357,10 @@ class Preticket(models.Model):
         #actualizo total del preticket
         self.total_preticket = self.total()
         self.save()
+        #actualizo el stock del producto
+        stk = int(producto.stock)
+        producto.stock = stk - int(cantidad)
+        producto.save()
 
 
     def generar_factura(self):

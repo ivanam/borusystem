@@ -11,14 +11,14 @@ from django.http import HttpResponseRedirect, response, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from fpdf import FPDF
-
+import xlsxwriter
 
 from boru.settings import PAGINADO_USUARIOS, STATIC_URL, RUTA_PROYECTO
 from gestiones.Administrador.forms import altaUsuarioForm, fechasXconsultaForm
 from gestiones.Administrador.models import permisosVistas
 from gestiones.Carta.altacarta.models import SeccionCarta
 from gestiones.Comanda.comanda.models import Factura
-from gestiones.Producto.producto.models import Plato
+from gestiones.Producto.producto.models import Plato, Bebida, Ejecutivo, DelDia
 
 
 @permission_required('Administrador.is_admin', login_url="logout")
@@ -228,13 +228,12 @@ def paginadorajaxResultados(request):
 def listarImprimir(request):
     fecha = datetime.date.today()
     now = datetime.datetime.now()
-    nombre = str(fecha)+str(now.hour)+str(now.minute)+str(now.second)+'.pdf'
+    nombre = str(fecha) + str(now.hour) + str(now.minute) + str(now.second) + '.pdf'
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font('Arial', 'BU', 25)
 
-
-    pdf.image(RUTA_PROYECTO+"\\"+STATIC_URL+"img\\boru_logo_pdf.png",13,13,52,23,type='PNG')
+    pdf.image(RUTA_PROYECTO + "\\" + STATIC_URL + "img\\boru_logo_pdf.png", 13, 13, 52, 23, type='PNG')
     pdf.cell(0, 30, 'Carta Boru', 0, 1, 'C')
     pdf.ln(10)
 
@@ -242,29 +241,64 @@ def listarImprimir(request):
     for seccion in secciones:
         if not seccion.es_vacia_seccion():
             pdf.set_font('Arial', 'UB', 20)
-            pdf.cell(0,10,str(seccion.nombre).capitalize(),0,1,'L')
+            pdf.cell(0, 10, str(seccion.nombre).capitalize(), 0, 1, 'L')
 
             productos = seccion.dame_productos()
             for p in productos:
                 pdf.set_font('Arial', 'B', 16)
-                pdf.cell(75, 10, str(p.nombre).capitalize(),0,0)
+                pdf.cell(75, 10, str(p.nombre).capitalize(), 0, 0)
 
                 pdf.set_font('Arial', 'B', 16)
-                pdf.cell(90, 10,"........................................................", 0, 0,"L")
+                pdf.cell(90, 10, "........................................................", 0, 0, "L")
 
                 pdf.set_font('Arial', 'B', 16)
-                pdf.cell(25, 10, '$' + str(p.importe()), 0, 0,"L")
+                pdf.cell(25, 10, '$' + str(p.importe()), 0, 0, "L")
                 pdf.ln()
             pdf.ln()
 
-    nombre = RUTA_PROYECTO+"\\"+STATIC_URL+"pdf\\"+nombre
-    nombreWeb = STATIC_URL+"pdf\\"+nombre
+    nombre = RUTA_PROYECTO + "\\" + STATIC_URL + "pdf\\" + nombre
+    nombreWeb = STATIC_URL + "pdf\\" + nombre
     pdf.output(name=nombre, dest='F')
-    return render_to_response('Administrador/visorPdf.html', {'nombre': nombreWeb},context_instance=RequestContext(request))
+
+
+    #exel ejemplo
+    workbook = xlsxwriter.Workbook(RUTA_PROYECTO + "\\" + STATIC_URL + "xlsx\\grafico.xlsx")
+    worksheet = workbook.add_worksheet()
+    # Add the worksheet data to be plotted.
+    platos_stock = Plato.objects.all().order_by("-stock")[0:5]
+    bebidas_stock = Bebida.objects.all().order_by("-stock")[0:5]
+    menue_stock = Ejecutivo.objects.all().order_by("-stock")[0:5]
+    menud_stock = DelDia.objects.all().order_by("-stock")[0:5]
+
+    platos = []
+    data = []
+    nombre = []
+
+    platos.extend(platos_stock)
+    platos.extend(bebidas_stock)
+    platos.extend(menue_stock)
+    platos.extend(menud_stock)
+
+    for p in platos:
+        data.append(p.stock)
+        nombre.append(p.nombre)
+
+    worksheet.write_column('A1', nombre)
+    worksheet.write_column('B1', data)
+    # Create a new chart object.
+    chart = workbook.add_chart({'type': 'pie'})
+    # Add a series to the chart.
+    chart.add_series({'values': '=Sheet1!$B$1:$B$' + str(len(data))})
+    # Insert the chart into the worksheet.
+    worksheet.insert_chart('D1', chart)
+    workbook.close()
+
+    return render_to_response('Administrador/visorPdf.html', {'nombre': nombreWeb},
+                              context_instance=RequestContext(request))
+
 
 @permission_required('Administrador.is_admin', login_url="login")
 def masVendidos(request):
-
     if request.method == 'POST':
         formulario = fechasXconsultaForm(request.POST)
 
@@ -273,7 +307,7 @@ def masVendidos(request):
             fechaI = formulario.cleaned_data['fecha_Inicio']
             fechaF = formulario.cleaned_data['fecha_fin']
 
-            facturas = Factura.objects.filter(fecha__range=(fechaI,fechaF))
+            facturas = Factura.objects.filter(fecha__range=(fechaI, fechaF))
             for f in facturas:
                 if (f.comanda != None):
                     print (f.comanda)
