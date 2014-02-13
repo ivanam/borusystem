@@ -17,7 +17,7 @@ from boru.settings import PAGINADO_USUARIOS, STATIC_URL, RUTA_PROYECTO
 from gestiones.Administrador.forms import altaUsuarioForm, fechasXconsultaForm
 from gestiones.Administrador.models import permisosVistas
 from gestiones.Carta.altacarta.models import SeccionCarta
-from gestiones.Comanda.comanda.models import Factura
+from gestiones.Comanda.comanda.models import Factura, DetalleFactura
 from gestiones.Producto.producto.models import Plato, Bebida, Ejecutivo, DelDia
 
 
@@ -259,46 +259,19 @@ def listarImprimir(request):
     nombre = RUTA_PROYECTO + "\\" + STATIC_URL + "pdf\\" + nombre
     nombreWeb = STATIC_URL + "pdf\\" + nombre
     pdf.output(name=nombre, dest='F')
-
-
-    #exel ejemplo
-    workbook = xlsxwriter.Workbook(RUTA_PROYECTO + "\\" + STATIC_URL + "xlsx\\grafico.xlsx")
-    worksheet = workbook.add_worksheet()
-    # Add the worksheet data to be plotted.
-    platos_stock = Plato.objects.all().order_by("-stock")[0:5]
-    bebidas_stock = Bebida.objects.all().order_by("-stock")[0:5]
-    menue_stock = Ejecutivo.objects.all().order_by("-stock")[0:5]
-    menud_stock = DelDia.objects.all().order_by("-stock")[0:5]
-
-    platos = []
-    data = []
-    nombre = []
-
-    platos.extend(platos_stock)
-    platos.extend(bebidas_stock)
-    platos.extend(menue_stock)
-    platos.extend(menud_stock)
-
-    for p in platos:
-        data.append(p.stock)
-        nombre.append(p.nombre)
-
-    worksheet.write_column('A1', nombre)
-    worksheet.write_column('B1', data)
-    # Create a new chart object.
-    chart = workbook.add_chart({'type': 'pie'})
-    # Add a series to the chart.
-    chart.add_series({'values': '=Sheet1!$B$1:$B$' + str(len(data))})
-    # Insert the chart into the worksheet.
-    worksheet.insert_chart('D1', chart)
-    workbook.close()
-
     return render_to_response('Administrador/visorPdf.html', {'nombre': nombreWeb},
                               context_instance=RequestContext(request))
 
 
 @permission_required('Administrador.is_admin', login_url="login")
 def masVendidos(request):
+
+    #Consulta sql para saber cual plato es el mas vendido
+    #select nombre, SUM(cantidad) from comanda_detallefactura
+    # where nombre in (select nombre from producto_plato)
+    # group by nombre
+    # order by SUM(cantidad) DESC;
+
     if request.method == 'POST':
         formulario = fechasXconsultaForm(request.POST)
 
@@ -307,15 +280,46 @@ def masVendidos(request):
             fechaI = formulario.cleaned_data['fecha_Inicio']
             fechaF = formulario.cleaned_data['fecha_fin']
 
-            facturas = Factura.objects.filter(fecha__range=(fechaI, fechaF))
-            for f in facturas:
-                if (f.comanda != None):
-                    print (f.comanda)
-                else:
-                    print (f.preticket)
+            #Generando el grafico en excel
+            nombre_archivo ="grafico.xlsx"
+            limite_productos = 15
+            workbook = xlsxwriter.Workbook(RUTA_PROYECTO + "\\" + STATIC_URL + "xlsx\\" + nombre_archivo)
+            worksheet = workbook.add_worksheet()
+            data = []
+            nombre = []
+
+            #Productos mas vendidos
+            for x in DetalleFactura.objects.raw(
+                    'select id,nombre, SUM(cantidad) as cant '
+                    'from comanda_detallefactura '
+                    'where id in '
+                    '( select cfd.detallefactura_id '
+                    'from comanda_factura as cf inner join comanda_factura_detalle as cfd '
+                    'on cf.id = cfd.factura_id '
+                    'and cf.fecha between \''+str(fechaI)+'\' and \''+str(fechaF)+'\') '
+                    'group by nombre order by cant DESC '
+                    'LIMIT '+str(limite_productos)+';'):
+
+                data.append(x.cant)
+                nombre.append(x.nombre)
+
+            worksheet.set_column(0, 0, 50)
+            worksheet.write_column('A1', nombre)
+            worksheet.write_column('B1', data)
+            # Create a new chart object.
+            chart = workbook.add_chart({'type': 'pie'})
+            # Add a series to the chart.
+
+            chart.add_series({
+                'values': '=Sheet1!$B$1:$B$' + str(len(data)),
+                'categories': '=Sheet1!$A$1:$A$' + str(len(nombre))
+            })
+            # Insert the chart into the worksheet.
+            worksheet.insert_chart('D1', chart)
+            workbook.close()
 
             #mostramos que la operacion fue exitosa
-            return render_to_response('Administrador/consultaMasVendidoMsj.html', {},
+            return render_to_response('Administrador/consultaMasVendidoMsj.html', {"nombre_archivo":nombre_archivo},
                                       context_instance=RequestContext(request))
 
         return render_to_response('Administrador/consultaMasVendido.html',
