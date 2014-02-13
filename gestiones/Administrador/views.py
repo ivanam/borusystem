@@ -40,6 +40,7 @@ def AltaAdministrador(request):
             activo = formulario.cleaned_data['is_active']
             print(activo)
 
+
             #creamos el user mozo
             usuarioAdministrador = User.objects.create_user(usuario, email, contrasenia)
             #rescato los permiso de mozo
