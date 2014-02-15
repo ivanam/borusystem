@@ -53,7 +53,14 @@
                     <div id="pedidos_nuevos"></div>
                     </li>
 
-                    <li><a href="#" onclick="alert('En construccion...');">Facturas</a></li>
+                    <li class="dropdown {%if activar_facturas %}active{% endif %}"><a href="{% url 'facturas' %}">Facturas
+                    {%if activar_facturas %}
+                        <b class="caret"></b>
+                        {% endif %}
+                        </a>
+                    </li>
+
+
                     <li><a href="#" onclick="alert('En construccion...');">Listado Comandas/Pedidos</a></li>
                 </ul>
                 <div class="cerrar_sesion_fix" id="cerrar_sescion_actual">

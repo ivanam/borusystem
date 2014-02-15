@@ -1,0 +1,58 @@
+<!-- inicio paginador //-->
+<div class="paginacion_comandas">
+    <span class="step-links">
+        {% if facturas.has_previous %}
+            <a href="{% url 'facturas' facturas.previous_page_number %}" title=" < Anterior "><img
+                    src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"></a>
+        {% endif %}
+
+        {% if facturas.number %}
+        <span class="current">
+            {{ facturas.number }}<span class="paginado_de"> de {{ facturas.paginator.num_pages }}</span>
+        </span>
+        {% endif %}
+
+        {% if facturas.has_next %}
+            <a href="{% url 'facturas' facturas.next_page_number %}" title=" Siguiente > "><img
+                    src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"></a>
+        {% endif %}
+    </span>
+</div>
+<!-- fin paginador //-->
+{% for p in facturas %}
+<!--inicio facturas item //-->
+<div class="fecha_buscador">{{fecha_del_dia}}</div>
+<div class="contenedor_comanda_item">
+    <div class="preticket_numero">Factura Nº {{p.id}}</div>
+    <div class="contenedor_ticket_data">
+        <div class="comanda_fecha">Fecha: {{ p.fecha }} {{ p.hora }}</div>
+
+        <div class="comanda_total">Importe: {{ p.total_factura }}</div>
+        <div class="linea"></div>
+        <div class="comanda_btn">
+
+            {% if not p.pago %}
+            <input type="button" class="btn btn-small" value="Relizar pago"
+                   onClick="ir('{% url 'pagar_factura' p.id p.comanda.id %}','&bull; Generando Pago<br><br>');">
+            {% endif %}
+            {% if p.pago %}
+            <input type="button" class="btn btn-small factura_pagada_btn" value="Factura Pagada" disabled>
+            {% endif %}
+
+            {% if p.comanda %}
+            <input type="button" class="btn btn-small" value="Ver Comanda"
+                   onClick="mostrarDetalleComanda({{p.comanda.id}});">
+            {% else %}
+            <input type="button" class="btn btn-small" value="Ver Preticket"
+                   onClick="mostrarDetallePreticket({{p.id}});">
+            {% endif %}
+
+             <input type="button" class="btn btn-small" value="Ver Factura"
+                   onClick="mostrarDetalleFactura({{p.id}});">
+
+        </div>
+    </div>
+</div>
+<div class="salto_linea"></div>
+<!--fin facturas item //-->
+{% endfor %}

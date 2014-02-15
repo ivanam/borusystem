@@ -1,6 +1,6 @@
 import datetime
 from django.contrib.auth.decorators import permission_required
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from boru.settings import PAGINADO_PRODUCTOS, STATIC_URL
@@ -37,7 +37,6 @@ def pretickets(request,pretickets_page=1):
     if pretickets_page == None:
         pretickets_page = 1
 
-
     #calculo fecha para filtrar los pedidos y dejar los de hoy y ayer nomas
     hoy = datetime.date.today();
     ayer = datetime.date.today() - datetime.timedelta(days=1)
@@ -54,6 +53,30 @@ def pretickets(request,pretickets_page=1):
     return render_to_response('Cajero/cajero.html',
                               {"item_pretickets": detalle_renderizado, "titulo": "Pretickets","activar_pretickets":True},
                               context_instance=RequestContext(request))
+
+
+def facturas(request,facturas_page=1):
+    if facturas_page == None:
+        facturas_page = 1
+
+    #calculo fecha para filtrar los pedidos y dejar los de hoy y ayer nomas
+    hoy = datetime.date.today();
+    ayer = datetime.date.today() - datetime.timedelta(days=1)
+
+    facturas_lista = Factura.objects.filter(fecha__range=(ayer,hoy)).order_by("-fecha", "-hora")
+    paginator = Paginator(facturas_lista, PAGINADO_PRODUCTOS)
+    facturas = paginator.page(facturas_page)
+
+    #abro el modelo de comanda abierta
+    detalle_factura = get_template('Cajero/item_factura.html')
+    #renderizo el template html
+    detalle_renderizado = detalle_factura.render(Context({'facturas': facturas, 'STATIC_URL': STATIC_URL}))
+
+    return render_to_response('Cajero/cajero.html',
+                              {"item_factura": detalle_renderizado, "titulo": "Facturas","activar_facturas":True},
+                              context_instance=RequestContext(request))
+
+
 
 @permission_required('Administrador.is_cajero', login_url="login")
 def una_comanda(request,id_comanda=None):
@@ -297,18 +320,13 @@ def guardar_detalle_preticket_ajax(request):
             if lista_productos != []:
                 preticket.limpiarDetalles(True)
 
-            #id_prod = 0
-            #categoria = ''
-            #cantidad = 0
-
             #las recorro y rescato los platos y los asigno al menu
             for p in lista_productos:
 
                 cad = p.split("_")
                 id_prod = cad[0]
                 categoria = cad[1]
-                cantidad_vendida = cad[2]
-                cantidad = cad[3]
+                cantidad = cad[2]
 
                 if categoria == "P":
                     productoNuevo= Plato.objects.get(pk=id_prod)

@@ -266,70 +266,130 @@ def listarImprimir(request):
 
 @permission_required('Administrador.is_admin', login_url="login")
 def masVendidos(request):
-
-    #Consulta sql para saber cual plato es el mas vendido
-    #select nombre, SUM(cantidad) from comanda_detallefactura
-    # where nombre in (select nombre from producto_plato)
-    # group by nombre
-    # order by SUM(cantidad) DESC;
-
     if request.method == 'POST':
         formulario = fechasXconsultaForm(request.POST)
 
         if formulario.is_valid():
+
             #capturamos y limpiamos datos
             fechaI = formulario.cleaned_data['fecha_Inicio']
             fechaF = formulario.cleaned_data['fecha_fin']
+            tipo_grafico = formulario.cleaned_data['tipo_grafico']
+            producto_informe = formulario.cleaned_data['producto_informe']
+            top_productos = formulario.cleaned_data['top_productos']
+            criterio_consulta = formulario.cleaned_data['criterio_consulta']
+
+            titulo = 'Productos '
+
+            #parseamos parametros de la consulta
+            if criterio_consulta == "MAS":
+                order = 'DESC'
+                titulo = titulo + 'mas vendidos '
+            else:
+                order = 'ASC'
+                titulo = titulo + 'menos vendidos '
+
+            titulo = titulo + 'entre '+ str(fechaI) +' y '+str(fechaF)+' \n'
+
+            if top_productos != "ALL":
+                limite_productos = 'LIMIT ' + str(top_productos)
+                titulo = titulo + '(Top ' + str(top_productos)+' '
+            else:
+                limite_productos = ''
+                titulo = titulo + '(Todos '
+
+
+            if producto_informe == "TODOS":
+
+                titulo = titulo + 'Productos)'
+
+                sql_query = 'select id,nombre, SUM(cantidad) as cant ' \
+                            'from comanda_detallefactura ' \
+                            'where id in ' \
+                            '( select cfd.detallefactura_id ' \
+                            'from comanda_factura as cf inner join comanda_factura_detalle as cfd ' \
+                            'on cf.id = cfd.factura_id ' \
+                            'and cf.fecha between \'' + str(fechaI) + '\' and \'' + str(fechaF) + '\') ' \
+                            'group by nombre order by cant ' + order + ' ' + limite_productos + ';'
+
+            else:
+
+                titulo = titulo + str(producto_informe).capitalize() +')'
+
+                """
+                sql_query = 'select id,nombre, SUM(cantidad) as cant ' \
+                            'from comanda_detallefactura ' \
+                            'where nombre in (select nombre from producto_' + producto_informe + ') ' \
+                            'group by nombre ' \
+                            'order by cant ' + order + ' ' + limite_productos + ';'
+                """
+
+                sql_query = 'select id,nombre, SUM(cantidad) as cant ' \
+                            'from comanda_detallefactura ' \
+                            'where id in ' \
+                            '( ' \
+                            'select j.id from ' \
+                                '(' \
+                                'select cfd.detallefactura_id from ' \
+                                'comanda_factura as cf inner join comanda_factura_detalle as cfd ' \
+                                'on cf.id = cfd.factura_id ' \
+                                'and cf.fecha between \'' + str(fechaI) + '\' and \'' + str(fechaF) + '\'' \
+                                ') ' \
+                                'as h inner join ' \
+                                    '(' \
+                                    'select id from comanda_detallefactura ' \
+                                    'where nombre in ' \
+                                        '(' \
+                                        'select nombre from producto_'+producto_informe+' ' \
+                                        ')' \
+                                    ') as j on h.detallefactura_id = j.id' \
+                                ') ' \
+                                'group by nombre order by cant ' + order + ' ' + limite_productos + ';'
 
             #Generando el grafico en excel
-            nombre_archivo ="grafico.xlsx"
-            limite_productos = 15
+            nombre_archivo = "grafico.xlsx"
             workbook = xlsxwriter.Workbook(RUTA_PROYECTO + "\\" + STATIC_URL + "xlsx\\" + nombre_archivo)
             worksheet = workbook.add_worksheet()
             data = []
             nombre = []
 
             #Productos mas vendidos
-            for x in DetalleFactura.objects.raw(
-                    'select id,nombre, SUM(cantidad) as cant '
-                    'from comanda_detallefactura '
-                    'where id in '
-                    '( select cfd.detallefactura_id '
-                    'from comanda_factura as cf inner join comanda_factura_detalle as cfd '
-                    'on cf.id = cfd.factura_id '
-                    'and cf.fecha between \''+str(fechaI)+'\' and \''+str(fechaF)+'\') '
-                    'group by nombre order by cant DESC '
-                    'LIMIT '+str(limite_productos)+';'):
-
+            for x in DetalleFactura.objects.raw(sql_query):
                 data.append(x.cant)
                 nombre.append(x.nombre)
 
-            worksheet.set_column(0, 0, 50)
-            worksheet.write_column('A1', nombre)
-            worksheet.write_column('B1', data)
+            worksheet.set_column(0, 0, 40)
+            worksheet.write_column('A2', nombre)
+            worksheet.write_column('B2', data)
             # Create a new chart object.
-            chart = workbook.add_chart({'type': 'pie'})
+            chart = workbook.add_chart({'type': str(tipo_grafico)})
+            chart.set_title({'name': titulo,
+                             'name_font': {
+                                'name': 'Arial',
+                                'color': '#000000',
+                                'size': 9,},
+                             })
             # Add a series to the chart.
 
             chart.add_series({
-                'values': '=Sheet1!$B$1:$B$' + str(len(data)),
-                'categories': '=Sheet1!$A$1:$A$' + str(len(nombre))
+                'values': '=Sheet1!$B$2:$B$' + str(len(data)+1),
+                'categories': '=Sheet1!$A$2:$A$' + str(len(nombre)+1)
             })
             # Insert the chart into the worksheet.
-            worksheet.insert_chart('D1', chart)
+            worksheet.insert_chart('D2', chart)
             workbook.close()
 
             #mostramos que la operacion fue exitosa
-            return render_to_response('Administrador/consultaMasVendidoMsj.html', {"nombre_archivo":nombre_archivo},
+            return render_to_response('Administrador/consultaMasVendido.html', {'formulario': formulario,'consulta':True,'nombre_archivo':nombre_archivo},
                                       context_instance=RequestContext(request))
 
         return render_to_response('Administrador/consultaMasVendido.html',
-                                  {'formulario': formulario},
+                                  {'formulario': formulario,'consulta':False},
                                   context_instance=RequestContext(request))
 
     else:
         formulario = fechasXconsultaForm()
         return render_to_response('Administrador/consultaMasVendido.html',
-                                  {'formulario': formulario},
+                                  {'formulario': formulario,'consulta':False},
                                   context_instance=RequestContext(request))
 
