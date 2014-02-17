@@ -13,7 +13,7 @@ from django.template import RequestContext
 from fpdf import FPDF
 import xlsxwriter
 
-from boru.settings import PAGINADO_USUARIOS, STATIC_URL, RUTA_PROYECTO
+from boru.settings import PAGINADO_USUARIOS, STATIC_URL, RUTA_PROYECTO, TOTAL_LINEAS_PDF
 from gestiones.Administrador.forms import altaUsuarioForm, fechasXconsultaForm
 from gestiones.Administrador.models import permisosVistas
 from gestiones.Carta.altacarta.models import SeccionCarta
@@ -227,35 +227,51 @@ def paginadorajaxResultados(request):
 
 @permission_required('Administrador.is_admin', login_url="login")
 def listarImprimir(request):
+    lineas = TOTAL_LINEAS_PDF
     fecha = datetime.date.today()
     now = datetime.datetime.now()
     nombre = str(fecha) + str(now.hour) + str(now.minute) + str(now.second) + '.pdf'
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font('Arial', 'BU', 25)
-
     pdf.image(RUTA_PROYECTO + "\\" + STATIC_URL + "img\\boru_logo_pdf.png", 13, 13, 52, 23, type='PNG')
     pdf.cell(0, 30, 'Carta Boru', 0, 1, 'C')
     pdf.ln(10)
+    lineas = lineas - 4
 
     secciones = SeccionCarta.objects.filter().order_by("categoria")
     for seccion in secciones:
         if not seccion.es_vacia_seccion():
+            if (lineas - 3) <= 0:
+                pdf.add_page()
+                lineas = TOTAL_LINEAS_PDF
+            lineas = lineas - 3
             pdf.set_font('Arial', 'UB', 20)
-            pdf.cell(0, 10, str(seccion.nombre).capitalize(), 0, 1, 'L')
+            pdf.cell(0, 10, str(seccion.nombre).capitalize(), 0, 1, 'R')
+            pdf.ln()
 
             productos = seccion.dame_productos()
             for p in productos:
-                pdf.set_font('Arial', 'B', 16)
-                pdf.cell(75, 10, str(p.nombre).capitalize(), 0, 0)
+                if p.activo ==True:
+                    if (lineas - 2) <= 0:
+                        pdf.add_page()
+                        lineas = TOTAL_LINEAS_PDF - 3
+                        pdf.set_font('Arial', 'UB', 20)
+                        pdf.cell(0, 10, str(seccion.nombre).capitalize(), 0, 1, 'R')
+                        pdf.ln()
+                    lineas= lineas -2
+                    pdf.set_font('Arial', 'B', 16)
+                    pdf.cell(75, 10, str(p.nombre).capitalize(), 0, 0)
 
-                pdf.set_font('Arial', 'B', 16)
-                pdf.cell(90, 10, "........................................................", 0, 0, "L")
+                    pdf.set_font('Arial', 'B', 16)
+                    pdf.cell(90, 10, "........................................................", 0, 0, "L")
 
-                pdf.set_font('Arial', 'B', 16)
-                pdf.cell(25, 10, '$' + str(p.importe()), 0, 0, "L")
-                pdf.ln()
+                    pdf.set_font('Arial', 'B', 16)
+                    pdf.cell(25, 10, '$' + str(p.importe()), 0, 0, "L")
+                    pdf.ln()
+
             pdf.ln()
+            lineas = lineas -1
 
     nombre = RUTA_PROYECTO + "\\" + STATIC_URL + "pdf\\" + nombre
     nombreWeb = STATIC_URL + "pdf\\" + nombre
@@ -354,6 +370,8 @@ def masVendidos(request):
             nombre = []
 
             #Productos mas vendidos
+            worksheet.write('A1', 'Producto')
+            worksheet.write('B1', 'Cantidad vendida')
             for x in DetalleFactura.objects.raw(sql_query):
                 data.append(x.cant)
                 nombre.append(x.nombre)
