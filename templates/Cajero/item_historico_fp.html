@@ -1,0 +1,92 @@
+<!-- inicio paginador //-->
+<div class="paginacion_comandas">
+    <span class="step-links">
+        {% if listado.has_previous %}
+            <a onclick="enviarFormPaginado('form_historico','id_historico_page',{{listado.previous_page_number}});" href="#" title=" < Anterior "><img
+                    src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"></a>
+        {% endif %}
+
+        {% if listado.number %}
+        <span class="current">
+            {{ listado.number }}<span class="paginado_de"> de {{ listado.paginator.num_pages }}</span>
+        </span>
+        {% endif %}
+
+        {% if listado.has_next %}
+            <a onclick="enviarFormPaginado('form_historico','id_historico_page',{{listado.next_page_number}});" href="#" title=" Siguiente > "><img
+                    src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"></a>
+        {% endif %}
+    </span>
+</div>
+<!-- fin paginador //-->
+{% for p in listado %}
+<!--inicio comanda item //-->
+<div class="fecha_buscador">{{fecha_del_dia}}</div>
+<div class="contenedor_comanda_item">
+    <div class="preticket_numero" title="{% if p.tipo_listado == 'C' %} Comanda Nº {{p.id}} {% else %} Pedido Nº {{p.id}} {% endif %}">
+        {% if p.tipo_comanda == "C" %} Comanda Nº {{p.id}} {% else %} Pedido Nº {{p.id}} {% endif %}
+    </div>
+    <div class="contenedor_ticket_data">
+        <div class="comanda_fecha ">Fecha: {{ p.fecha }} {{ p.hora }}</div>
+
+        <div class="comanda_total">Importe: {{ p.total }}</div>
+        <div class="linea"></div>
+        <div class="comanda_btn">
+
+
+
+
+            {% if p.factura %}
+
+                <input type="button" class="btn btn-small" value="Ver Pedido" onClick="mostrarDetallePedido({{p.id}});">
+                <input type="button" class="btn btn-small" value="Ver Factura" onClick="mostrarDetalleFactura({{p.factura.id}});">
+
+                    {% if p.factura.pago %}
+                        <input type="button" class="btn btn-small factura_pagada_btn" value="Factura Pagada" disabled>
+                    {% endif %}
+
+            {% endif %}
+
+            {% if p.preticket %}
+
+                <input type="button" class="btn btn-small" value="Ver Comanda" onClick="mostrarDetalleComanda({{p.id}});">
+                <input type="button" class="btn btn-small" value="Ver Preticket" onClick="mostrarDetallePreticket({{p.preticket.id}});">
+
+                {% if p.preticket.factura %}
+                    <input type="button" class="btn btn-small" value="Ver Factura" onClick="mostrarDetalleFactura({{p.preticket.factura.id}});">
+                {% endif %}
+
+                {% if p.preticket.factura.pago %}
+                    <input type="button" class="btn btn-small factura_pagada_btn" value="Factura Pagada" disabled>
+                {% endif %}
+
+            {% endif %}
+
+
+        </div>
+    </div>
+</div>
+<div class="salto_linea"></div>
+<!--fin comanda item //-->
+{% endfor %}
+<!-- inicio paginador //-->
+<div class="flotar_der">
+    <span class="step-links">
+        {% if listado.has_previous %}
+            <a onclick="enviarFormPaginado('form_historico','id_historico_page',{{listado.previous_page_number}});" href="#" title=" < Anterior "><img
+                    src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"></a>
+        {% endif %}
+
+        {% if listado.number %}
+        <span class="current">
+            {{ listado.number }}<span class="paginado_de"> de {{ listado.paginator.num_pages }}</span>
+        </span>
+        {% endif %}
+
+        {% if listado.has_next %}
+            <a onclick="enviarFormPaginado('form_historico','id_historico_page',{{listado.next_page_number}});" href="#" title=" Siguiente > "><img
+                    src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"></a>
+        {% endif %}
+    </span>
+</div>
+<!-- fin paginador //-->

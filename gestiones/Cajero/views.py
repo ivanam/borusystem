@@ -7,7 +7,8 @@ from boru.settings import PAGINADO_PRODUCTOS, STATIC_URL
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Context
-from django.template.loader import get_template
+from django.template.loader import get_template, render_to_string
+from gestiones.Cajero.forms import historicoVentasForm
 from gestiones.Comanda.comanda.models import Comanda, Preticket, Factura
 from gestiones.Producto.producto.models import Plato, Bebida, DelDia, Ejecutivo
 
@@ -19,8 +20,10 @@ def Cajero(request,pagina=1):
         pagina = 1
 
     #calculo fecha para filtrar las comandas y dejar las de hoy y ayer nomas
-    hoy = datetime.date.today();
+    hoy = datetime.date.today()
     ayer = datetime.date.today()-datetime.timedelta(days=1)
+
+    titulo = "Comandas Abiertas del "+str(ayer.strftime("%d/%m/%Y"))+" y "+str(hoy.strftime("%d/%m/%Y"))
 
     comandas_lista = Comanda.objects.filter(tipo_comanda__exact="C", finalizada = True,fecha__range=(ayer,hoy),preticket__exact =None).order_by("-fecha", "-hora")
     paginator = Paginator(comandas_lista, PAGINADO_PRODUCTOS)
@@ -30,7 +33,7 @@ def Cajero(request,pagina=1):
     detalle_comanda=get_template('Cajero/item_comanda_abierta.html')
     #renderizo el template html
     detalle_renderizado=detalle_comanda.render(Context({'comandas': comandas,'STATIC_URL':STATIC_URL}))
-    return render_to_response('Cajero/cajero.html', {"item_comandas_abiertas": detalle_renderizado,"titulo":"Comandas","activar_comandas":True}, context_instance=RequestContext(request))
+    return render_to_response('Cajero/cajero.html', {"item_comandas_abiertas": detalle_renderizado,"titulo":titulo,"activar_comandas":True}, context_instance=RequestContext(request))
 
 
 def pretickets(request,pretickets_page=1):
@@ -38,8 +41,10 @@ def pretickets(request,pretickets_page=1):
         pretickets_page = 1
 
     #calculo fecha para filtrar los pedidos y dejar los de hoy y ayer nomas
-    hoy = datetime.date.today();
+    hoy = datetime.date.today()
     ayer = datetime.date.today() - datetime.timedelta(days=1)
+
+    titulo = "Pretickets del " + str(ayer.strftime("%d/%m/%Y")) + " y " + str(hoy.strftime("%d/%m/%Y"))
 
     pretickets_lista = Preticket.objects.filter(fecha__range=(ayer,hoy)).order_by("-fecha", "-hora")
     paginator = Paginator(pretickets_lista, PAGINADO_PRODUCTOS)
@@ -51,7 +56,7 @@ def pretickets(request,pretickets_page=1):
     detalle_renderizado = detalle_preticket.render(Context({'pretickets': pretickets, 'STATIC_URL': STATIC_URL}))
 
     return render_to_response('Cajero/cajero.html',
-                              {"item_pretickets": detalle_renderizado, "titulo": "Pretickets","activar_pretickets":True},
+                              {"item_pretickets": detalle_renderizado, "titulo": titulo,"activar_pretickets":True},
                               context_instance=RequestContext(request))
 
 
@@ -60,8 +65,10 @@ def facturas(request,facturas_page=1):
         facturas_page = 1
 
     #calculo fecha para filtrar los pedidos y dejar los de hoy y ayer nomas
-    hoy = datetime.date.today();
+    hoy = datetime.date.today()
     ayer = datetime.date.today() - datetime.timedelta(days=1)
+
+    titulo = "Facturas del " + str(ayer.strftime("%d/%m/%Y")) + " y " + str(hoy.strftime("%d/%m/%Y"))
 
     facturas_lista = Factura.objects.filter(fecha__range=(ayer,hoy)).order_by("-fecha", "-hora")
     paginator = Paginator(facturas_lista, PAGINADO_PRODUCTOS)
@@ -73,9 +80,133 @@ def facturas(request,facturas_page=1):
     detalle_renderizado = detalle_factura.render(Context({'facturas': facturas, 'STATIC_URL': STATIC_URL}))
 
     return render_to_response('Cajero/cajero.html',
-                              {"item_factura": detalle_renderizado, "titulo": "Facturas","activar_facturas":True},
+                              {"item_factura": detalle_renderizado, "titulo": titulo,"activar_facturas":True},
                               context_instance=RequestContext(request))
 
+
+def historico(request):
+
+    #si la consulta es por POST
+    if request.method == 'POST':
+
+        formulario = historicoVentasForm(request.POST)
+
+        #y el formulario es valido
+        if formulario.is_valid():
+
+            fecha_Inicio = formulario.cleaned_data['fecha_Inicio']
+            fecha_fin = formulario.cleaned_data['fecha_fin']
+            criterio_listado = formulario.cleaned_data['criterio_listado']
+            historico_page = formulario.cleaned_data['historico_page']
+            mozo = formulario.cleaned_data['mozo']
+
+            plantilla = "item_historico_"+str(criterio_listado)+".html"
+
+            if criterio_listado == "t":
+                listado_total = Comanda.objects.filter(finalizada=True,
+                                                       fecha__range=(fecha_Inicio, fecha_fin)).order_by("-fecha",
+                                                                                                        "-hora")
+                if mozo != None:
+                    listado_total = listado_total.filter(mozo__id=mozo.id)
+
+            if criterio_listado == "ca":
+                listado_total = Comanda.objects.filter(finalizada=True, cerrada=False, tipo_comanda__exact="C",
+                                                       fecha__range=(fecha_Inicio, fecha_fin)).order_by("-fecha",
+                                                                                                        "-hora")
+                if mozo != None:
+                    listado_total = listado_total.filter(mozo__id=mozo.id)
+
+            if criterio_listado == "cc":
+                listado_total = Comanda.objects.filter(finalizada=True, cerrada=True, tipo_comanda__exact="C",
+                                                       fecha__range=(fecha_Inicio, fecha_fin)).order_by("-fecha",
+                                                                                                        "-hora")
+                if mozo != None:
+                    listado_total = listado_total.filter(mozo__id=mozo.id)
+
+            if criterio_listado == "p":
+                listado_total = Comanda.objects.filter(finalizada = True,tipo_comanda__exact="P",fecha__range=(fecha_Inicio, fecha_fin)).order_by("-fecha",
+                                                                                                        "-hora")
+                if mozo != None:
+                    listado_total = listado_total.filter(mozo__id=mozo.id)
+
+            if criterio_listado == "ptk":
+                listado_total = Preticket.objects.filter(fecha__range=(fecha_Inicio, fecha_fin)).order_by("-fecha",
+                                                                                                        "-hora")
+                if mozo != None:
+                    listado_total = listado_total.filter(comanda__mozo__id=mozo.id)
+
+            if criterio_listado == "f":
+                listado_total = Factura.objects.filter(fecha__range=(fecha_Inicio, fecha_fin)).order_by("-fecha",
+                                                                                                        "-hora")
+                if mozo != None:
+                    listado_total = listado_total.filter(Q(comanda__mozo__id=mozo.id) | Q(preticket__comanda__mozo__id=mozo.id))
+
+            if criterio_listado == "fp":
+                listado_total = Factura.objects.filter(pago__isnull=False,fecha__range=(fecha_Inicio, fecha_fin)).order_by("-fecha",
+                                                                                                        "-hora")
+                plantilla = "item_historico_f.html"
+
+                if mozo != None:
+                    listado_total = listado_total.filter(
+                        Q(comanda__mozo__id=mozo.id) | Q(preticket__comanda__mozo__id=mozo.id))
+
+            if criterio_listado == "fnp":
+                listado_total = Factura.objects.filter(pago__isnull=True,fecha__range=(fecha_Inicio, fecha_fin)).order_by("-fecha",
+                                                                                                        "-hora")
+                plantilla = "item_historico_f.html"
+
+                if mozo != None:
+                    listado_total = listado_total.filter(
+                        Q(comanda__mozo__id=mozo.id) | Q(preticket__comanda__mozo__id=mozo.id))
+
+
+            paginator = Paginator(listado_total, PAGINADO_PRODUCTOS)
+            listado_paginado = paginator.page(historico_page)
+            item_historico = render_to_string('Cajero/'+plantilla, {'listado': listado_paginado},
+                                              context_instance=RequestContext(request))
+
+            #renderizo el template html
+            detalle_renderizado = render_to_string('Cajero/historico_form.html',{'formulario': formulario,"listado_resultados":item_historico}, context_instance=RequestContext(request))
+
+            #mostramos que la operacion fue exitosa
+            return render_to_response('Cajero/cajero.html',{"item_historico": detalle_renderizado,"titulo":"Historico de Ventas","activar_historico":True},context_instance=RequestContext(request))
+
+        #renderizo el template html
+        detalle_renderizado = render_to_string('Cajero/historico_form.html', {'formulario': formulario},
+                                               context_instance=RequestContext(request))
+        #si el formulario no es valido lo vuelvo a mostrar
+        return render_to_response('Cajero/cajero.html', {"item_historico": detalle_renderizado,"titulo":"Historico de Ventas","activar_historico":True},context_instance=RequestContext(request))
+
+    else:
+        #si no viene por post solo muetro el form
+        formulario = historicoVentasForm()
+        #renderizo el template html
+        detalle_renderizado = render_to_string('Cajero/historico_form.html', {'formulario': formulario},
+                                               context_instance=RequestContext(request))
+
+        return render_to_response('Cajero/cajero.html', {"item_historico": detalle_renderizado,"titulo":"Historico de Ventas","activar_historico":True},context_instance=RequestContext(request))
+
+"""
+        #calculo fecha para filtrar los pedidos y dejar los de hoy y ayer nomas
+        hoy = datetime.date.today()
+        ayer = datetime.date.today() - datetime.timedelta(days=1)
+
+        titulo = "Historico del " + str(ayer.strftime("%d/%m/%Y")) + " y " + str(hoy.strftime("%d/%m/%Y"))
+
+        historico_lista = Factura.objects.filter(fecha__range=(ayer, hoy)).order_by("-fecha", "-hora")
+        paginator = Paginator(historico_lista, PAGINADO_PRODUCTOS)
+        historicofacturas = paginator.page(historico_page)
+
+        #abro el modelo de comanda abierta
+        detalle_historico = get_template('Cajero/item_historico.html')
+        #renderizo el template html
+        detalle_renderizado = detalle_historico.render(Context({'historico': historico, 'STATIC_URL': STATIC_URL}))
+
+        return render_to_response('Cajero/cajero.html',
+                                  {"item_historico": detalle_renderizado, "titulo": titulo, "activar_historico": True},
+                                  context_instance=RequestContext(request))
+
+"""
 
 
 @permission_required('Administrador.is_cajero', login_url="login")
@@ -221,12 +352,13 @@ def detalle_factura_ajax(request):
 @permission_required('Administrador.is_cajero', login_url="login")
 def pedidos_pub(request, pedidos_page=1):
 
-
     if pedidos_page == None:
         pedidos_page = 1
 
     hoy = datetime.date.today();
     ayer = datetime.date.today() - datetime.timedelta(days=1)
+
+    titulo = "Pedidos Pub del " + str(ayer.strftime("%d/%m/%Y")) + " y " + str(hoy.strftime("%d/%m/%Y"))
 
     pedidos_lista = Comanda.objects.filter(tipo_comanda__exact="P", finalizada = True, fecha__range=(ayer, hoy)).order_by("-fecha", "-hora")
 
@@ -239,7 +371,7 @@ def pedidos_pub(request, pedidos_page=1):
     detalle_renderizado = detalle_pedido.render(Context({'pedidos': pedidos}))
 
     return render_to_response('Cajero/cajero.html',
-                              {"item_pedidos_pub": detalle_renderizado, "titulo": "Pedidos Pub","activar_pedidos":True},
+                              {"item_pedidos_pub": detalle_renderizado, "titulo": titulo,"activar_pedidos":True},
                               context_instance=RequestContext(request))
 
 @permission_required('Administrador.is_cajero', login_url="login")

@@ -39,4 +39,6 @@ urlpatterns = patterns('',
     url(r'^buscarresultados$', 'gestiones.Cajero.views.buscarproductoajaxResultados', name="buscador_producto_ajax_resultados_pre"),
 
     url(r'^facturas/(?P<facturas_page>\d+)*$', 'gestiones.Cajero.views.facturas', name="facturas"),
+
+    url(r'^historico$', 'gestiones.Cajero.views.historico', name="historico"),
 )

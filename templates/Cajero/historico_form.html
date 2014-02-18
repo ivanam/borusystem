@@ -1,0 +1,58 @@
+<div class="contenedor_historico_form">
+    <span id="msg_toggle">Opciones de Listado Historico</span>
+
+    <div class="toggle_arrow_down" id="arrow_toggle" onclick="colapsar('colapsar_form');"></div>
+    <div id="colapsar_form">
+
+        <form method="post" action="" enctype="application/x-www-form-urlencoded" name="form_historico"
+              id="form_historico">
+
+            <div class="linea"></div>
+            <br>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Listar Ventas</div>
+                <div class="contenedor_input">
+                    {{ formulario.fecha_Inicio }} al {{ formulario.fecha_fin }}
+                    <div class="form_error_msg">{{ formulario.fecha_fin.errors|striptags }}</div>
+                    <div class="form_error_msg">{{ formulario.fecha_Inicio.errors|striptags }}</div>
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Criterio del Listado</div>
+                <div class="contenedor_input">
+                    {{ formulario.criterio_listado }}
+                    <div class="form_error_msg">{{ formulario.criterio_listado.errors|striptags }}</div>
+
+                </div>
+            </div>
+
+            <div class="contenefor_form_row">
+                <div class="contenedor_texto"><span class="form_error_msg">*</span> Filtrar por Mozo</div>
+                <div class="contenedor_input">
+                    {{ formulario.mozo }}
+                    <div class="form_error_msg">{{ formulario.mozo.errors|striptags }}</div>
+
+                </div>
+            </div>
+
+
+            <div class="linea"></div>
+            <br>
+
+            <div class="contenefor_form_row">
+                <input type="submit" name="enviar_form_historico" id="enviar_form_historico"
+                       class="btn btn-primary btn-large" value="Generar Listado">
+            </div>
+            {{ formulario.historico_page }}
+            {% csrf_token %}
+
+        </form>
+    </div>
+</div>
+<div class="salto_linea"></div>
+
+{{listado_resultados}}
+
+

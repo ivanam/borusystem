@@ -2,14 +2,16 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>{% block titulo %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap.css" type="text/css" media="all"/>
-    <link rel="stylesheet" href="{{STATIC_URL}}css/boru.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="{{STATIC_URL}}css/ui-lightness/jquery-ui-1.10.3.custom.css" type="text/css"
+          media="all"/>
     <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-1.10.2.min.js"></script>
-    <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-cookie.js"></script>
-    <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/funciones.js"></script>
+    <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-ui-1.10.3.custom.min.js"></script>
     <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/bootstrap.js"></script>
+    <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/funciones.js"></script>
     <script type="text/javascript" language="javascript"
             src="{{STATIC_URL}}js/twitter-bootstrap-hover-dropdown.min.js"></script>
+    <link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap.css" type="text/css" media="all"/>
+    <link rel="stylesheet" href="{{STATIC_URL}}css/boru.css" type="text/css" media="all"/>
     <link rel='shortcut icon' href="{{STATIC_URL}}img/favicon.ico">
 </head>
 <body>
@@ -61,7 +63,12 @@
                     </li>
 
 
-                    <li><a href="#" onclick="alert('En construccion...');">Listado Comandas/Pedidos</a></li>
+                    <li class="dropdown {%if activar_historico %}active{% endif %}"><a href="{% url 'historico' %}">Historico de Ventas
+                    {%if activar_historico %}
+                        <b class="caret"></b>
+                        {% endif %}
+                        </a>
+                    </li>
                 </ul>
                 <div class="cerrar_sesion_fix" id="cerrar_sescion_actual">
                     <a href="{% url 'logout' %}" target="_self">

@@ -64,15 +64,14 @@ class fechasXconsultaForm(forms.Form):
         ('MENOS', 'Productos menos vendidos')
     )
 
-
     hoy = datetime.date.today()
 
-    fecha_Inicio = forms.DateField(required=True,widget=forms.TextInput,initial=hoy)
-    fecha_fin = forms.DateField(required=True,widget=forms.TextInput)
-    tipo_grafico = forms.ChoiceField(required=True,choices=GRAFICOS_TIPO,initial='pie')
-    producto_informe = forms.ChoiceField(required=True,choices=PRODUCTO_INFORME,initial='TODOS')
-    top_productos = forms.ChoiceField(required=True,choices=TOP_PRODUCTOS,initial='15')
-    criterio_consulta = forms.ChoiceField(required=True,choices=CRITERIO_CONSULTA,initial='MAS')
+    fecha_Inicio = forms.DateField(required=True,widget = forms.TextInput, initial=hoy)
+    fecha_fin = forms.DateField(required=True,widget = forms.TextInput)
+    tipo_grafico = forms.ChoiceField(required=True, choices=GRAFICOS_TIPO, initial='pie')
+    producto_informe = forms.ChoiceField(required=True, choices=PRODUCTO_INFORME, initial='TODOS')
+    top_productos = forms.ChoiceField(required=True, choices=TOP_PRODUCTOS, initial='15')
+    criterio_consulta = forms.ChoiceField(required=True, choices=CRITERIO_CONSULTA, initial='MAS')
 
     def clean_fecha_fin(self):
         diccionario_limpio = self.cleaned_data
