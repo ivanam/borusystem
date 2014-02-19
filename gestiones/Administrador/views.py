@@ -230,7 +230,7 @@ def listarImprimir(request):
     lineas = TOTAL_LINEAS_PDF
     fecha = datetime.date.today()
     now = datetime.datetime.now()
-    nombre = str(fecha) + str(now.hour) + str(now.minute) + str(now.second) + '.pdf'
+    nombre = "Carta_Boru_"+str(fecha)+'.pdf'
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font('Arial', 'BU', 25)
@@ -238,7 +238,6 @@ def listarImprimir(request):
     pdf.cell(0, 30, 'Carta Boru', 0, 1, 'C')
     pdf.ln(10)
     lineas = lineas - 4
-
     secciones = SeccionCarta.objects.filter().order_by("categoria")
     for seccion in secciones:
         if not seccion.es_vacia_seccion():
@@ -247,9 +246,8 @@ def listarImprimir(request):
                 lineas = TOTAL_LINEAS_PDF
             lineas = lineas - 3
             pdf.set_font('Arial', 'UB', 20)
-            pdf.cell(0, 10, str(seccion.nombre).capitalize(), 0, 1, 'R')
+            pdf.cell(0, 10, str(seccion.nombre).capitalize(), 0, 1, 'L')
             pdf.ln()
-
             productos = seccion.dame_productos()
             for p in productos:
                 if p.activo ==True:
@@ -257,27 +255,24 @@ def listarImprimir(request):
                         pdf.add_page()
                         lineas = TOTAL_LINEAS_PDF - 3
                         pdf.set_font('Arial', 'UB', 20)
-                        pdf.cell(0, 10, str(seccion.nombre).capitalize(), 0, 1, 'R')
+                        pdf.cell(0, 10, str(seccion.nombre).capitalize(), 0, 1, 'L')
                         pdf.ln()
                     lineas= lineas -2
                     pdf.set_font('Arial', 'B', 16)
                     pdf.cell(75, 10, str(p.nombre).capitalize(), 0, 0)
-
                     pdf.set_font('Arial', 'B', 16)
                     pdf.cell(90, 10, "........................................................", 0, 0, "L")
-
                     pdf.set_font('Arial', 'B', 16)
                     pdf.cell(25, 10, '$' + str(p.importe()), 0, 0, "L")
                     pdf.ln()
-
             pdf.ln()
             lineas = lineas -1
-
-    nombre = RUTA_PROYECTO + "\\" + STATIC_URL + "pdf\\" + nombre
-    nombreWeb = STATIC_URL + "pdf\\" + nombre
-    pdf.output(name=nombre, dest='F')
-    return render_to_response('Administrador/visorPdf.html', {'nombre': nombreWeb},
-                              context_instance=RequestContext(request))
+    #nombre = RUTA_PROYECTO + "\\" + STATIC_URL + "pdf\\" + nombre
+    #nombreWeb = STATIC_URL + "pdf\\" + nombre
+    #pdf.output(name=nombre, dest='F')
+    #return render_to_response('Administrador/visorPdf.html', {'nombre': nombreWeb},
+     #                         context_instance=RequestContext(request))
+    return HttpResponse(pdf.output(name=nombre,dest='S'),content_type='application/pdf')
 
 
 @permission_required('Administrador.is_admin', login_url="login")
@@ -332,14 +327,6 @@ def masVendidos(request):
 
                 titulo = titulo + str(producto_informe).capitalize() +')'
 
-                """
-                sql_query = 'select id,nombre, SUM(cantidad) as cant ' \
-                            'from comanda_detallefactura ' \
-                            'where nombre in (select nombre from producto_' + producto_informe + ') ' \
-                            'group by nombre ' \
-                            'order by cant ' + order + ' ' + limite_productos + ';'
-                """
-
                 sql_query = 'select id,nombre, SUM(cantidad) as cant ' \
                             'from comanda_detallefactura ' \
                             'where id in ' \
@@ -369,16 +356,24 @@ def masVendidos(request):
             data = []
             nombre = []
 
+            format = workbook.add_format()
+            format.set_bold()
+            format.set_font_size(12)
             #Productos mas vendidos
-            worksheet.write('A1', 'Producto')
-            worksheet.write('B1', 'Cantidad vendida')
+            worksheet.write('A1', 'Producto',format)
+            worksheet.write('B1', 'Cantidad vendida',format)
+
+
             for x in DetalleFactura.objects.raw(sql_query):
                 data.append(x.cant)
                 nombre.append(x.nombre)
 
+            format = workbook.add_format()
+            format.set_indent(2)
+
             worksheet.set_column(0, 0, 40)
-            worksheet.write_column('A2', nombre)
-            worksheet.write_column('B2', data)
+            worksheet.write_column('A2', nombre,format)
+            worksheet.write_column('B2', data,format)
             # Create a new chart object.
             chart = workbook.add_chart({'type': str(tipo_grafico)})
             chart.set_title({'name': titulo,

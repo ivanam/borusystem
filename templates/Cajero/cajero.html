@@ -244,7 +244,7 @@ var revisar_comandas = setInterval(function(){pollingComandas()},5000);
 });
 
 function colapsar(id){
- $("#"+id).toggle(1000);
+ $("#"+id).slideToggle(1000);
 
  $("#arrow_toggle").toggleClass( "toggle_arrow_up" );
 }

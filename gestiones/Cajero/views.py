@@ -23,7 +23,7 @@ def Cajero(request,pagina=1):
     hoy = datetime.date.today()
     ayer = datetime.date.today()-datetime.timedelta(days=1)
 
-    titulo = "Comandas Abiertas del "+str(ayer.strftime("%d/%m/%Y"))+" y "+str(hoy.strftime("%d/%m/%Y"))
+    titulo = "Comandas Abiertas del "+str(ayer.strftime("%d-%m-%Y"))+" y "+str(hoy.strftime("%d-%m-%Y"))
 
     comandas_lista = Comanda.objects.filter(tipo_comanda__exact="C", finalizada = True,fecha__range=(ayer,hoy),preticket__exact =None).order_by("-fecha", "-hora")
     paginator = Paginator(comandas_lista, PAGINADO_PRODUCTOS)
@@ -44,7 +44,7 @@ def pretickets(request,pretickets_page=1):
     hoy = datetime.date.today()
     ayer = datetime.date.today() - datetime.timedelta(days=1)
 
-    titulo = "Pretickets del " + str(ayer.strftime("%d/%m/%Y")) + " y " + str(hoy.strftime("%d/%m/%Y"))
+    titulo = "Pretickets del " +str(ayer.strftime("%d-%m-%Y"))+" y "+str(hoy.strftime("%d-%m-%Y"))
 
     pretickets_lista = Preticket.objects.filter(fecha__range=(ayer,hoy)).order_by("-fecha", "-hora")
     paginator = Paginator(pretickets_lista, PAGINADO_PRODUCTOS)
@@ -68,7 +68,7 @@ def facturas(request,facturas_page=1):
     hoy = datetime.date.today()
     ayer = datetime.date.today() - datetime.timedelta(days=1)
 
-    titulo = "Facturas del " + str(ayer.strftime("%d/%m/%Y")) + " y " + str(hoy.strftime("%d/%m/%Y"))
+    titulo = "Facturas del " +str(ayer.strftime("%d-%m-%Y"))+" y "+str(hoy.strftime("%d-%m-%Y"))
 
     facturas_lista = Factura.objects.filter(fecha__range=(ayer,hoy)).order_by("-fecha", "-hora")
     paginator = Paginator(facturas_lista, PAGINADO_PRODUCTOS)
@@ -185,29 +185,6 @@ def historico(request):
                                                context_instance=RequestContext(request))
 
         return render_to_response('Cajero/cajero.html', {"item_historico": detalle_renderizado,"titulo":"Historico de Ventas","activar_historico":True},context_instance=RequestContext(request))
-
-"""
-        #calculo fecha para filtrar los pedidos y dejar los de hoy y ayer nomas
-        hoy = datetime.date.today()
-        ayer = datetime.date.today() - datetime.timedelta(days=1)
-
-        titulo = "Historico del " + str(ayer.strftime("%d/%m/%Y")) + " y " + str(hoy.strftime("%d/%m/%Y"))
-
-        historico_lista = Factura.objects.filter(fecha__range=(ayer, hoy)).order_by("-fecha", "-hora")
-        paginator = Paginator(historico_lista, PAGINADO_PRODUCTOS)
-        historicofacturas = paginator.page(historico_page)
-
-        #abro el modelo de comanda abierta
-        detalle_historico = get_template('Cajero/item_historico.html')
-        #renderizo el template html
-        detalle_renderizado = detalle_historico.render(Context({'historico': historico, 'STATIC_URL': STATIC_URL}))
-
-        return render_to_response('Cajero/cajero.html',
-                                  {"item_historico": detalle_renderizado, "titulo": titulo, "activar_historico": True},
-                                  context_instance=RequestContext(request))
-
-"""
-
 
 @permission_required('Administrador.is_cajero', login_url="login")
 def una_comanda(request,id_comanda=None):
@@ -358,7 +335,7 @@ def pedidos_pub(request, pedidos_page=1):
     hoy = datetime.date.today();
     ayer = datetime.date.today() - datetime.timedelta(days=1)
 
-    titulo = "Pedidos Pub del " + str(ayer.strftime("%d/%m/%Y")) + " y " + str(hoy.strftime("%d/%m/%Y"))
+    titulo = "Pedidos Pub del " +str(ayer.strftime("%d-%m-%Y"))+" y "+str(hoy.strftime("%d-%m-%Y"))
 
     pedidos_lista = Comanda.objects.filter(tipo_comanda__exact="P", finalizada = True, fecha__range=(ayer, hoy)).order_by("-fecha", "-hora")
 
@@ -537,26 +514,3 @@ def buscarproductoajaxResultados(request):
 
         return render_to_response('Cajero/busquedaresultados_items.html', {'plato': resultados},
                                   context_instance=RequestContext(request))
-"""
-@permission_required('Administrador.is_cajero', login_url="login")
-def paginadorajaxResultados(request):
-
-    if request.method == 'GET':
-
-        pagina = request.GET['pagina']
-        platos_lista = Plato.objects.all().order_by('-activo')
-        paginator = Paginator(platos_lista, PAGINADO_PRODUCTOS)
-
-        try:
-            platos = paginator.page(pagina)
-        except PageNotAnInteger:
-            # If page is not an integer, deliver first page.
-            platos = paginator.page(1)
-        except EmptyPage:
-            # If page is out of range (e.g. 9999), deliver last page of results.
-            platos = paginator.page(paginator.num_pages)
-
-        return render_to_response('Cajero/busquedaresultados_items.html', {'plato': platos},
-                                  context_instance=RequestContext(request))
-
-"""
