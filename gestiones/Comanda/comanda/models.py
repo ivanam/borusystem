@@ -83,8 +83,12 @@ class EstrategiaComanda(EstrategiaServicio):
         pass
 
     def filtrar_secciones(self):
+        secciones = []
         seccion = SeccionCarta.objects.filter(activo__exact=1).order_by("-categoria","nombre")
-        return seccion
+        for s in seccion:
+            if not (s.es_vacia_seccion()):
+                secciones.append(s)
+        return secciones
 
     def finalizar_comanda(self, comanda):
         comanda.finalizada = True
@@ -160,8 +164,12 @@ class EstrategiaPedido(EstrategiaServicio):
 
 
     def filtrar_secciones(self):
-        seccion = SeccionCarta.objects.filter(categoria__exact='B', activo__exact=1).order_by("-categoria","nombre")
-        return seccion
+        secciones = []
+        seccion = SeccionCarta.objects.filter(categoria__exact='B', activo__exact=1, ).order_by("-categoria","nombre")
+        for s in seccion:
+            if not (s.es_vacia_seccion()):
+                secciones.append(s)
+        return secciones
 
     def finalizar_comanda(self, comanda):
 

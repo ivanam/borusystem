@@ -70,6 +70,8 @@ def vistaMesas(request):
         mesa = Mesa.objects.get(pk=id_mesa)
         mesa.ocupada = False
         mesa.save()
+    mesas_seleccionadas = []
+    request.session['listaMesasComanda']= mesas_seleccionadas
     mesas=Mesa.objects.filter(activo__exact=1).order_by("sector")
     panel_seleccionar_mesa=get_template('Mozo/panel_mesas_seleccionadas.html')
     return render_to_response('Mozo/seleccionar_mesas.html', {'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas }, context_instance=RequestContext(request))
