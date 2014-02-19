@@ -19,6 +19,7 @@ def inicio(request):
     request.session['listaProductosComanda']=[]
     request.session['listaMesasComanda']=[]
     request.session['total'] = 0
+    request.session['id_comanda'] = 0
     return render_to_response('Mozo/mozo.html', {"crear_comanda":True}, context_instance=RequestContext(request))
 
 
@@ -38,20 +39,26 @@ def crearcomanda(request):
 
             #recupero las mesas que estan activas
             mesas=Mesa.objects.filter(activo__exact=1).order_by("sector")
-
             #recupero el panel que muestra las mesas seleccionadas
             panel_seleccionar_mesa=get_template('Mozo/panel_mesas_seleccionadas.html')
-
-            #Creamos la comanda
-            fecha = datetime.date.today()
-            now = datetime.datetime.now()
-            hora = datetime.time(now.hour, now.minute, now.second)
-            comanda = Comanda.objects.create(fecha=fecha, hora=hora, cantidadC=cantidad)
-            comanda.mozo = request.user
-            comanda.finalizada = False
-            comanda.save()
-            #guardo en la sesion el id de la comanda
-            request.session['id_comanda']= comanda.id
+            if request.session['id_comanda'] == 0:
+                #Creamos la comanda
+                fecha = datetime.date.today()
+                now = datetime.datetime.now()
+                hora = datetime.time(now.hour, now.minute, now.second)
+                comanda = Comanda.objects.create(fecha=fecha, hora=hora, cantidadC=cantidad)
+                comanda.mozo = request.user
+                comanda.finalizada = False
+                comanda.save()
+                #guardo en la sesion el id de la comanda
+                request.session['id_comanda']= comanda.id
+            else:
+                mesas_seleccionadas = request.session['listaMesasComanda']
+                for id_mesa in mesas_seleccionadas:
+                    mesa = Mesa.objects.get(pk=id_mesa)
+                    mesa.ocupada = False
+                    mesa.save()
+                request.session['listaMesasComanda'] = []
 
             #lo inserto en el resto del template y lo muestro
             return render_to_response('Mozo/seleccionar_mesas.html', {"seleccionar_mesa":True, 'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas }, context_instance=RequestContext(request))
