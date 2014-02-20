@@ -1,4 +1,3 @@
-from cookielib import http2time
 import datetime
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.hashers import make_password
