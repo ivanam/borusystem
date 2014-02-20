@@ -351,7 +351,7 @@ def masVendidos(request):
 
             #Generando el grafico en excel
             nombre_archivo = "grafico.xlsx"
-            workbook = xlsxwriter.Workbook(RUTA_PROYECTO + "\\" + STATIC_URL + "xlsx\\" + nombre_archivo)
+            workbook = xlsxwriter.Workbook(RUTA_PROYECTO + "/" + STATIC_URL + "xlsx/" + nombre_archivo)
             worksheet = workbook.add_worksheet()
             data = []
             nombre = []

@@ -2,129 +2,135 @@
 {% block titulo %}Boru - Modificar Seccion Carta{% endblock %}
 {% block contenido %}
 
-	<div class="izquierda">
-	  <div class="listado_modificar_mozos cont_redondeado">
+<div class="izquierda">
+    <div class="listado_modificar_mozos cont_redondeado">
         <div class="label label-inverse titulo_menu">Listado de Secciones</div>
 
-       <!-- inicio listado de mozos //-->
-          <!-- inicio encabezados del listado //-->
-          <div class="listado_item_campo_header label label-inverse">
-              <div class="listado_item_campo_base listado_item_campo_02">
-                 &nbsp
-              </div>
-              <div class="listado_item_campo_base listado_item_campo_04" title="Nombre">
-                  Nombre
-              </div>
+        <!-- inicio listado de mozos //-->
+        <!-- inicio encabezados del listado //-->
+        <div class="listado_item_campo_header label label-inverse">
+            <div class="listado_item_campo_base listado_item_campo_02">
+                &nbsp
+            </div>
+            <div class="listado_item_campo_base listado_item_campo_02 flotar_iz" title="Imagen">
+                Imag
+            </div>
+            <div class="listado_item_campo_base listado_item_campo_05 flotar_iz" title="Nombre">
+                Nombre
+            </div>
 
-              <div class="listado_item_campo_base listado_item_campo_02" title="Categoria">
-                  Cat
-              </div>
+            <div class="listado_item_campo_base listado_item_campo_04 flotar_iz" title="Categoria">
+                Cat
+            </div>
 
-              <div class="listado_item_campo_base listado_item_campo_02" title="Imagen">
-                  Imag
-              </div>
+        </div>
+        <!-- fin de encabezados del listado //-->
 
-              <div class="listado_item_campo_base listado_item_campo_02" title="Activo">
-                  Activo
-              </div>
+        {% for m in secciones %}
+        <div class="listado_modificar_mozo_item {% if not m.activo %}inactivo{% endif %}">
 
-
-          </div>
-          <!-- fin de encabezados del listado //-->
-
-          {% for m in secciones %}
-          <div class="listado_modificar_mozo_item {% if not m.activo %}inactivo{% endif %}">
-
-              <div class="listado_item_campo_base listado_item_campo_02">
-                  <img src="{{STATIC_URL}}img/conf/{% if m.activo %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
-                       urldel="{% url 'modificarseccion_id_del' m.id %}" estado="{{m.activo}}" class="eliminar_seccion"
-                       nombre="{{m.id}}"
-                       title="{% if not m.activo %}Acivar{% else %}Desactivar{% endif %} seccion: {{m.id}}">
-              </div>
-
-
-              <div class="cargar_modificar_mozo" href="{% url 'modificarseccion_id' m.id %}">
-
-                  <div class="listado_item_campo_base listado_item_campo_04" title="Nombre: {{m.nombre}}">
-                      {{m.nombre|capfirst|truncatechars:10}}
-                  </div>
-
-                  <div class="listado_item_campo_base listado_item_campo_02" title="Precio: {{m.categoria}}">
-                      {{m.categoria}}
-                  </div>
-
-                  <div class="listado_item_campo_base listado_item_campo_02" title="Stock: {{m.imagen}}">
-                      {{m.imagen}}
-                  </div>
-
-                  <div class="listado_item_campo_base listado_item_campo_02" title="{{m.activo}}">
-                      {{m.activo|truncatechars:6}}
-                  </div>
-
-
-
-              </div>
-          </div>
-          {% endfor %}
-		 <!-- fin listado de mozos//-->
-      </div>
-   </div>
-
-	<div class="derecha">
-	  <div id="con_menu_mesa" class="cont_redondeado contenedor_principal_big">
-    <div class="label label-inverse titulo_menu">Modificar Seccion</div>
-    <br>
-
-    <div class="salto_linea"></div>
-    <div id="menues" class="bloque_menues">
-        <div class="salto_linea"></div>
-
-        <!--Aca inicio contenido//-->
-        <form action="" method="post" name="add_menu" id="id_add_menu">
-            {{ formulario.non_field_errors }}
-
-
-
-             <div class="contenefor_form_row">
-
-                <div class="contenedor_texto"><span class="form_error_msg">*</span> Nombre </div>
-                <div class="contenedor_input">
-                    <!--<input type="text" name="username" value="" class="validar_campo">-->
-                    {{ formulario.nombre }}
-                    <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
-                </div>
+            <div class="listado_item_campo_base listado_item_campo_02">
+                <img src="{{STATIC_URL}}img/conf/{% if m.activo %}glyphicons_192_circle_remove.png{% else %}glyphicons_193_circle_ok.png{% endif %}"
+                     urldel="{% url 'modificarseccion_id_del' m.id %}" estado="{{m.activo}}" class="eliminar_seccion"
+                     nombre="{{m.nombre}}"
+                     title="{% if not m.activo %}Acivar{% else %}Desactivar{% endif %} seccion: {{m.nombre}}">
             </div>
 
 
-            <div class="contenefor_form_row">
+            <div class="cargar_modificar_mozo" href="{% url 'modificarseccion_id' m.id %}">
 
-                <div class="contenedor_texto"><span class="form_error_msg">*</span> Imagen </div>
-                <div class="contenedor_input">
-                    <!--<input type="text" name="username" value="" class="validar_campo">-->
-                    {{ formulario.imagen }}
-                    <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
+                <div class="listado_item_campo_base listado_item_campo_02 flotar_iz texto_iz" title="Imagen: {{m.imagen}}">
+                  <img src="{{STATIC_URL}}img/comida/{{m.imagen}}" width="16">
                 </div>
+
+                <div class="listado_item_campo_base listado_item_campo_05 flotar_iz texto_iz cortar_div" title="Nombre: {{m.nombre}}">
+                    {{m.nombre|capfirst}}
+                </div>
+
+                <div class="listado_item_campo_base listado_item_campo_04 flotar_iz texto_iz cortar_div" title="Categoria: {{m.categoria}}">
+                    {{m.get_categoria_display}}
+                </div>
+
             </div>
+        </div>
+        {% endfor %}
+        <!-- fin listado de mozos//-->
+        <!-- inicio paginador //-->
+        <div class="pagination">
+            <span class="step-links">
+                {% if secciones.has_previous %}
+                    <a href="{% url 'modificarseccion' secciones.previous_page_number %}" title=" < Anterior "><img
+                            src="{{STATIC_URL}}img/glyphicons_224_chevron-left.png"></a>
+                {% endif %}
 
+                {% if secciones.number %}
+                <span class="current">
+                    {{ secciones.number }}<span class="paginado_de"> de {{ secciones.paginator.num_pages }}</span>
+                </span>
+                {% endif %}
 
-
-
-
-                                    {% csrf_token %}
-                                    <div class="salto_linea"></div>
-                                    <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Seccion"
-                                           class="btn btn-large btn-primary">
-
-        </form>
-        <!-- Aca fin de contenido//-->
-
+                {% if secciones.has_next %}
+                    <a href="{% url 'modificarseccion' secciones.next_page_number %}" title=" Siguiente > "><img
+                            src="{{STATIC_URL}}img/glyphicons_223_chevron-right.png"></a>
+                {% endif %}
+            </span>
+        </div>
+        <!-- fin paginador //-->
     </div>
-    <!-- fin bloke de mesas//-->
-    <div class="salto_linea"></div>
-    <span class="form_error_msg">* Campos Obligatorios</span>
-</div><!-- fin contenedor principal//-->
+</div>
 
-    </div><!-- derecha fin//-->
+<div class="derecha">
+    <div id="con_menu_mesa" class="cont_redondeado contenedor_principal_big">
+        <div class="label label-inverse titulo_menu">Modificar Seccion</div>
+        <br>
+
+        <div class="salto_linea"></div>
+        <div id="menues" class="bloque_menues">
+            <div class="salto_linea"></div>
+
+            <!--Aca inicio contenido//-->
+            <form action="" method="post" name="add_menu" id="id_add_menu">
+                {{ formulario.non_field_errors }}
+
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"><span class="form_error_msg">*</span> Nombre</div>
+                    <div class="contenedor_input">
+                        <!--<input type="text" name="username" value="" class="validar_campo">-->
+                        {{ formulario.nombre }}
+                        <div class="form_error_msg">{{ formulario.nombre.errors|striptags }}</div>
+                    </div>
+                </div>
+
+
+                <div class="contenefor_form_row">
+
+                    <div class="contenedor_texto"><span class="form_error_msg">*</span> Imagen</div>
+                    <div class="contenedor_input">
+                        <!--<input type="text" name="username" value="" class="validar_campo">-->
+                        {{ formulario.imagen }}
+                        <div class="form_error_msg">{{ formulario.stock.errors|striptags }}</div>
+                    </div>
+                </div>
+
+
+                {% csrf_token %}
+                <div class="salto_linea"></div>
+                <input type="submit" name="btn_add_mozo" id="btn_id_add_mozo" value="Modificar Seccion"
+                       class="btn btn-large btn-primary">
+
+            </form>
+            <!-- Aca fin de contenido//-->
+
+        </div>
+        <!-- fin bloke de mesas//-->
+        <div class="salto_linea"></div>
+        <span class="form_error_msg">* Campos Obligatorios</span>
+    </div>
+    <!-- fin contenedor principal//-->
+
+</div><!-- derecha fin//-->
 {% endblock %}
 
 {% block script %}
@@ -145,15 +151,25 @@ $(document).ready(function(){
 			$(this).click(function(event){
 				var mozo = $(this).attr("nombre");
 				var estado = $(this).attr("estado");
-				var msg = (estado == "True")?"Usted desea desactivar el menu ":"Usted desea activar una seccion ";
+				var msg = (estado == "True")?"Usted desea desactivar la Seccion ":"Usted desea activar la seccion ";
                 if( confirm(msg+mozo+"?") ){
                    $(location).attr('href', $(this).attr("urldel") );
                 }
 			});
 	 });
 
+
+     $("#id_imagen option").each(function(i){
+        var imageURL="{{STATIC_URL}}img/comida/"+$(this).val();
+        $(this).css("background", "transparent url('"+imageURL+"') no-repeat right center");
+        $(this).css("height","45px");
+        $(this).css("border-bottom","1px solid #cccccc");
+        $(this).css("padding-right","10px");
+    });
+
 	$('.dropdown-toggle').dropdownHover(options);
 
 });
+
 </script>
 {% endblock %}

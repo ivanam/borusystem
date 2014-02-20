@@ -24,7 +24,7 @@
 <div class="fecha_buscador">{{fecha_del_dia}}</div>
 <div class="contenedor_comanda_item">
     <div class="preticket_numero" title="Factura Nº {{p.id}} Tipo {% if p.comanda %}({{p.comanda.tipo_comanda}}) Pedido. {% else %}({{p.preticket.comanda.tipo_comanda}}) Comanda. {% endif %}">
-        Factura Nº {{p.id}} Tipo {% if p.comanda %} {{p.comanda.tipo_comanda}} {% else %} {{p.preticket.comanda.tipo_comanda}} {% endif %}
+        Factura Nº {{p.id}} ({% if p.comanda %} Pedido {% else %} Comanda {% endif %})
     </div>
     <div class="contenedor_ticket_data">
         <div class="comanda_fecha ">Fecha: {{ p.fecha }} {{ p.hora }}</div>

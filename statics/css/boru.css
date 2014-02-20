@@ -1,3 +1,60 @@
+.cortar_div{
+white-space:nowrap; 
+overflow:hidden;
+text-overflow:ellipsis;
+}
+.nombreProducto{
+white-space:nowrap; 
+overflow:hidden;
+text-overflow:ellipsis;
+width:40px;
+display:inline;
+clear:none;
+margin:4px 1px;
+}
+
+.precioProducto{
+height:auto;
+margin:4px 1px;
+overflow:hidden;
+display:inline;
+clear:none;
+}
+
+.menu_seleccionada_item{
+width:93%;
+height:auto;
+margin:1px 1px;
+overflow:hidden;
+}
+
+.menu_seleccionado{
+border: 1px solid #cccccc;
+background-color: #F7F7F7;
+opacity:0.5;
+filter: alpha(opacity = 55);
+height:auto;
+width:150px;
+overflow: hidden;
+padding:5px 5px;
+-webkit-border-radius: 0px 0px 7px 7px;
+-moz-border-radius: 0px 0px 7px 7px;
+border-radius: 0px 0px 7px 7px;
+position:relative;
+top:-19px;
+z-index:1;
+}
+
+
+.menu_seleccionado:hover{
+opacity:1;
+filter: alpha(opacity = 100);
+-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+width:250px;
+}
+
 .toggle_arrow_down{
 float:right;
 width: 26px;
@@ -1191,6 +1248,22 @@ display:inline;
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
 }
 
+
+.eliminarProducto{
+background-image:url(../img/conf/glyphicons_192_circle_remove.png);
+background-repeat:no-repeat;
+background-position:center center;
+height:26px;
+width:26px;
+cursor:pointer;
+overflow:visible;
+margin:1px 1px;
+display:inline;
+clear:none;
+}
+
+
+
 .mesa_info_titulo{
 width:67px;
 margin-bottom:1px;
@@ -1498,6 +1571,7 @@ filter: alpha(opacity = 100);
 -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
 box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
 }
+
 
 .mesas_seleccionadas{
 border: 1px solid #cccccc;

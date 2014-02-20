@@ -29,71 +29,84 @@
     <div class="contenedor_comanda_data">
         <div class="comanda_fecha">Fecha: {{ p.fecha }} {{ p.hora }}
         </div>
-        <div class="comanda_mozo flotar_der label">Mozo: {{p.mozo|capfirst}}</div>
+        <div class="comanda_mozo flotar_der label label-{% if p.tipo_comanda == 'C' %}warning{% else %}info{% endif %}">Mozo: {{p.mozo|capfirst}}</div>
         <div class="comanda_mesas">
             Mesas:
             {% for m in p.mesas.all %}
-            <span class="badge">{{ m.id }}</span>
+            <span class="badge badge-{% if p.tipo_comanda == 'C' %}warning{% else %}info{% endif %}">{{ m.id }}</span>
             {% endfor %}
         </div>
-        <div class="comanda_total">Importe: {{ p.total }}</div>
+        <div class="comanda_total">Importe:
+
+            {% if p.factura %}
+                {{ p.factura.total_factura }}
+            {% else %}
+                {% if p.preticket %}
+                    {{ p.preticket.total_preticket }}
+                {% else %}
+                    {{ p.total }}
+                {% endif %}
+            {% endif %}
+
+        </div>
         <div class="linea"></div>
         <div class="comanda_btn">
 
             {% if p.tipo_comanda == 'C' %}
 
-            <input type="button" class="btn btn-small" value="Ver Comanda"
-                   onClick="mostrarDetalleComanda({{p.id}});">
+                <input type="button" class="btn btn-small" value="Ver Comanda"
+                       onClick="mostrarDetalleComanda({{p.id}});">
 
-            {% if not p.cerrada %}
+                {% if not p.cerrada %}
 
-            <input type="button" class="btn btn-small" value="Cerrar Comanda"
-                   onClick="ir('{% url 'cerrar_comanda' p.id %}','&bull; Cerrando Comanda<br><br>&bull; Generando Preticket<br><br>');">
+                    <input type="button" class="btn btn-small" value="Cerrar Comanda"
+                           onClick="ir('{% url 'cerrar_comanda' p.id %}','&bull; Cerrando Comanda<br><br>&bull; Generando Preticket<br><br>');">
 
-            {% else %}
+                {% else %}
 
-            <input type="button" class="btn btn-small" value="Ver Preticket"
-                   onClick="mostrarDetallePreticket({{p.preticket.id}});">
+                    <input type="button" class="btn btn-small" value="Ver Preticket"
+                           onClick="mostrarDetallePreticket({{p.preticket.id}});">
 
-            {% if p.preticket.factura %}
+                    {% if p.preticket.factura %}
 
+                        <input type="button" class="btn btn-small" value="Ver Factura"
+                           onClick="mostrarDetalleFactura({{p.preticket.factura.id}});">
 
+                        {% if not p.preticket.factura.pago %}
+                            <input type="button" class="btn btn-small" value="Relizar pago"
+                                   onClick="ir('{% url 'pagar_factura' p.preticket.factura.id p.id %}','&bull; Generando Pago<br><br>');">
+                        {% else %}
+                            <input type="button" class="btn btn-small factura_pagada_btn" value="Factura Pagada" disabled>
+                        {% endif %}
 
-            <input type="button" class="btn btn-small" value="Ver Factura"
-                   onClick="mostrarDetalleFactura({{p.preticket.factura.id}});">
-
-            {% if not p.preticket.factura.pago %}
-
-            <input type="button" class="btn btn-small" value="Relizar pago"
-                   onClick="ir('{% url 'pagar_factura' p.preticket.factura.id p.id %}','&bull; Generando Pago<br><br>');">
-            {% else %}
-            <input type="button" class="btn btn-small factura_pagada_btn" value="Factura Pagada" disabled>
-            {% endif %}
-
-            {% endif %}
-
-
-            {% endif %}
-
-            {% else %}
+                    {% else %}
+                        <input type="button" class="btn btn-small" value="Generar Factura"
+                   onClick="ir('{% url 'generar_factura' p.preticket.id p.id %}','&bull; Generando Factura<br><br>');">
 
 
-            <input type="button" class="btn btn-small" value="Ver Pedido"
-                   onClick="mostrarDetallePedido({{p.id}});">
+                        <button class="btn btn-small" value="Editar"
+                               onClick="editarDetallePreticket({{p.preticket.id}});" title="Editar Preticket"><img width="17" src="{{STATIC_URL}}img/conf/glyphicons_150_edit.png"></button>
 
+                    {% endif %}
 
-            <input type="button" class="btn btn-small" value="Ver Factura"
-                   onClick="mostrarDetalleFactura({{p.factura.id}});">
-
-                        {% if not p.factura.pago %}
-            <input type="button" class="btn btn-small" value="Relizar pago"
-                   onClick="ir('{% url 'pagar_factura' p.factura.id p.id %}','&bull; Generando Pago<br><br>');">
+                {% endif %}
 
             {% else %}
-            <input type="button" class="btn btn-small factura_pagada_btn" value="Factura Pagada" disabled>
-            {% endif %}
 
+                <input type="button" class="btn btn-small" value="Ver Pedido"
+                       onClick="mostrarDetallePedido({{p.id}});">
 
+                <input type="button" class="btn btn-small" value="Ver Factura"
+                       onClick="mostrarDetalleFactura({{p.factura.id}});">
+
+                {% if not p.factura.pago %}
+
+                    <input type="button" class="btn btn-small" value="Relizar pago"
+                           onClick="ir('{% url 'pagar_factura' p.factura.id p.id %}','&bull; Generando Pago<br><br>');">
+
+                {% else %}
+                   <input type="button" class="btn btn-small factura_pagada_btn" value="Factura Pagada" disabled>
+                {% endif %}
 
             {% endif %}
 

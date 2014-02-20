@@ -53,6 +53,8 @@ $.ajax({
         data: "datos_producto="+id_prod+"_"+cantidad+"_"+categoria,
         success: function(platos){
             $(".platos").html(platos);
+
+            panelExpandirTexto();
         }
 })
 
@@ -65,6 +67,8 @@ $.ajax({
         data: "id_prod=",
         success: function(platos){
             $(".platos").html(platos);
+
+            panelExpandirTexto();
         }
 })
 
@@ -142,9 +146,19 @@ function modificarlistado(plato){
         data: "id="+plato,
         success: function(platos){
             $(".platos").html(platos);
+            panelExpandirTexto();
           }
     });
     }
+
+function panelExpandirTexto(){
+    $(".menu_seleccionado").mouseover(function() {
+        $(".nombreProducto").css("width","55%");
+    });
+    $(".menu_seleccionado").mouseout(function() {
+        $(".nombreProducto").css("width","40px");
+    });
+}
 
 $(document).ready(function(){
      
@@ -165,7 +179,8 @@ $(document).ready(function(){
 		 });
      });
 	
-	
+	panelExpandirTexto();
+
 	
 });
 </script>

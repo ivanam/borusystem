@@ -26,7 +26,7 @@
     <div class="preticket_numero">Preticket Nº {{p.id}}</div>
     <div class="contenedor_ticket_data">
         <div class="comanda_fecha">Fecha: {{ p.fecha }} {{ p.hora }}</div>
-        <div class="comanda_mozo flotar_der label">Mozo: {{p.comanda.mozo|capfirst}}</div>
+        <div class="comanda_mozo flotar_der label label-success">Mozo: {{p.comanda.mozo|capfirst}}</div>
         <div class="comanda_mesas">
             Mesas:
             {% for m in p.comanda.mesas.all %}

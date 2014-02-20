@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import permission_required
+from django.core.paginator import Paginator
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from boru.settings import PAGINADO_SECCIONES
 from gestiones.Carta.modificarseccion.forms import modificarSeccionForm
 from gestiones.Carta.altacarta.models import Carta, SeccionCarta
 from django.core.urlresolvers import reverse
@@ -8,9 +10,16 @@ from django.http import HttpResponseRedirect
 
 
 @permission_required('Administrador.is_admin', login_url="login")
-def modificarseccion (request, id_seccion=None):
+def modificarseccion (request, id_seccion=None,pagina=1):
+
+    if pagina == None:
+        pagina = 1
+
     #rescato las secciones
-    secciones = SeccionCarta.objects.all().order_by('-activo')
+    #secciones = SeccionCarta.objects.all().order_by('-activo')
+    secciones_lista = SeccionCarta.objects.all().order_by('nombre')
+    paginator = Paginator(secciones_lista, PAGINADO_SECCIONES)
+    secciones = paginator.page(pagina)
 
     try:
         #obtengo en el caso de que venga el id por GET, al usuario

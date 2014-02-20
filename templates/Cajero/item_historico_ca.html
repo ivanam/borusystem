@@ -28,7 +28,7 @@
         <div class="comanda_fecha">Fecha: {{ p.fecha }} {{ p.hora }} {% if not p.vista %}<span
                 class="label label-important">Nueva</span>{% endif %}
         </div>
-        <div class="comanda_mozo flotar_der label">Mozo: {{p.mozo|capfirst}}</div>
+        <div class="comanda_mozo flotar_der label label-warning">Mozo: {{p.mozo|capfirst}}</div>
         <div class="comanda_mesas">
             Mesas:
             {% for m in p.mesas.all %}
