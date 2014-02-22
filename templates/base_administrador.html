@@ -240,6 +240,68 @@
   </div>
   <div class="salto_linea"></div>
 </div>
+
+
+
+<!-- Modal Ayuda-->
+<div id="myModalAyuda" class="comanda_detalle_modal modal hide fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel2" class="modal-titulo"><img src="{{STATIC_URL}}img/conf/glyphicons_194_circle_question_mark.png"> Ayuda en linea
+</h3>
+    </div>
+    <div class="modal-body modal-body-ayuda"></div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    </div>
+</div>
+<!-- Fin Modal Ayuda -->
+
+<script>
+function ayudaContextual(){
+
+    var hostPage = location.host;
+    var hrefPage = location.href;
+    var protocolPage = location.protocol;
+
+    var fuente = hrefPage.replace(protocolPage,"");
+    fuente = fuente.replace(hostPage,"");
+    fuente = fuente.replace("//","");
+    fuente = fuente.replace("/administrador/","");
+    fuente = fuente.replace("/","");
+    fuente = fuente.replace("#","");
+    var patt1 = /[0-9]/g;
+    fuente = fuente.replace(patt1,"");
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'ayudaContextual' %}",
+        data: "fuente="+fuente,
+        success: function(datos){
+
+            $('.modal-body-ayuda').html(datos);
+            $('#myModalAyuda').modal("show")
+          }
+    });
+}
+
+$(document).ready(function(){
+
+    $('body').keypress(function(e){
+
+        var keycode = (e.keyCode ? e.keyCode : e.which);
+
+        if(keycode == 112){
+            ayudaContextual();
+        }
+
+     });
+
+});
+</script>
+
 {% block script %}{% endblock %}
 </body>
 </html>

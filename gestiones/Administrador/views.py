@@ -11,7 +11,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from fpdf import FPDF
 import xlsxwriter
-
+from gestiones.Administrador.ayudaContextual import ayudaMsg
 from boru.settings import PAGINADO_USUARIOS, STATIC_URL, RUTA_PROYECTO, TOTAL_LINEAS_PDF
 from gestiones.Administrador.forms import altaUsuarioForm, fechasXconsultaForm
 from gestiones.Administrador.models import permisosVistas
@@ -404,4 +404,22 @@ def masVendidos(request):
         return render_to_response('Administrador/consultaMasVendido.html',
                                   {'formulario': formulario,'consulta':False},
                                   context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_admin', login_url="login")
+def ayudaContextual(request):
+    if request.method == 'GET':
+
+        try:
+            fuente=request.GET['fuente']
+            entrada = ayudaMsg.get(fuente, "Ayuda en construccion!")
+            titulo = entrada.get("titulo")
+            mensaje = entrada.get("msg")
+        except:
+            titulo = "Titulo en construccion!"
+            mensaje = "Mensaje en construccion!"
+
+    return render_to_response('Administrador/ayudaContextual.html', {'titulo': titulo, 'mensaje': mensaje, 'fuente':fuente},
+                              context_instance=RequestContext(request))
+
 

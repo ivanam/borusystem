@@ -1,3 +1,57 @@
+.modal-body-ayuda{
+padding:0px !important;
+}
+.ayuda_contenedor{
+width:420px;
+heighdt:auto;
+margin:5px auto;
+padding:2px 2px;
+overflow:hidden;
+clear:both;
+display:block;
+}
+.ayuda_fuente{
+color:#FF9900;
+width:100%;
+height:auto;
+font-size:9px;
+text-align:right;
+font-weight:bold;
+float:right;
+margin:-5px 0px;
+padding:1px 1px;
+overflow:hidden;
+clear:both;
+}
+.ayuda_titulo{
+color:#333333;
+width:100%;
+height:auto;
+font-size:20px;
+text-align:left;
+font-weight:bold;
+float:left;
+margin:5px auto;
+padding:5px 1px;
+overflow:hidden;
+clear:both;
+word-wrap:break-word !important;
+text-decoration:underline;
+}
+
+.ayuda_msg{
+color:#666666;
+width:100%;
+height:auto;
+font-size:15px;
+float:left;
+margin:5px auto;
+overflow:hidden;
+clear:both;
+word-wrap:break-word !important;
+text-align:justify;
+}
+
 .cortar_div{
 white-space:nowrap; 
 overflow:hidden;
