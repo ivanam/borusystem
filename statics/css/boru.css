@@ -1577,17 +1577,11 @@ cursor:pointer;
 
 
 .cerrar_sesion_fix{
-/*position:relative;
-left:100%;*/
 display:inline;
 float:right;
-height:20px;
-width:100px;
+height:auto;
+width:130px;
 margin:11px 5px auto 5px;
-/*
-margin-left: -100px;
-margin-top: -87px;
-*/
 cursor:pointer;
 }
 
