@@ -22,8 +22,7 @@
 {% block script %}
 <script>
 $(document).ready(function(){
-	
-	$('.dropdown-toggle').dropdownHover(options);
+    volver("{% url 'altacarta' %}",1250);
 });
 </script>
 {% endblock %}

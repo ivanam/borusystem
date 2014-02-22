@@ -2,13 +2,14 @@ from decimal import Decimal
 from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.db.models import Q
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Context
 from django.template.loader import get_template
 from boru.settings import PAGINADO_PRODUCTOS, STATIC_URL
 from gestiones.Carta.altacarta.models import SeccionCarta
-from gestiones.Comanda.comanda.models import Comanda, DetalleComanda
+from gestiones.Comanda.comanda.models import Comanda, DetalleComanda, Preticket, Factura
 from gestiones.Producto.producto.models import Bebida, Plato, DelDia, Ejecutivo, MenuS
 from gestiones.Salon.altamesa.models import Mesa
 import datetime
@@ -404,39 +405,203 @@ def eliminarProductosAjaxSeleccionado(request):
                               context_instance=RequestContext(request))
 
 
-
-
-
-
-#------------------------------------------Inicio de Mis comandas--------------------------------------------------------
-
-
 @permission_required('Administrador.is_mozo', login_url="login")
 def miscomandas(request,pagina=1):
 
     if pagina == None:
         pagina = 1
 
-    comandas_lista = Comanda.objects.filter(tipo_comanda__exact="C", finalizada = True, cerrada = False).order_by("-fecha", "-hora")
+    #calculo fecha para filtrar las comandas y dejar las de hoy y ayer nomas
+    hoy = datetime.date.today()
+    ayer = datetime.date.today() - datetime.timedelta(days=1)
+
+    titulo = "Mis Comandas del " + str(ayer.strftime("%d-%m-%Y")) + " y " + str(hoy.strftime("%d-%m-%Y"))
+
+    comandas_lista = Comanda.objects.filter(fecha__range=(ayer, hoy),mozo__id=request.user.id).order_by("-fecha", "-hora")
     paginator = Paginator(comandas_lista, PAGINADO_PRODUCTOS)
     comandas = paginator.page(pagina)
 
     #abro el modelo de comanda abierta
-    detalle_comanda=get_template('Mozo/item_comanda_abierta.html')
+    detalle_comanda = get_template('Mozo/item_comanda_abierta.html')
     #renderizo el template html
-    detalle_renderizado=detalle_comanda.render(Context({'comandas': comandas,'STATIC_URL':STATIC_URL}))
+    detalle_renderizado = detalle_comanda.render(Context({'listado': comandas, 'STATIC_URL': STATIC_URL}))
 
-    print(detalle_renderizado)
-    return render_to_response('Mozo/mis_comandas.html', {"item_comandas_abiertas": detalle_renderizado,"titulo":"Comandas Abiertas"}, context_instance=RequestContext(request))
+    return render_to_response('Mozo/miscomandas.html',{'listado_comandas':detalle_renderizado,'miscomandas':True,"titulo": titulo},context_instance=RequestContext(request))
 
 
 @permission_required('Administrador.is_mozo', login_url="login")
-def polling_comandas(request):
+def detalle_comanda_ajax(request):
     if request.method == "GET":
-        print("Aca entre")
-        comandas_nuevas=Comanda.objects.filter(tipo_comanda__exact="C",vista=False,finalizada=True,cerrada=False).count()
-        pedidos_nuevos =Comanda.objects.filter(tipo_comanda__exact="P",vista=False,finalizada=True,cerrada=True).count()
+        id_comanda = request.GET["id_comanda"]
+        comanda = Comanda.objects.get(pk=id_comanda)
+        total = comanda.total()
 
-    return render_to_response('Mozo/comandas_nuevas.html',{'numero':comandas_nuevas,'numero_pedido':pedidos_nuevos},context_instance=RequestContext(request))
+        return render_to_response('Cajero/detalle_comanda.html', {'comanda': comanda,'total':total},
+                                  context_instance=RequestContext(request))
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def detalle_preticket_ajax(request):
+    if request.method == "GET":
+        id_preticket = request.GET["id_preticket"]
+        preticket = Preticket.objects.get(pk=id_preticket)
+        total = preticket.total_preticket
+
+        return render_to_response('Cajero/detalle_preticket.html', {'preticket': preticket,'total':total},
+                                  context_instance=RequestContext(request))
 
 
+@permission_required('Administrador.is_mozo', login_url="login")
+def editar_detalle_comanda_ajax(request):
+    if request.method == "GET":
+        id_comanda = request.GET["id_comanda"]
+        comanda = Comanda.objects.get(pk=id_comanda)
+        total = comanda.total()
+
+        return render_to_response('Mozo/editar_detalle_comanda.html', {'comanda': comanda,'total':total},
+                                  context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def detalle_factura_ajax(request):
+    if request.method == "GET":
+        id_factura = request.GET["id_factura"]
+        factura = Factura.objects.get(pk=id_factura)
+        total = factura.total_factura
+        print(factura.total_factura)
+        return render_to_response('Cajero/detalle_factura.html', {'factura': factura,'total':total},
+                                  context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def cerrar_comanda(request, id_comanda=None):
+
+    comanda = Comanda.objects.get(pk=id_comanda)
+    comanda.cerrada = True
+    comanda.save()
+    generar_preticket(request,id_comanda)
+    return HttpResponseRedirect(reverse('una_comanda_mozo',args=[id_comanda]))
+
+
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def generar_preticket(request,id_comanda=None):
+
+    comanda = Comanda.objects.get(pk=id_comanda)
+    comanda.estrategia.generar_preticket(comanda)
+
+    return HttpResponseRedirect(reverse('una_comanda_mozo', args=[id_comanda]))
+
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def guardar_detalle_comanda_ajax(request):
+    if request.method == "POST":
+
+        #recupero las ids de los platos que quiero agregar al menu
+        lista_productos = request.POST.getlist('producto')
+        comanda_id = request.POST.get('comanda_id')
+
+        try:
+            #obtengo la Comanda
+            comanda = Comanda.objects.get(pk=comanda_id)
+
+            #solo si la lista no esta vacia la limpio para volver a agregar los productos
+            if lista_productos != []:
+                comanda.limpiarDetalles(True)
+
+            #las recorro y rescato los platos y los asigno al menu
+            for p in lista_productos:
+
+                cad = p.split("_")
+                id_prod = cad[0]
+                categoria = cad[1]
+                cantidad = cad[2]
+
+                if categoria == "P":
+                    productoNuevo = Plato.objects.get(pk=id_prod)
+                    print "es plato " + productoNuevo.nombre
+                else:
+                    if categoria == "B":
+                        productoNuevo = Bebida.objects.get(pk=id_prod)
+                        print "es bebida " + productoNuevo.nombre
+                    else:
+                        if categoria == "D":
+                            productoNuevo = DelDia.objects.get(pk=id_prod)
+                            print "es deldia " + productoNuevo.nombre
+                        else:
+                            productoNuevo = Ejecutivo.objects.get(pk=id_prod)
+                            print "es es ejecutivo " + productoNuevo.nombre
+
+                comanda.agregarDetalle(productoNuevo, cantidad)
+
+        except:
+            print "Error, no se pudo agregar el producto a la Comanda!"
+
+    return HttpResponseRedirect(reverse('una_comanda_mozo', args=[comanda.pk]))
+
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def buscarproductoajax(request):
+    if request.method == 'GET':
+        q = request.GET['q']
+
+        resultados=[]
+
+        platos = Plato.objects.filter(Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by(
+            'nombre').filter(activo=True)
+
+        bebidas = Bebida.objects.filter(Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by(
+            'nombre').filter(activo=True)
+
+        delDia = DelDia.objects.filter(Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by(
+            'nombre').filter(activo=True)
+
+        ejecutivo = Ejecutivo.objects.filter(Q(nombre__icontains=q) | Q(seccion__nombre__icontains=q)).order_by(
+            'nombre').filter(activo=True)
+
+        resultados.extend(platos)
+        resultados.extend(bebidas)
+        resultados.extend(delDia)
+        resultados.extend(ejecutivo)
+
+        return render_to_response('Mozo/busquedaresultados.html', {'listado': resultados},
+                                  context_instance=RequestContext(request))
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def buscarproductoajaxResultados(request):
+    if request.method == 'GET':
+        q = request.GET['q']
+
+        resultados = []
+
+        if q != "":
+            platos = Plato.objects.filter( Q(nombre__iexact=q) | Q(seccion__nombre__iexact=q) ).order_by('nombre').filter(activo = True)
+
+            bebidas = Bebida.objects.filter( Q(nombre__iexact=q) | Q(seccion__nombre__iexact=q) ).order_by('nombre').filter(activo = True)
+
+            delDia = DelDia.objects.filter( Q(nombre__iexact=q) | Q(seccion__nombre__iexact=q) ).order_by('nombre').filter(activo = True)
+
+            ejecutivo = Ejecutivo.objects.filter( Q(nombre__iexact=q) | Q(seccion__nombre__iexact=q) ).order_by('nombre').filter(activo = True)
+
+            resultados.extend(platos)
+            resultados.extend(bebidas)
+            resultados.extend(delDia)
+            resultados.extend(ejecutivo)
+
+
+        return render_to_response('Mozo/busquedaresultados_items.html', {'plato': resultados},
+                                  context_instance=RequestContext(request))
+
+
+@permission_required('Administrador.is_mozo', login_url="login")
+def una_comanda(request, id_comanda=None):
+    try:
+        lista_comandas = []
+        lista_comandas.append( Comanda.objects.get(pk=id_comanda))
+        detalle_generico = get_template('Mozo/item_comanda_abierta.html')
+        return render_to_response('Mozo/miscomandas.html',
+                                  {"una_comanda": detalle_generico.render(Context({'listado': lista_comandas,'STATIC_URL':STATIC_URL})),
+                                   "titulo": "Comanda Seleccionada", 'miscomandas': True},
+                                  context_instance=RequestContext(request))
+
+    except Exception:
+        return HttpResponse("Error, la comanda no fue encontreda en el Systema")

@@ -1,0 +1,106 @@
+{% extends "base_mozo.html" %}
+{% block titulo %}Boru - Mozo{% endblock %}
+
+{% block contenido %}
+
+<!-- inicio contenedor principal //-->
+<div id="con_menu_mozo" class="cont_redondeado contenedor_principal_big">
+    <div class="label label-inverse titulo_menu">{{titulo}}</div>
+    <br>
+    <!-- inicio listado comandas //-->
+        {{listado_comandas}}
+        {{una_comanda}}
+    <!-- fin listado comandas //-->
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+function ir(uri,msg){
+    $("#modalCargando").modal("show");
+    $(".mensajeModal").html(msg);
+
+    if(uri != false)
+        document.location.href = uri;
+}
+
+function mostrarDetalleComanda(id_comanda){
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'detalle_comanda_ajax_mozo' %}",
+        data: "id_comanda="+id_comanda,
+        success: function(datos){
+
+            $('.modal-titulo').html("Comanda Nº "+id_comanda);
+            $('.modal-body').html(datos);
+            $('#myModal').modal("show")
+          }
+    });
+}
+
+function mostrarDetallePedido(id_comanda){
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'detalle_comanda_ajax_mozo' %}",
+        data: "id_comanda="+id_comanda,
+        success: function(datos){
+
+            $('.modal-titulo').html("Pedido Nº "+id_comanda);
+            $('.modal-body').html(datos);
+            $('#myModal').modal("show")
+          }
+    });
+}
+
+function mostrarDetallePreticket(id_preticket){
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'detalle_preticket_ajax_mozo' %}",
+        data: "id_preticket="+id_preticket,
+        success: function(datos){
+
+            $('.modal-titulo').html("Preticket Nº "+id_preticket);
+            $('.modal-body').html(datos);
+            $('#myModal').modal("show")
+          }
+    });
+}
+
+
+function editarDetalleComanda(id_comanda){
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'editar_detalle_comanda_ajax' %}",
+        data: "id_comanda="+id_comanda,
+        success: function(datos){
+            $('.modal-titulo').html("Editar Comanda Nº "+id_comanda);
+            $('.modal-body-comanda').html(datos);
+            $('#myModalComanda').modal("show")
+          }
+    });
+
+}
+
+function mostrarDetalleFactura(id_factura){
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'detalle_factura_ajax_mozo' %}",
+        data: "id_factura="+id_factura,
+        success: function(datos){
+
+            $('.modal-titulo').html("Factura Nº "+id_factura);
+            $('.modal-body').html(datos);
+            $('#myModal').modal("show")
+          }
+    });
+}
+
+</script>
+{% endblock %}

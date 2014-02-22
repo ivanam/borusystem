@@ -228,7 +228,7 @@ class Comanda(models.Model):
     tipo_comanda = models.CharField(max_length=1, choices=TIPO_COMANDA)
     fecha = models.DateField("Fecha")
     hora = models.TimeField("Hora")
-    cantidadC = models.DecimalField("CantidadC", max_digits=11, decimal_places=0)
+    cantidadC = models.DecimalField("Comensales", max_digits=11, decimal_places=0)
     detalles = models.ManyToManyField(DetalleComanda, related_name="tiene", null=True, blank=True)
     mesas = models.ManyToManyField(Mesa, related_name="ocupa", null=True, blank=True)
     mozo = models.ForeignKey(User, null=True, blank=True)
@@ -279,6 +279,64 @@ class Comanda(models.Model):
 
     def cerrar(self):
         self.estrategia.cerrar_comanda(self)
+
+
+    def limpiarDetalles(self, reponerStock):
+
+        if reponerStock == True:
+            #eliminamos detalles pero reponiendo el stock de los mismos
+            detalles = self.detalles
+
+            for d in detalles.all():
+                if d.platos is not None:
+                    d.platos.stock = int(d.platos.stock) + int(d.cantidadP)
+                    d.platos.save()
+                else:
+                    if d.bebidas is not None:
+                        d.bebidas.stock = int(d.bebidas.stock) + int(d.cantidadP)
+                        d.bebidas.save()
+                    else:
+                        if d.menuD is not None:
+                            d.menuD.stock = int(d.menuD.stock) + int(d.cantidadP)
+                            d.menuD.save()
+                        else:
+                            d.menuE.stock = int(d.menuE.stock) + int(d.cantidadP)
+                            d.menuE.save()
+
+                #elimino todos los detalles del preticket
+                d.delete()
+
+    def agregarDetalle(self, producto, cantidad):
+        #creo el nuevo detalle
+        detalle_comanda = DetalleComanda.objects.create(cantidadP=cantidad, precioXunidad=producto.importe())
+        #leagrego el nombre del producto
+        detalle_comanda.nombre = producto.nombre
+        #le agrego el producto
+        if type(producto) is Plato:
+            detalle_comanda.platos = producto
+            detalle_comanda.descuento = producto.descuento
+        else:
+            if type(producto) is Bebida:
+                detalle_comanda.bebidas = producto
+                detalle_comanda.descuento = producto.descuento
+            else:
+                if type(producto) is DelDia:
+                    detalle_comanda.menuD = producto
+                else:
+                    detalle_comanda.menuE = producto
+                    #guardo el detalle con los nuevos datos
+        detalle_comanda.save()
+        #agrego el detalle a la lista de detalles de la comanda
+        self.detalles.add(detalle_comanda)
+        #salvo el comanda
+        self.save()
+        #actualizo total del comanda
+        self.total = self.total()
+        self.save()
+        #actualizo el stock del producto
+        stk = int(producto.stock)
+        producto.stock = stk - int(cantidad)
+        producto.save()
 
 
 class DetallePreticket(models.Model):

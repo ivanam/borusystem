@@ -36,6 +36,7 @@ def Cajero(request,pagina=1):
     return render_to_response('Cajero/cajero.html', {"item_comandas_abiertas": detalle_renderizado,"titulo":titulo,"activar_comandas":True}, context_instance=RequestContext(request))
 
 
+@permission_required('Administrador.is_cajero', login_url="login")
 def pretickets(request,pretickets_page=1):
     if pretickets_page == None:
         pretickets_page = 1
@@ -59,7 +60,7 @@ def pretickets(request,pretickets_page=1):
                               {"item_pretickets": detalle_renderizado, "titulo": titulo,"activar_pretickets":True},
                               context_instance=RequestContext(request))
 
-
+@permission_required('Administrador.is_cajero', login_url="login")
 def facturas(request,facturas_page=1):
     if facturas_page == None:
         facturas_page = 1
@@ -83,7 +84,7 @@ def facturas(request,facturas_page=1):
                               {"item_factura": detalle_renderizado, "titulo": titulo,"activar_facturas":True},
                               context_instance=RequestContext(request))
 
-
+@permission_required('Administrador.is_cajero', login_url="login")
 def historico(request):
 
     #si la consulta es por POST
@@ -225,12 +226,6 @@ def una_comanda(request,id_comanda=None):
 
     except Exception:
             return HttpResponse("Error, la comanda no fue encontreda en el Systema")
-
-
-
-
-
-
 
 
 @permission_required('Administrador.is_cajero', login_url="login")

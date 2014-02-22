@@ -37,7 +37,7 @@
             </div>
             <!-- fin contenido uno //-->
 
-            <div class="btn btn-warning btn-large btn_menu_mozo" onclick="alert('En construccion...');">
+            <div class="btn btn-warning btn-large btn_menu_mozo" onclick="document.location.href = '{% url 'miscomandas' %}';">
                 <span class="titulo_btn_mozo">Mis Comandas</span>
             </div>
 
@@ -49,6 +49,8 @@
 
 {% block script %}
 <script>
+
+
 function enviarFormComanda(){
 
 var formOk = isNaN( $("#cantidadC").val() );

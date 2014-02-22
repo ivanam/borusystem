@@ -1,0 +1,460 @@
+<!-- Modal cuerpo comanda //-->
+<div class="detalle_cajero">
+<div class="salto_linea"></div>
+<div class="label label-inverse titulo_menu">Buscar Productos</div>
+<div class="salto_linea"></div>
+
+<!-- inicio buscador de productos //-->
+<div>
+    <input class="buscador_productos buscador_editar_preticket"
+           type="text"
+           value="Ingrese en nombre del producto..."
+           name="q"
+           ondblclick="this.value = '';"
+           onfocus="if(this.value == 'Ingrese en nombre del producto...') this.value='';"
+           title="Doble click para limpiar el campo.">
+
+    <div class="cont_resultado_busqueda_productos cont_resultado_busqueda_productos_preticket"></div>
+</div>
+<!-- fin de buscador de productos //-->
+
+<form action="{% url 'guardar_detalle_comanda_ajax' %}" method="post" enctype="application/x-www-form-urlencoded"
+      name="editar_comanda"
+      id="editar_comanda">
+    <input type="hidden" name="comanda_id" id="comanda_id" value="{{comanda.id}}">
+<div class="label label-inverse header_editar_detalle_cajero">
+    <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
+    <div class="listado_item_campo_base listado_item_campo_06 flotar_iz">Nombre</div>
+    <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">Precio</div>
+    <div class="listado_item_campo_base listado_item_campo_04_2 flotar_iz">Cantidad</div>
+    <div class="listado_item_campo_base listado_item_campo_03_2 flotar_iz">Descuento</div>
+</div>
+<div class="salto_linea"></div>
+
+<!-- inicio productos agregados //-->
+<div class="ajax_resultados">
+
+</div>
+<!-- fin de agregado productos //-->
+
+<div class="resultados">
+    {% for p in comanda.detalles.all %}
+
+    {% if p.platos %}
+    <div class="editar_detalle_info" id="detalle_producto_{{ p.platos.id }}_{{ p.platos.seccion.categoria }}">
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
+        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.nombre|capfirst }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precioXunidad }}</div>
+        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro"
+             stock="{{p.platos.stock}}"
+             cantidad_vendida="{{ p.cantidadP }}"
+             id="stk_producto_{{ p.platos.id }}_{{ p.platos.seccion.categoria }}">
+            {{ p.cantidadP }}
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+            <img width="25" class="adddelProducto" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png"
+                 title="Más Producto"
+                 onclick="addProducto('stk_producto_{{ p.platos.id }}_{{ p.platos.seccion.categoria }}');">
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+            <img width="25" class="adddelProducto" src="{{STATIC_URL}}img/conf/glyphicons_191_circle_minus.png"
+                 title="Menos Producto"
+                 onclick="delProducto('stk_producto_{{ p.platos.id }}_{{ p.platos.seccion.categoria }}');">
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro">
+            {% if p.descuento %}{{ p.descuento }}{% else %}0{% endif %}%
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+
+            <input class="checkModificado" type="checkbox" name="producto"
+                   id="producto_{{ p.platos.id }}_{{ p.platos.seccion.categoria }}"
+                   value="{{ p.platos.id }}_{{ p.platos.seccion.categoria }}_{{ p.cantidadP }}"
+                   cantidad="{{ p.cantidadP }}"
+                   precio="{{ p.precioXunidad }}"
+                   checked>
+            <label id="lb_producto_{{ p.platos.id }}_{{ p.platos.seccion.categoria }}"
+                   for="producto_{{ p.platos.id }}_{{ p.platos.seccion.categoria }}"
+                   onclick="checkEstado('producto_{{ p.platos.id }}_{{ p.platos.seccion.categoria }}');"
+                   title="Eliminar producto de la comanda">&#160;</label>
+
+        </div>
+    </div>
+    <div class="salto_linea"></div>
+    {% endif %}
+
+    {% if p.bebidas %}
+    <div class="editar_detalle_info" id="detalle_producto_{{ p.bebidas.id }}_{{ p.bebidas.seccion.categoria }}">
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
+        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.nombre|capfirst }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precioXunidad }}</div>
+        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro"
+             stock="{{p.bebidas.stock}}"
+             cantidad_vendida="{{ p.cantidadP }}"
+             id="stk_producto_{{ p.bebidas.id }}_{{ p.bebidas.seccion.categoria }}">
+            {{ p.cantidadP }}
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+            <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png"
+                 title="Más Producto"
+                 class="adddelProducto"
+                 onclick="addProducto('stk_producto_{{ p.bebidas.id }}_{{ p.bebidas.seccion.categoria }}');">
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+            <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_191_circle_minus.png"
+                 title="Menos Producto"
+                 class="adddelProducto"
+                 onclick="delProducto('stk_producto_{{ p.bebidas.id }}_{{ p.bebidas.seccion.categoria }}');">
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro">
+            {% if p.descuento %}{{ p.descuento }}{% else %}0{% endif %}%
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+
+            <input class="checkModificado" type="checkbox" name="producto"
+                   id="producto_{{ p.bebidas.id }}_{{ p.bebidas.seccion.categoria }}"
+                   value="{{ p.bebidas.id }}_{{ p.bebidas.seccion.categoria }}_{{ p.cantidadP }}"
+                   cantidad="{{ p.cantidadP }}"
+                   precio="{{ p.precioXunidad }}"
+                   checked>
+            <label id="lb_producto_{{ p.bebidas.id }}_{{ p.bebidas.seccion.categoria }}"
+                   for="producto_{{ p.bebidas.id }}_{{ p.bebidas.seccion.categoria }}"
+                   onclick="checkEstado('producto_{{ p.bebidas.id }}_{{ p.bebidas.seccion.categoria }}');"
+                   title="Eliminar producto de la Comanda">&#160;</label>
+
+        </div>
+    </div>
+    <div class="salto_linea"></div>
+    {% endif %}
+
+    {% if p.menuD %}
+    <div class="editar_detalle_info" id="detalle_producto_{{ p.menuD.id }}_{{ p.menuD.seccion.categoria }}">
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
+        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.nombre|capfirst }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precioXunidad }}</div>
+        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro"
+             stock="{{p.menuD.stock}}"
+             cantidad_vendida="{{ p.cantidadP }}"
+             id="stk_producto_{{ p.menuD.id }}_{{ p.menuD.seccion.categoria }}">
+            {{ p.cantidadP }}
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+            <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png"
+                 title="Más Producto"
+                 class="adddelProducto"
+                 onclick="addProducto('stk_producto_{{ p.menuD.id }}_{{ p.menuD.seccion.categoria }}');">
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+            <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_191_circle_minus.png"
+                 title="Menos Producto"
+                 class="adddelProducto"
+                 onclick="delProducto('stk_producto_{{ p.menuD.id }}_{{ p.menuD.seccion.categoria }}');">
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro">
+            {% if p.descuento %}{{ p.descuento }}{% else %}0{% endif %}%
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+
+            <input class="checkModificado" type="checkbox" name="producto"
+                   id="producto_{{ p.menuD.id }}_{{ p.menuD.seccion.categoria }}"
+                   value="{{ p.menuD.id }}_{{ p.menuD.seccion.categoria }}_{{ p.cantidadP }}"
+                   cantidad="{{ p.cantidadP }}"
+                   precio="{{ p.precioXunidad }}"
+                   checked>
+            <label id="lb_producto_{{ p.menuD.id }}_{{ p.menuD.seccion.categoria }}"
+                   for="producto_{{ p.menuD.id }}_{{ p.menuD.seccion.categoria }}"
+                   onclick="checkEstado('producto_{{ p.menuD.id }}_{{ p.menuD.seccion.categoria }}');"
+                   title="Eliminar producto de la Comanda">&#160;</label>
+
+        </div>
+    </div>
+    <div class="salto_linea"></div>
+    {% endif %}
+
+    {% if p.menuE %}
+    <div class="editar_detalle_info" id="detalle_producto_{{ p.menuE.id }}_{{ p.menuE.seccion.categoria }}">
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">&nbsp;&nbsp;&nbsp;</div>
+        <div class="listado_item_campo_base listado_item_campo_06 flotar_iz texto_iz">{{ p.nombre|capfirst }}</div>
+        <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_der">{{ p.precioXunidad }}</div>
+        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro"
+             stock="{{p.menuE.stock}}"
+             cantidad_vendida="{{ p.cantidadP }}"
+             id="stk_producto_{{ p.menuE.id }}_{{ p.menuE.seccion.categoria }}">
+            {{ p.cantidadP }}
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+            <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_190_circle_plus.png"
+                 title="Más Producto"
+                 class="adddelProducto"
+                 onclick="addProducto('stk_producto_{{ p.menuE.id }}_{{ p.menuE.seccion.categoria }}');">
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+            <img width="25" src="{{STATIC_URL}}img/conf/glyphicons_191_circle_minus.png"
+                 title="Menos Producto"
+                 class="adddelProducto"
+                 onclick="delProducto('stk_producto_{{ p.menuE.id }}_{{ p.menuE.seccion.categoria }}');">
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_02_2 flotar_iz texto_centro">
+            {% if p.descuento %}{{ p.descuento }}{% else %}0{% endif %}%
+        </div>
+
+        <div class="listado_item_campo_base listado_item_campo_00 flotar_iz">
+
+            <input class="checkModificado" type="checkbox" name="producto"
+                   id="producto_{{ p.menuE.id }}_{{ p.menuE.seccion.categoria }}"
+                   value="{{ p.menuE.id }}_{{ p.menuE.seccion.categoria }}_{{ p.cantidadP }}"
+                   cantidad="{{ p.cantidadP }}"
+                   precio="{{ p.precioXunidad }}"
+                   checked>
+            <label id="lb_producto_{{ p.menuE.id }}_{{ p.menuE.seccion.categoria }}"
+                   for="producto_{{ p.menuE.id }}_{{ p.menuE.seccion.categoria }}"
+                   onclick="checkEstado('producto_{{ p.menuE.id }}_{{ p.menuE.seccion.categoria }}');"
+                   title="Eliminar producto de la Comanda">&#160;</label>
+        </div>
+    </div>
+    <div class="salto_linea"></div>
+    {% endif %}
+
+    {% endfor %}
+</div>
+<br>
+
+<div class="label label-inverse">Importe Total: <span id="total_comensales" class="total_comanda">{{ total }}</span>
+</div>
+{% csrf_token %}
+</form>
+</div>
+<!-- Fin Modal cuerpo //-->
+<script>
+
+function guardarComanda(){
+
+    var total_comanda = parseInt( $(".total_comanda").html() );
+
+    if( total_comanda != 0 ){
+        ir(false,"&bull; Modificando Comanda<br><br>");
+        $("#editar_comanda").submit();
+    }else{
+        alert("La comanda debe tener al menos un producto!");
+    }
+}
+
+function calcularTotal(){
+
+var total=0;
+
+    $(".checkModificado").each(function(i){
+
+        if( $(this).is(":checked") ){
+         var subtotal = parseFloat( $(this).attr("cantidad") ) * parseFloat( $(this).attr("precio") );
+         total = total + subtotal;
+        }
+
+    });
+
+    $(".total_comanda").html(total);
+}
+
+
+
+
+function checkEstado(id_check){
+
+    if( $("#"+id_check).is(":checked") ){
+
+            $("#lb_"+id_check).attr("title","Agregar producto a la Comanda");
+
+            $("#detalle_"+id_check).removeClass("editar_detalle_info");
+            $("#detalle_"+id_check).removeClass("editar_detalle_info_agregar");
+            $("#detalle_"+id_check).addClass("editar_detalle_info_eliminar");
+    }
+    else{
+
+            $("#lb_"+id_check).attr("title","Eliminar producto de la Comanda");
+
+            $("#detalle_"+id_check).removeClass("editar_detalle_info_eliminar");
+
+            if( $("#lb_"+id_check).attr("agregado") == "true")
+                $("#detalle_"+id_check).addClass("editar_detalle_info_agregar");
+            else
+                $("#detalle_"+id_check).addClass("editar_detalle_info");
+
+    }
+
+    var actulizar_total = setTimeout(function(){calcularTotal()},300);
+}
+
+
+
+
+function addProducto(id){
+
+/*total de stock es lo que nos queda mas lo que vendimos
+por que lo que vendimos ya se desconto del stock*/
+
+var totalStock = parseInt($("#"+id).attr("stock")) + parseInt($("#"+id).attr("cantidad_vendida"));
+var cantidad = $("#"+id).html();
+var incrementoStock = parseInt(cantidad)+1;
+
+    if( incrementoStock <= totalStock){
+        $("#"+id).html(incrementoStock);
+
+        generarValue(id.replace("stk_producto_",""), incrementoStock);
+    }
+
+
+    calcularTotal();
+}
+
+function delProducto(id){
+
+var cantidad = $("#"+id).html();
+var decrementoStock = parseInt(cantidad)-1;
+
+    if( decrementoStock > 0){
+
+        $("#"+id).html(decrementoStock);
+
+        generarValue(id.replace("stk_producto_",""), decrementoStock);
+
+    }
+
+    calcularTotal();
+
+}
+
+function generarValue(id, cantidad){
+
+    //modifico el value del input
+    $("#producto_"+id).val(id+"_"+cantidad);
+
+    //modifico el atributo cantidad del input
+    $("#producto_"+id).attr("cantidad",cantidad);
+}
+
+function enviarForm(msg){
+    $(".buscador_productos").val(msg);
+    buscarresultados();
+}
+
+function reemplazarCadena(cad, q){
+var re = new RegExp(q,"gi");
+    return cad.replace(re,"<span class='resaltado resaltarBusqueda'>"+q+"</span>");
+}
+
+function buscarresultados(){
+
+    var busqueda=$(".buscador_productos").val();
+    var agregar =  true;
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'buscador_producto_ajax_resultados_mozo' %}",
+        data: "q="+busqueda,
+        success: function(datos){
+
+            if(datos.length > 0){
+
+                var id_prod_add = $(".checkModificado",datos).attr("id");
+
+                $(".checkModificado").each(function(i){
+
+                    if( id_prod_add == $(this).attr("id") ){
+                        agregar = false;
+                    }
+                });
+
+                //editar_detalle_info_agregar /--->checked:true
+                //editar_detalle_info_eliminar /--->checked:false
+                //editar_detalle_info /--->checked:true or false
+
+                if( agregar == true ){
+
+                    //agrego los detalles del preticket
+                    $(".ajax_resultados").html($(".ajax_resultados").html()+datos);
+
+                    //TODO fix bug reviso los que estan eliminados
+                    $("div[id*=detalle_producto_]").each(function(i){
+
+                            //y los saco de la lista
+                            if($(this).attr("class") == 'editar_detalle_info_eliminar' ){
+                                $(".checkModificado",this).removeAttr("checked");
+                            }
+
+                    });
+
+                }
+                else{
+                    alert("El producto que desea agregar ya esta en la lista del preticket \nsi desea modificar la cantidad utilice los botones \"+\" o \"-\" \nsi desea eliminarlo de la lista utilice el boton \"X\".");
+                }
+                $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+
+                calcularTotal();
+            }
+          }
+    });
+
+}
+
+$(document).ready(function(){
+
+    $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+
+    //cuando presiono una tecla en la caja de busqueda
+    $(".buscador_productos").keyup(function(event){
+
+        var busqueda=$(this).val();
+
+        if( busqueda.length >= 2){
+
+            $.ajax({
+                type: "GET",
+                url: "{% url 'buscador_producto_ajax_mozo' %}",
+                data: "q="+busqueda,
+                success: function(datos){
+
+                    if(datos.length > 0){
+                        $(".cont_resultado_busqueda_productos").html(datos);
+                        $(".cont_resultado_busqueda_productos").css("visibility","visible");
+
+                        $(".busqueda_item").each(function(i){
+                            var cad=$(this).text();
+                            $(this).html(reemplazarCadena(cad, busqueda));
+                            $(".resaltado").addClass("resaltarBusqueda");
+                        });
+
+                    }
+                    else{
+                        $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+                    }
+
+                  }
+            });
+        }
+        else
+        {
+            $(".cont_resultado_busqueda_productos").css("visibility","hidden");
+        }
+
+    });
+
+});
+</script>

@@ -26,39 +26,56 @@
                         <div class="icon-user"></div>
                         <div class="label label-inverse" id="nombre_usuario">{{user}}</div>
                     </div>
-                    <ul class="nav">
-                        <li class="{%if crear_comanda %}active{% endif %}">
-                            <a href="#">Crear Comanda
-                            {%if crear_comanda %}
-                            <b class="caret"></b>
-                            {% endif %}
-                            </a>
-                        </li>
+                    {% if not miscomandas %}
+                        <ul class="nav">
+                            <li class="{%if crear_comanda %}active{% endif %}">
+                                <a href="#">Crear Comanda
+                                {%if crear_comanda %}
+                                <b class="caret"></b>
+                                {% endif %}
+                                </a>
+                            </li>
 
-                        <li  class="{%if seleccionar_mesa %}active{% endif %}">
-                            <a href="#">Seleccionar Mesas
-                            {%if seleccionar_mesa %}
-                            <b class="caret"></b>
-                            {% endif %}
-                            </a>
-                        </li>
+                            <li  class="{%if seleccionar_mesa %}active{% endif %}">
+                                <a href="#">Seleccionar Mesas
+                                {%if seleccionar_mesa %}
+                                <b class="caret"></b>
+                                {% endif %}
+                                </a>
+                            </li>
 
-                        <li class="{%if seleccionar_menu %}active{% endif %}">
-                            <a href="#">Seleccionar Menu
-                            {%if seleccionar_menu %}
-                            <b class="caret"></b>
-                            {% endif %}
-                            </a>
-                        </li>
+                            <li class="{%if seleccionar_menu %}active{% endif %}">
+                                <a href="#">Seleccionar Menu
+                                {%if seleccionar_menu %}
+                                <b class="caret"></b>
+                                {% endif %}
+                                </a>
+                            </li>
 
-                        <li class="{%if finalizar %}active{% endif %}">
-                            <a href="#">Finalizar
-                            {%if finalizar %}
-                            <b class="caret"></b>
-                            {% endif %}
-                            </a>
-                        </li>
-                    </ul>
+                            <li class="{%if finalizar %}active{% endif %}">
+                                <a href="#">Finalizar
+                                {%if finalizar %}
+                                <b class="caret"></b>
+                                {% endif %}
+                                </a>
+                            </li>
+                        </ul>
+                        {% else %}
+                            <ul class="nav">
+                            <li>
+                                <a href="{% url 'mozo' %}">Crear Comanda </a>
+                            </li>
+                            </ul>
+                            <ul class="nav">
+                            <li class="{%if miscomandas %}active{% endif %}">
+                                <a href="{% url 'miscomandas' %}">Mis Comandas
+                                {%if miscomandas %}
+                                <b class="caret"></b>
+                                {% endif %}
+                                </a>
+                            </li>
+                            </ul>
+                        {% endif %}
                     <div class="cerrar_sesion_fix" id="cerrar_sescion_actual">
                         <a href="{% url 'logout' %}" target="_self">
                             <div class="label label-inverse">
@@ -113,6 +130,55 @@
         <div id="cuerpo_down"></div>
     </div>
 </div>
+
+<!-- Modal cargado-->
+<div id="modalCargando" class="modal hide">
+    <div class="procesando">
+        <div class="flotar_iz"><img src="{{STATIC_URL}}img/conf/loading.gif"></div>
+        <div class="flotar_der">Procesando Peticion ...</div>
+        <div class="mensajeModal flotar_der"></div>
+        <br>
+    </div>
+</div>
+<!-- Fin Modal cargando-->
+
+
+<!-- Modal -->
+<div id="myModal" class="comanda_detalle_modal modal hide fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel" class="modal-titulo"></h3>
+    </div>
+    <div class="modal-body"></div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true" title="Imprimir" onclick="print();">
+            <img width="20" src="{{STATIC_URL}}img/conf/glyphicons_015_print.png" title="Imprimir">
+        </button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    </div>
+</div>
+<!-- Fin Modal -->
+
+
+<!-- Modal Comanda-->
+<div id="myModalComanda" class="comanda_detalle_modal modal hide fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel2" class="modal-titulo"></h3>
+    </div>
+    <div class="modal-body modal-body-comanda"></div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true" title="Guardar" onclick="guardarComanda();">
+        Guardar Comanda
+        </button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+    </div>
+</div>
+<!-- Fin Modal Preticket -->
+
+
 {% block script %}{% endblock %}
 </body>
 </html>
