@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect, response, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.template.loader import render_to_string
 from fpdf import FPDF
 import xlsxwriter
 from gestiones.Administrador.ayudaContextual import ayudaMsg
@@ -414,12 +415,20 @@ def ayudaContextual(request):
             fuente=request.GET['fuente']
             entrada = ayudaMsg.get(fuente, "Ayuda en construccion!")
             titulo = entrada.get("titulo")
+            plantilla = entrada.get("plantilla")
             mensaje = entrada.get("msg")
+
+            if plantilla != None:
+                plantilla_ayuda = render_to_string('Administrador/ayudaContextual/'+ plantilla, {},
+                                                  context_instance=RequestContext(request))
+            else:
+                plantilla_ayuda = None
         except:
             titulo = "Titulo en construccion!"
+            plantilla_ayuda = None
             mensaje = "Mensaje en construccion!"
 
-    return render_to_response('Administrador/ayudaContextual.html', {'titulo': titulo, 'mensaje': mensaje, 'fuente':fuente},
+    return render_to_response('Administrador/ayudaContextual.html', {'titulo': titulo, 'mensaje': mensaje, 'fuente':fuente, 'plantilla':plantilla_ayuda},
                               context_instance=RequestContext(request))
 
 

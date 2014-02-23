@@ -247,7 +247,7 @@
 
 
 <!-- Modal Ayuda-->
-<div id="myModalAyuda" class="comanda_detalle_modal modal hide fade" tabindex="-1" role="dialog"
+<div id="myModalAyuda" class="modal_ventana_ayuda modal hide fade" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
 
@@ -265,23 +265,15 @@
 <script>
 function ayudaContextual(){
 
-    var hostPage = location.host;
-    var hrefPage = location.href;
-    var protocolPage = location.protocol;
-
-    var fuente = hrefPage.replace(protocolPage,"");
-    fuente = fuente.replace(hostPage,"");
-    fuente = fuente.replace("//","");
-    fuente = fuente.replace("/administrador/","");
-    fuente = fuente.replace("/","");
-    fuente = fuente.replace("#","");
-    var patt1 = /[0-9]/g;
-    fuente = fuente.replace(patt1,"");
+var uri = location.href;
+var pattern = /administrador\/([a-zA-Z]*)/
+var fuente;
+fuente = pattern.exec(uri);
 
     $.ajax({
         type: "GET",
         url: "{% url 'ayudaContextual' %}",
-        data: "fuente="+fuente,
+        data: "fuente="+fuente[1],
         success: function(datos){
 
             $('.modal-body-ayuda').html(datos);
