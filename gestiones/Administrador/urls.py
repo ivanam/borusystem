@@ -11,6 +11,7 @@ url(r'^listarImprimir$', 'gestiones.Administrador.views.listarImprimir', name="l
 url(r'^consulta+vendidos$', 'gestiones.Administrador.views.masVendidos', name="consulta+vendidos"),
 
 url(r'^ayudaContextual$', 'gestiones.Administrador.views.ayudaContextual', name="ayudaContextual"),
+url(r'^consultaFacturas$', 'gestiones.Administrador.views.consultaFacturas', name="consultaFacturas"),
 
 #url(r'^pruebaUsuario$', 'gestiones.Administrador.views.PruebaUsuario', name="pruebaUsuario"),
 #url(r'^altaAdministrador$', 'gestiones.Administrador.views.AltaAdministrador', name="altaAdministrador"),

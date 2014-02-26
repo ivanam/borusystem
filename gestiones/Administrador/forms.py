@@ -85,4 +85,21 @@ class fechasXconsultaForm(forms.Form):
         return fecha_fin
 
 
+class fechasXconsultaFacturasForm(forms.Form):
 
+
+    hoy = datetime.date.today()
+
+    fecha_Inicio = forms.DateField(required=True,widget = forms.TextInput, initial=hoy)
+    fecha_fin = forms.DateField(required=True,widget = forms.TextInput)
+
+    def clean_fecha_fin(self):
+        diccionario_limpio = self.cleaned_data
+
+        fecha_fin = diccionario_limpio.get('fecha_fin')
+        fecha_Inicio = diccionario_limpio.get('fecha_Inicio')
+
+        if (fecha_Inicio > fecha_fin):
+            raise forms.ValidationError("La Fecha Fin no puede ser menor a la fecha de inicio")
+
+        return fecha_fin

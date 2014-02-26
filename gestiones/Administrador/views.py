@@ -14,7 +14,7 @@ from fpdf import FPDF
 import xlsxwriter
 from gestiones.Administrador.ayudaContextual import ayudaMsg
 from boru.settings import PAGINADO_USUARIOS, STATIC_URL, RUTA_PROYECTO, TOTAL_LINEAS_PDF
-from gestiones.Administrador.forms import altaUsuarioForm, fechasXconsultaForm
+from gestiones.Administrador.forms import altaUsuarioForm, fechasXconsultaForm, fechasXconsultaFacturasForm
 from gestiones.Administrador.models import permisosVistas
 from gestiones.Carta.altacarta.models import SeccionCarta
 from gestiones.Comanda.comanda.models import Factura, DetalleFactura
@@ -25,7 +25,6 @@ from gestiones.Producto.producto.models import Plato, Bebida, Ejecutivo, DelDia
 def Administrador(request):
     return render_to_response('Administrador/administrador.html', {'user': request.user},
                               context_instance=RequestContext(request))
-
 
 @permission_required('Administrador.is_admin', login_url="login")
 def AltaAdministrador(request):
@@ -431,4 +430,76 @@ def ayudaContextual(request):
     return render_to_response('Administrador/ayudaContextual.html', {'titulo': titulo, 'mensaje': mensaje, 'fuente':fuente, 'plantilla':plantilla_ayuda},
                               context_instance=RequestContext(request))
 
+@permission_required('Administrador.is_admin', login_url="login")
+def consultaFacturas(request):
+    if request.method== 'POST':
+        formulario = fechasXconsultaFacturasForm(request.POST)
+        #nombre = 'ganancia.xlsx'
+        if formulario.is_valid():
 
+            #capturamos y limpiamos datos
+            fechaI = formulario.cleaned_data['fecha_Inicio']
+            fechaF = formulario.cleaned_data['fecha_fin']
+            sql_query = 'select id, fecha, hora, tipo, total_factura ' \
+                            'from comanda_factura ' \
+                            'where comanda_factura.fecha between \'' + str(fechaI) + '\' and \'' + str(fechaF) + '\''+' and comanda_factura.pago_id IS NOT NULL'+';'
+
+            nombre_archivo = "facturas.xlsx"
+            workbook = xlsxwriter.Workbook(RUTA_PROYECTO + "/" + STATIC_URL + "xlsx/" + nombre_archivo)
+            worksheet = workbook.add_worksheet()
+            fecha = []
+            hora = []
+            tipo = []
+            totalF = []
+            id = []
+            totalC = 0
+
+            formatT = workbook.add_format()
+            formatT.set_bold()
+            formatT.set_font_size(14)
+            formatT.set_align('center')
+            #Facturas
+            worksheet.write('A1', 'Numero Factura', formatT)
+            worksheet.write('B1', 'Fecha', formatT)
+            worksheet.write('C1', 'Hora', formatT)
+            worksheet.write('D1', 'Tipo', formatT)
+            worksheet.write('E1', 'Total', formatT)
+            fila = 2
+            for x in Factura.objects.raw(sql_query):
+                fecha.append(str(x.fecha))
+                hora.append(str(x.hora))
+                tipo.append(x.tipo)
+                totalF.append(str(x.total_factura))
+                id.append(x.id)
+                totalC = totalC + x.total_factura
+                fila = fila + 1
+            fila = fila +1
+            format = workbook.add_format()
+            format.set_indent(5)
+
+            worksheet.set_column(0, 0, 40)
+            worksheet.write_column('A2', id, format)
+            worksheet.write_column('B2', fecha, format)
+            worksheet.write_column('C2', hora, format)
+            worksheet.write_column('D2', tipo, format)
+            worksheet.write_column('E2', totalF, format)
+            #worksheet.write('F2', str(totalC), format)
+            worksheet.write('A'+str(fila), 'Total Facturado de '+str(fechaI)+' a '+str(fechaF),formatT)
+
+            format = workbook.add_format()
+            format.set_align('center')
+            worksheet.write('E'+str(fila), str(totalC), format)
+            #worksheet.write_column('F2', totalC, format)
+            # Create a new chart object.
+            # Insert the chart into the worksheet.
+            #worksheet.insert_chart('D2', chart)
+            workbook.close()
+
+            return render_to_response('Administrador/consultaFacturas.html', {'formulario': formulario,'consulta':True,'nombre_archivo':nombre_archivo},
+                                      context_instance=RequestContext(request))
+
+    else:
+        formulario = fechasXconsultaFacturasForm()
+        return render_to_response('Administrador/consultaFacturas.html',
+                                  {'formulario': formulario,'consulta':False},
+                                  context_instance=RequestContext(request))
