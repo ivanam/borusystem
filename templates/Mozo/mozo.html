@@ -53,9 +53,11 @@
 
 function enviarFormComanda(){
 
-var formOk = isNaN( $("#cantidadC").val() );
+var formOk = isNaN( $("#cantidadC").val() );              //ok false   //bad true
+var largo = ( $("#cantidadC").val().length > 0 );         //ok true    //bad false
+var nocero = ( parseInt( $("#cantidadC").val() ) != 0 );  //ok true    //bad false
 
-    if( formOk ){
+    if( formOk || !largo || !nocero){
         alert("Debe ingresar un numero entero!");
     }
     else{
@@ -73,13 +75,16 @@ $(document).ready(function() {
       });
 
 
-     $('#cantidadC').keypress(function(e){
+     $('#cantidadC').keypress(function(event){
 
-        var keycode = (e.keyCode ? e.keyCode : e.which);
+
+
+        var keycode = (event.keyCode ? event.keyCode : event.which);
 
         if(keycode == 13){
+            event.preventDefault();
             enviarFormComanda();
-            return false;
+
         }
      });
 

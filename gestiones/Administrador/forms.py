@@ -85,8 +85,8 @@ class fechasXconsultaForm(forms.Form):
         return fecha_fin
 
 
-class fechasXconsultaFacturasForm(forms.Form):
 
+class fechasXconsultaFacturasForm(forms.Form):
 
     hoy = datetime.date.today()
 

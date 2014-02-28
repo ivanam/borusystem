@@ -4,6 +4,7 @@
 <title>{% block titulo %}{% endblock %}</title>
 <link rel="stylesheet" href="{{STATIC_URL}}css/ui-lightness/jquery-ui-1.10.3.custom.css"  type="text/css" media="all" />
 <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery.hotkeys.js"></script>
 <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-ui-1.10.3.custom.min.js"></script>
 <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/bootstrap.js"></script>
 <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/funciones.js"></script>
@@ -38,9 +39,9 @@
 					Mozos <b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-					<li><a href="{% url 'altamozo' %}">Alta Mozos</a></li>
-					<li><a href="{% url 'modificarmozo' %}">Modificar Mozos</a></li>
-					<li><a href="{% url 'eliminarmozo' %}">Eliminar Mozos</a></li>
+					<li><a href="{% url 'altamozo' %}"><span class="atajo_teclado" title="Atajo de Teclado Shift+A">A</span>lta Mozos</a></li>
+					<li><a href="{% url 'modificarmozo' %}">Modificar Mo<span class="atajo_teclado" title="Atajo de Teclado Shift+Z">z</span>os</a></li>
+					<li><a href="{% url 'eliminarmozo' %}"><span class="atajo_teclado" title="Atajo de Teclado Shift+E">E</span>liminar Mozos</a></li>
 				</ul>
 			</li>
 			<!-- fin menu mozos //-->
@@ -53,8 +54,8 @@
 					Mesas <b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-					<li><a href="{% url 'altamesa' %}">Alta Mesa</a></li>
-					<li><a href="{% url 'modificarmesa' %}">Modificar Mesa</a></li>
+					<li><a href="{% url 'altamesa' %}">Alta Me<span class="atajo_teclado" title="Atajo de Teclado Shift+S">s</span>a</a></li>
+					<li><a href="{% url 'modificarmesa' %}">M<span class="atajo_teclado" title="Atajo de Teclado Shift+O">o</span>dificar Mesa</a></li>
 				</ul>
 			</li>
 			<!-- fin menu mesa //-->
@@ -65,9 +66,8 @@
 					Sectores <b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-					<li><a href="{% url 'altasector' %}">Alta Sector</a></li>
-					<li><a href="{% url 'modificarsector' %}">Modificar Sector</a></li>
-					<!--<li><a href="adm_sector_eliminar.html">Eliminar Sector</a></li>//-->
+					<li><a href="{% url 'altasector' %}">Alta Se<span class="atajo_teclado" title="Atajo de Teclado Shift+C">c</span>tor</a></li>
+					<li><a href="{% url 'modificarsector' %}">Modificar Sec<span class="atajo_teclado" title="Atajo de Teclado Shift+T">t</span>or</a></li>
 				</ul>
 			</li>
 			<!-- fin menu sector //-->
@@ -79,11 +79,11 @@
 					Productos <b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-					<li><a href="{% url 'altabebida' %}">Alta Bebida</a></li>
-					<li><a href="{% url 'modificarbebida' %}">Modificar Bebida</a></li>
+					<li><a href="{% url 'altabebida' %}">Alta <span class="atajo_teclado" title="Atajo de Teclado Shift+B">B</span>ebida</a></li>
+					<li><a href="{% url 'modificarbebida' %}">Mo<span class="atajo_teclado" title="Atajo de Teclado Shift+D">d</span>ificar Bebida</a></li>
 					<div class="divider"></div>
-					<li><a href="{% url 'altaplato' %}">Alta Plato</a></li>
-					<li><a href="{% url 'modificarplato' %}">Modificar Plato</a></li>
+					<li><a href="{% url 'altaplato' %}">Alta <span class="atajo_teclado" title="Atajo de Teclado Shift+P">P</span>lato</a></li>
+					<li><a href="{% url 'modificarplato' %}">Modi<span class="atajo_teclado" title="Atajo de Teclado Shift+F">f</span>icar Plato</a></li>
 				</ul>
 			</li>
 			<!-- fin menu productos //-->
@@ -96,12 +96,12 @@
 				</a>
 				<ul class="dropdown-menu">
 				
-					<li><a href="{% url 'altamenudia' %}">Alta Menu del Dia</a></li>
-					<li><a href="{% url 'modificarmenudia' %}">Modificar Menu del Dia</a></li>
+					<li><a href="{% url 'altamenudia' %}">A<span class="atajo_teclado" title="Atajo de Teclado Shift+L">l</span>ta Menu del Dia</a></li>
+					<li><a href="{% url 'modificarmenudia' %}">Mod<span class="atajo_teclado" title="Atajo de Teclado Shift+I">i</span>ficar Menu del Dia</a></li>
 					<div class="divider"></div>
 
-					<li><a href="{% url 'altamenuejecutivo' %}">Alta Menu Ejecutivo</a></li>
-					<li><a href="{% url 'modificarmenuejecutivo' %}">Modificar Menu Ejecutivo</a></li>
+					<li><a href="{% url 'altamenuejecutivo' %}">Alta Menu E<span class="atajo_teclado" title="Atajo de Teclado Shift+J">j</span>ecutivo</a></li>
+					<li><a href="{% url 'modificarmenuejecutivo' %}">Modificar Men<span class="atajo_teclado" title="Atajo de Teclado Shift+U">u</span> Ejecutivo</a></li>
 					
 				</ul>
 			</li>
@@ -113,34 +113,12 @@
 					Carta <b class="caret"></b>
 				</a>
 				<ul class="dropdown-menu">
-				    <li><a href="{% url 'altacarta' %}">Alta Carta</a></li>
-					<li><a href="{% url 'altaseccion' %}">Crear Seccion Carta</a></li>
-					<li><a href="{% url 'modificarseccion' %}">Modificar Seccion Carta</a></li>
-					<!--<li><a href="#" onclick="alert('En construccion...');">Eliminar Seccion Carta</a></li>//-->
-
-					<!--
-					<div class="divider"></div>
-					<li><a href="adm_carta_add_producto.html">Agregar Productos a Seccion Carta</a></li>
-					<li><a href="adm_carta_remove_producto.html">Eliminar Productos de Seccion Carta</a></li>
-					//-->
-					
+				    <li><a href="{% url 'altacarta' %}">Alta Ca<span class="atajo_teclado" title="Atajo de Teclado Shift+R">r</span>ta</a></li>
+					<li><a href="{% url 'altaseccion' %}">Crear Seccio<span class="atajo_teclado" title="Atajo de Teclado Shift+N">n</span> Carta</a></li>
+					<li><a href="{% url 'modificarseccion' %}"><span class="atajo_teclado" title="Atajo de Teclado Shift+M">M</span>odificar Seccion Carta</a></li>
 				</ul>
 			</li>
 			<!-- fin menu carta //-->
-			
-            <!-- menu pretickets //-->
-		    <!--<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-					Pretickets <b class="caret"></b>
-				</a>
-				<ul class="dropdown-menu">
-				
-					<li><a href="#" onclick="alert('En construccion...');">Modificar Pretickets por Reclamo</a></li>
-					
-				</ul>
-			</li>//-->
-			<!-- fin menu pretickets //-->
-			
 			
             <!-- menu stock //-->
 		    <li class="dropdown">
@@ -149,8 +127,8 @@
 				</a>
 				<ul class="dropdown-menu">
 				
-					<li><a href="{% url 'stockplato' %}">Incrementar/Decrementar Stock Plato</a></li>
-                    <li><a href="{% url 'stockbebida' %}">Incrementar/Decrementar Stock Bebida</a></li>
+					<li><a href="{% url 'stockplato' %}">Incrementar / Decrementar Stoc<span class="atajo_teclado" title="Atajo de Teclado Shift+K">k</span> Plato</a></li>
+                    <li><a href="{% url 'stockbebida' %}">Incrementar<span class="atajo_teclado" title="Atajo de Teclado Shift+/"> / </span>Decrementar Stock Bebida</a></li>
 					
 				</ul>
 			</li>
@@ -179,10 +157,9 @@
 				</a>
 				<ul class="dropdown-menu">
 
-				    <li><a href="{% url 'listarImprimir' %}" target="_blank">Exportar Carta a PDF</a></li>
-                    <li><a href="{% url 'consulta+vendidos' %}">Estadisticas de Ventas</a></li>
+				    <li><a href="{% url 'listarImprimir' %}" target="_blank">E<span class="atajo_teclado" title="Atajo de Teclado Shift+X">x</span>portar Carta a PDF</a></li>
+                    <li><a href="{% url 'consulta+vendidos' %}">Estadisticas de <span class="atajo_teclado" title="Atajo de Teclado Shift+V">V</span>entas</a></li>
                     <li><a href="{% url 'consultaFacturas' %}">Consultar Facturas</a></li>
-
 				</ul>
 			</li>
 			<!-- fin menu clilistadosentes //-->
@@ -211,13 +188,13 @@
 			  <!-- inicio mesas selecionadas //-->
 			  <div class="label label-success mesa_seleccionada_item mesa_seleccionada_item_adm">
 			  <div class="contenedor_texto_link">
-			  <a href="{% url 'mozo' %}" target="_self">Panel de Mozo</a>
+			  <a href="{% url 'mozo' %}" target="_self">Panel de <span class="atajo_teclado" title="Atajo de Teclado Alt+M">M</span>ozo</a>
 			  </div>
 			  </div>
 			  
 			  <div class="label label-success mesa_seleccionada_item mesa_seleccionada_item_adm">
 			  <div class="contenedor_texto_link">
-			  <a href="{% url 'cajero'%}" target="_self">Panel de Cajero</a>
+			  <a href="{% url 'cajero'%}" target="_self">Panel de <span class="atajo_teclado" title="Atajo de Teclado Alt+C">C</span>ajero</a>
 			  </div>
 			  </div>
 			  <!-- fin mesas selecionadas //-->
@@ -283,17 +260,55 @@ fuente = pattern.exec(uri);
     });
 }
 
+function irAtajos(uri){
+        document.location.href = uri;
+}
+
 $(document).ready(function(){
 
-    $('body').keypress(function(e){
+    $(document).bind('keydown', 'f1',function (evt){ayudaContextual(); return false; });
 
-        var keycode = (e.keyCode ? e.keyCode : e.which);
 
-        if(keycode == 112){
-            ayudaContextual();
-        }
+    //atajos de teclado
+    //mozos
+    $(document).bind('keydown', 'Shift+a',function (evt){irAtajos("{% url 'altamozo' %}"); return false; });
+    $(document).bind('keydown', 'Shift+z',function (evt){irAtajos("{% url 'modificarmozo' %}"); return false; });
+    $(document).bind('keydown', 'Shift+e',function (evt){irAtajos("{% url 'eliminarmozo' %}"); return false; });
+    //mesas
+    $(document).bind('keydown', 'Shift+s',function (evt){irAtajos("{% url 'altamesa' %}"); return false; });
+    $(document).bind('keydown', 'Shift+o',function (evt){irAtajos("{% url 'modificarmesa' %}"); return false; });
+    //sector
+    $(document).bind('keydown', 'Shift+c',function (evt){irAtajos("{% url 'altasector' %}"); return false; });
+    $(document).bind('keydown', 'Shift+t',function (evt){irAtajos("{% url 'modificarsector' %}"); return false; });
+    //productos
+    $(document).bind('keydown', 'Shift+b',function (evt){irAtajos("{% url 'altabebida' %}"); return false; });
+    $(document).bind('keydown', 'Shift+d',function (evt){irAtajos("{% url 'modificarbebida' %}"); return false; });
+    $(document).bind('keydown', 'Shift+p',function (evt){irAtajos("{% url 'altaplato' %}"); return false; });
+    $(document).bind('keydown', 'Shift+f',function (evt){irAtajos("{% url 'modificarplato' %}"); return false; });
+    //menues
+    $(document).bind('keydown', 'Shift+l',function (evt){irAtajos("{% url 'altamenudia' %}"); return false; });
+    $(document).bind('keydown', 'Shift+i',function (evt){irAtajos("{% url 'modificarmenudia' %}"); return false; });
+    $(document).bind('keydown', 'Shift+j',function (evt){irAtajos("{% url 'altamenuejecutivo' %}"); return false; });
+    $(document).bind('keydown', 'Shift+u',function (evt){irAtajos("{% url 'modificarmenuejecutivo' %}"); return false; });
+    //carta
+    $(document).bind('keydown', 'Shift+r',function (evt){irAtajos("{% url 'altacarta' %}"); return false; });
+    $(document).bind('keydown', 'Shift+n',function (evt){irAtajos("{% url 'altaseccion' %}"); return false; });
+    $(document).bind('keydown', 'Shift+m',function (evt){irAtajos("{% url 'modificarseccion' %}"); return false; });
+    //stock
+    $(document).bind('keydown', 'Shift+k',function (evt){irAtajos("{% url 'stockplato' %}"); return false; });
+    $(document).bind('keydown', 'Shift+/',function (evt){irAtajos("{% url 'stockbebida' %}"); return false; });
+    //usuarios
 
-     });
+    //extras
+    $(document).bind('keyup', 'Shift+x',function (evt){
+        window.open("{% url 'listarImprimir' %}", '_blank');
+        ; return false;
+    });
+    $(document).bind('keydown', 'Shift+v',function (evt){irAtajos("{% url 'consulta+vendidos' %}"); return false; });
+
+    //accesos dircetos
+    $(document).bind('keydown', 'Alt+m',function (evt){irAtajos("{% url 'mozo' %}"); return false; });
+    $(document).bind('keydown', 'Alt+c',function (evt){irAtajos("{% url 'cajero' %}"); return false; });
 
 });
 </script>

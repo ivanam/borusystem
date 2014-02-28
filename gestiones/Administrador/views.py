@@ -26,6 +26,7 @@ def Administrador(request):
     return render_to_response('Administrador/administrador.html', {'user': request.user},
                               context_instance=RequestContext(request))
 
+
 @permission_required('Administrador.is_admin', login_url="login")
 def AltaAdministrador(request):
     if request.method == 'POST':
@@ -429,6 +430,7 @@ def ayudaContextual(request):
 
     return render_to_response('Administrador/ayudaContextual.html', {'titulo': titulo, 'mensaje': mensaje, 'fuente':fuente, 'plantilla':plantilla_ayuda},
                               context_instance=RequestContext(request))
+
 
 @permission_required('Administrador.is_admin', login_url="login")
 def consultaFacturas(request):

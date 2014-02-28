@@ -4,6 +4,7 @@
     <title>{% block titulo %}{% endblock %}</title>
 <link rel="stylesheet" href="{{STATIC_URL}}css/ui-lightness/jquery-ui-1.10.3.custom.css"  type="text/css" media="all" />
 <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery.hotkeys.js"></script>
 <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-ui-1.10.3.custom.min.js"></script>
 <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/bootstrap.js"></script>
 <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/funciones.js"></script>
@@ -180,5 +181,10 @@
 
 
 {% block script %}{% endblock %}
+<script>
+ $(document).unload(function(){
+  alert("Goodbye!");
+});
+</script>
 </body>
 </html>
