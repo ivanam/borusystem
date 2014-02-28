@@ -5,6 +5,8 @@
 	  
 	  <div class="contenedor_secundario">
 	  <div class="btn_anterior" id="btn_anterior"></div>
+          <input type="hidden" name="puedeMesas" id="puedeMesas">
+          <input type="hidden" name="puedeProducto" id="puedeProducto">
 	  
 	  <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
       <div class="label label-inverse titulo_menu">Finalizar Menu</div>
@@ -78,9 +80,17 @@ $(document).ready(function(){
 	$("#btn_anterior").click(function(){
 		document.location.href = "{% url 'seleccionarproductos' %}";
 	});
-	
+
 	$("#finalizar_menu").click(function(){
-		document.location.href = "{% url 'guardarComanda' %}";
+	    //if ((parseInt($("#puedeMesas").val()) == 0)){
+	    //    alert("Debe ingresar al menos una mesa para finalizar la comanda!! GIL!!!");
+	    //}
+	    //if ($("#puedeProducto").val()== 0){
+	      //  alert("Debe ingresar al menos un producto para finalizar la comanda!! GIL!!!");
+	    //}
+	    //else{
+		    document.location.href = "{% url 'guardarComanda' %}";
+	    //}
 	});
 
 	$("#cancelar_menu").click(function(){

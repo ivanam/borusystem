@@ -455,18 +455,25 @@ def consultaFacturas(request):
             totalF = []
             id = []
             totalC = 0
-
+            #Formato del titulo
             formatT = workbook.add_format()
             formatT.set_bold()
-            formatT.set_font_size(14)
+            formatT.set_font_size(12)
             formatT.set_align('center')
+            #Formato para los titulos de la tabla
+            formatT2 = workbook.add_format()
+            formatT2.set_align('center')
+            formatT2.set_font_size(12)
+            formatT2.set_bold()
+            formatT2.set_bg_color('silver')
             #Facturas
-            worksheet.write('A1', 'Numero Factura', formatT)
-            worksheet.write('B1', 'Fecha', formatT)
-            worksheet.write('C1', 'Hora', formatT)
-            worksheet.write('D1', 'Tipo', formatT)
-            worksheet.write('E1', 'Total', formatT)
-            fila = 2
+            worksheet.write('C1', 'Facturacion de '+str(fechaI)+' al '+str(fechaF), formatT)
+            worksheet.write('A2', 'Numero Factura', formatT2)
+            worksheet.write('B2', 'Fecha', formatT2)
+            worksheet.write('C2', 'Hora', formatT2)
+            worksheet.write('D2', 'Tipo', formatT2)
+            worksheet.write('E2', 'Total', formatT2)
+            fila = 3 #contador de filas dentro del excel
             for x in Factura.objects.raw(sql_query):
                 fecha.append(str(x.fecha))
                 hora.append(str(x.hora))
@@ -476,20 +483,22 @@ def consultaFacturas(request):
                 totalC = totalC + x.total_factura
                 fila = fila + 1
             fila = fila +1
-            format = workbook.add_format()
-            format.set_indent(5)
-
-            worksheet.set_column(0, 0, 40)
-            worksheet.write_column('A2', id, format)
-            worksheet.write_column('B2', fecha, format)
-            worksheet.write_column('C2', hora, format)
-            worksheet.write_column('D2', tipo, format)
-            worksheet.write_column('E2', totalF, format)
-            #worksheet.write('F2', str(totalC), format)
-            worksheet.write('A'+str(fila), 'Total Facturado de '+str(fechaI)+' a '+str(fechaF),formatT)
-
+            #formato para los valores
             format = workbook.add_format()
             format.set_align('center')
+            worksheet.set_column(0, 0, 30)
+            worksheet.set_column(1, 4, 15)
+            worksheet.write_column('A3', id, format)
+            worksheet.write_column('B3', fecha, format)
+            worksheet.write_column('C3', hora, format)
+            worksheet.write_column('D3', tipo, format)
+            worksheet.write_column('E3', totalF, format)
+            #worksheet.write('F2', str(totalC), format)
+            worksheet.write('A'+str(fila), 'Total Facturado',formatT2)
+            #formato para resultado total
+            format = workbook.add_format()
+            format.set_align('center')
+            format.set_bg_color('silver')
             worksheet.write('E'+str(fila), str(totalC), format)
             #worksheet.write_column('F2', totalC, format)
             # Create a new chart object.

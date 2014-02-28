@@ -280,6 +280,18 @@ def finalizar(request):
     lista = request.session['listaProductosComanda']
     cantidadComensales = request.session['cantidadC']
     total = request.session['total']
+    if(lista ==[]):
+        request.session['puedeProducto'] = 0
+    else:
+        request.session['puedeProducto'] = 1
+    if (request.session['listaMesasComanda']==[]):
+        request.session['puedeMesas'] = 0
+    else:
+        request.session['puedeMesas'] = 1
+    print("puede mesas=")
+    print(request.session['puedeMesas'])
+    print ("puede producto")
+    print(request.session['puedeProducto'])
     #id_comanda = request.session["id_comanda"]
     #comanda = Comanda.objects.get(pk=id_comanda)
 
@@ -615,3 +627,6 @@ def una_comanda(request, id_comanda=None):
 
     except Exception:
         return HttpResponse("Error, la comanda no fue encontreda en el Systema")
+
+
+
