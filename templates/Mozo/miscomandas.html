@@ -81,6 +81,7 @@ function editarDetalleComanda(id_comanda){
         success: function(datos){
             $('.modal-titulo').html("Editar Comanda Nº "+id_comanda);
             $('.modal-body-comanda').html(datos);
+            $('#myModalComanda').modal({backdrop: "static"});
             $('#myModalComanda').modal("show")
           }
     });

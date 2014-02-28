@@ -142,9 +142,8 @@
 				</a>
 				<ul class="dropdown-menu">
 
-				    <li><a href="{% url 'altaAdministrador' %}">Alta de Administrador</a></li>
-                    <li><a href="{% url 'altaCajero' %}">Alta de Cajero</a></li>
-					<li><a href="{% url 'modificarUsuarios' %}">Modificar Usuarios</a></li>
+				    <li><a href="{% url 'registrousuarios' %}">Re<span class="atajo_teclado" title="Atajo de Teclado Shift+G">g</span>istro de Usuarios</a></li>
+					<li><a href="{% url 'modificarusuarios' %}">Modificar Usuarios</a></li>
 				</ul>
 			</li>
 			<!-- fin menu clientes //-->
@@ -255,7 +254,7 @@ fuente = pattern.exec(uri);
         success: function(datos){
 
             $('.modal-body-ayuda').html(datos);
-            $('#myModalAyuda').modal("show")
+            $('#myModalAyuda').modal("show");
           }
     });
 }
@@ -298,7 +297,7 @@ $(document).ready(function(){
     $(document).bind('keydown', 'Shift+k',function (evt){irAtajos("{% url 'stockplato' %}"); return false; });
     $(document).bind('keydown', 'Shift+/',function (evt){irAtajos("{% url 'stockbebida' %}"); return false; });
     //usuarios
-
+    $(document).bind('keydown', 'Shift+g',function (evt){irAtajos("{% url 'registrousuarios' %}"); return false; });
     //extras
     $(document).bind('keyup', 'Shift+x',function (evt){
         window.open("{% url 'listarImprimir' %}", '_blank');
