@@ -137,7 +137,8 @@ function editarDetallePreticket(id_preticket){
 
             $('.modal-titulo').html("Editar Preticket Nº "+id_preticket);
             $('.modal-body-preticket').html(datos);
-            $('#myModalPreticket').modal("show")
+            $('#myModalPreticket').modal({backdrop:"static"});
+            $('#myModalPreticket').modal("show");
           }
     });
 
