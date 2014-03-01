@@ -1,7 +1,13 @@
 {% for m in listado%}
 <div class="cont_resultado_busqueda_item">
+    {% if m.stock != 0 %}
     <a class="busqueda_item" onclick="enviarForm('{{m.nombre}}');" title="{{m.nombre|capfirst}}: {{m.seccion}}">
         {{m.nombre|capfirst}}
     </a>
+    {% else %}
+    <span class="busqueda_item inactivo"  title="{{m.nombre|capfirst}}: {{m.seccion}}">
+       {{m.nombre|capfirst}} (sin stock)
+    </span>
+    {% endif %}
 </div>
 {% endfor %}

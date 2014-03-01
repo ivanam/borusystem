@@ -1,4 +1,5 @@
 from decimal import Decimal
+from itertools import combinations
 from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
@@ -352,6 +353,9 @@ def guardarComanda(request):
                 detalle = DetalleComanda.objects.create(nombre=ejecutivo.nombre,cantidadP=cantidad, menuE= ejecutivo, precioXunidad=ejecutivo.precio,descuento=0)
             comanda.detalles.add(detalle)
             comanda.save()
+
+    comanda.total = comanda.total_comanda();
+    comanda.save()
     comanda.finalizar()
     return HttpResponseRedirect(reverse('mozo'))
 
@@ -434,7 +438,7 @@ def detalle_comanda_ajax(request):
     if request.method == "GET":
         id_comanda = request.GET["id_comanda"]
         comanda = Comanda.objects.get(pk=id_comanda)
-        total = comanda.total()
+        total = comanda.total_comanda()
 
         return render_to_response('Cajero/detalle_comanda.html', {'comanda': comanda,'total':total},
                                   context_instance=RequestContext(request))
@@ -455,7 +459,7 @@ def editar_detalle_comanda_ajax(request):
     if request.method == "GET":
         id_comanda = request.GET["id_comanda"]
         comanda = Comanda.objects.get(pk=id_comanda)
-        total = comanda.total()
+        total = comanda.total_comanda()
 
         return render_to_response('Mozo/editar_detalle_comanda.html', {'comanda': comanda,'total':total},
                                   context_instance=RequestContext(request))
@@ -508,6 +512,7 @@ def guardar_detalle_comanda_ajax(request):
             if lista_productos != []:
                 comanda.limpiarDetalles(True)
 
+            print lista_productos
             #las recorro y rescato los platos y los asigno al menu
             for p in lista_productos:
 
@@ -515,25 +520,30 @@ def guardar_detalle_comanda_ajax(request):
                 id_prod = cad[0]
                 categoria = cad[1]
                 cantidad = cad[2]
-
+                print cad
                 if categoria == "P":
+                    print "es P"
                     productoNuevo = Plato.objects.get(pk=id_prod)
                     print "es plato " + productoNuevo.nombre
                 else:
                     if categoria == "B":
+                        print "es B"
                         productoNuevo = Bebida.objects.get(pk=id_prod)
                         print "es bebida " + productoNuevo.nombre
                     else:
                         if categoria == "D":
+                            print "es D"
                             productoNuevo = DelDia.objects.get(pk=id_prod)
                             print "es deldia " + productoNuevo.nombre
                         else:
+                            print "es E"
                             productoNuevo = Ejecutivo.objects.get(pk=id_prod)
                             print "es es ejecutivo " + productoNuevo.nombre
 
                 comanda.agregarDetalle(productoNuevo, cantidad)
 
-        except:
+        except Exception, e:
+            print e.message
             print "Error, no se pudo agregar el producto a la Comanda!"
 
     return HttpResponseRedirect(reverse('una_comanda_mozo', args=[comanda.pk]))

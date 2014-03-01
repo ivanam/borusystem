@@ -159,7 +159,7 @@
 
 				    <li><a href="{% url 'listarImprimir' %}" target="_blank">E<span class="atajo_teclado" title="Atajo de Teclado Shift+X">x</span>portar Carta a PDF</a></li>
                     <li><a href="{% url 'consulta+vendidos' %}">Estadisticas de <span class="atajo_teclado" title="Atajo de Teclado Shift+V">V</span>entas</a></li>
-                    <li><a href="{% url 'consultaFacturas' %}">Consultar Facturas</a></li>
+                    <li><a href="{% url 'consultaFacturas' %}">Consultar<span class="atajo_teclado" title="Atajo de Teclado Shift+Space">&nbsp;</span>Facturas</a></li>
 				</ul>
 			</li>
 			<!-- fin menu clilistadosentes //-->
@@ -305,6 +305,7 @@ $(document).ready(function(){
         ; return false;
     });
     $(document).bind('keydown', 'Shift+v',function (evt){irAtajos("{% url 'consulta+vendidos' %}"); return false; });
+    $(document).bind('keydown', 'Shift+space',function (evt){irAtajos("{% url 'consultaFacturas' %}"); return false; });
 
     //accesos dircetos
     $(document).bind('keydown', 'Alt+m',function (evt){irAtajos("{% url 'mozo' %}"); return false; });

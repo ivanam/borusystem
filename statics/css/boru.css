@@ -887,7 +887,7 @@ background:#F3F3F3;
 }
 
 .inactivo{
-color:#ff0000;
+color:#ff0000 !important;
 }
 
 .form_error_msg{

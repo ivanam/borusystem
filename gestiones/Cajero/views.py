@@ -282,7 +282,7 @@ def detalle_comanda_ajax(request):
     if request.method == "GET":
         id_comanda = request.GET["id_comanda"]
         comanda = Comanda.objects.get(pk=id_comanda)
-        total = comanda.total()
+        total = comanda.total_comanda()
 
         return render_to_response('Cajero/detalle_comanda.html', {'comanda': comanda,'total':total},
                                   context_instance=RequestContext(request))

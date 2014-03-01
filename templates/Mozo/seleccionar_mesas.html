@@ -82,14 +82,28 @@ $.ajax({
 function cancelar_comanda(){
 
 $.ajax({
-                type: "GET",
-                url: "{% url 'cancelarComandajax' %}",
-                //data: "id_mesa="+id_mesa,
-                success: function(platos){
+        type: "GET",
+        url: "{% url 'cancelarComandajax' %}",
+        //data: "id_mesa="+id_mesa,
+        success: function(platos){
 
-                  }
-            });
+          }
+    });
 }
+
+
+var bPreguntar = true;
+window.onbeforeunload = preguntarAntesDeSalir;
+
+    function preguntarAntesDeSalir()
+    {
+      if (bPreguntar)
+        return "¿Seguro que quieres salir?";
+    }
+
+
+
+
 $(document).ready(function(){
 
 $("#btn_anterior").click(function(){
@@ -161,6 +175,5 @@ $("#btn_siguiente").click(function(){
 
 	$('.dropdown-toggle').dropdownHover(options);
 });
-
 </script>
 {% endblock %}

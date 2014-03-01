@@ -108,7 +108,7 @@ class EstrategiaComanda(EstrategiaServicio):
             now = datetime.datetime.now()
             hora = datetime.time(now.hour, now.minute, now.second)
 
-            preticket = Preticket.objects.create(fecha=fecha, hora=hora, total_preticket=comanda.total(), comanda=comanda)
+            preticket = Preticket.objects.create(fecha=fecha, hora=hora, total_preticket=comanda.total_comanda(), comanda=comanda)
 
             #creo los detalles
             for d in comanda.detalles.all():
@@ -188,9 +188,9 @@ class EstrategiaPedido(EstrategiaServicio):
             factura.detalle.add(detalleF)
 
 
-        factura.total_factura = comanda.total()
+        factura.total_factura = comanda.total_comanda()
         factura.save()
-        comanda.total = comanda.total()
+        comanda.total = comanda.total_comanda()
         comanda.factura = factura
         comanda.save()
 
@@ -251,7 +251,7 @@ class Comanda(models.Model):
             self.tipo_comanda = "P"
 
 
-    def total(self):
+    def total_comanda(self):
         aux = 0
         for c in self.detalles.all():
             aux = aux + c.importe()
@@ -331,7 +331,7 @@ class Comanda(models.Model):
         #salvo el comanda
         self.save()
         #actualizo total del comanda
-        self.total = self.total()
+        self.total = self.total_comanda()
         self.save()
         #actualizo el stock del producto
         stk = int(producto.stock)
