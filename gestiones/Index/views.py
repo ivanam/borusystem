@@ -14,8 +14,6 @@ def Index(request):
 
         formulario = AuthenticationForm(request.POST)
 
-        print(formulario.is_valid)
-
         if formulario.is_valid:
 
             usuario = request.POST['username']
