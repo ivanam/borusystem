@@ -281,17 +281,13 @@ def finalizar(request):
     cantidadComensales = request.session['cantidadC']
     total = request.session['total']
     if(lista ==[]):
-        request.session['puedeProducto'] = 0
+        puedeProducto = False
     else:
-        request.session['puedeProducto'] = 1
+        puedeProducto = True
     if (request.session['listaMesasComanda']==[]):
-        request.session['puedeMesas'] = 0
+        puedeMesas = False
     else:
-        request.session['puedeMesas'] = 1
-    print("puede mesas=")
-    print(request.session['puedeMesas'])
-    print ("puede producto")
-    print(request.session['puedeProducto'])
+        puedeMesas = True
     #id_comanda = request.session["id_comanda"]
     #comanda = Comanda.objects.get(pk=id_comanda)
 
@@ -327,7 +323,7 @@ def finalizar(request):
                 men = MenuS(ejecutivo.nombre, cantidad, ejecutivo.precio)
                 menuS.append(men)
 
-    return render_to_response('Mozo/finalizar_comanda.html', {"finalizar":True,'cantidad': cantidadComensales, 'mesas': request.session['listaMesasComanda'], 'menuS':menuS, 'total':total},
+    return render_to_response('Mozo/finalizar_comanda.html', {"finalizar":True,'cantidad': cantidadComensales, 'mesas': request.session['listaMesasComanda'], 'menuS':menuS, 'total':total, 'puedeMesas':puedeMesas, 'puedeProducto':puedeProducto},
                               context_instance=RequestContext(request))
 
 

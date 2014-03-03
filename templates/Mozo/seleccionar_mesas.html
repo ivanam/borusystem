@@ -113,7 +113,13 @@ $("#btn_anterior").click(function(){
 
 
 $("#btn_siguiente").click(function(){
-		document.location.href = "{% url 'seleccionarproductos' %}";
+        var m = document.getElementById("mesas");
+        if (m.innerText== ""){
+            alert("Debe ingresar al menos una mesa")
+        }
+        else{
+		    document.location.href = "{% url 'seleccionarproductos' %}";
+		}
 	});
 
 	//le asocio una funcion a cada miembro d ela clase mesa_item
