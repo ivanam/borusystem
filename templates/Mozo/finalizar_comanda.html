@@ -1,85 +1,84 @@
 {% extends "base_mozo.html" %}
 {% block titulo %}Boru - Finalizar Comanda{% endblock %}
 {% block contenido %}
+<input type="hidden" name="puedeMesas" id="puedeMesas" value="{{puedeMesas}}">
+<input type="hidden" name="puedeProducto" id="puedeProducto" value="{{puedeProducto}}">
 
-	  
-	  <div class="contenedor_secundario">
-	  <div class="btn_anterior" id="btn_anterior"></div>
-          <input type="hidden" name="puedeMesas" id="puedeMesas" value="{{puedeMesas}}">
-          <input type="hidden" name="puedeProducto" id="puedeProducto" value="{{puedeProducto}}">
-	  
-	  <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
-      <div class="label label-inverse titulo_menu">Finalizar Menu</div>
-		<br>
-		<div class="salto_linea"></div>
-	  <div class="bloque_final">
-			<div class="salto_linea"></div>
-			<div class="label label-info titulo_menu">Comensales</div>
-			<div class="salto_linea"></div>
-			<div class="comanda_info"><div class="badge badge-warning"> {{cantidad}} </div></div>
-			<div class="salto_linea"></div>
-	
-			<div class="salto_linea"></div>
-			<div class="label label-info titulo_menu">Mesas Seleccionadas</div>
-			<div class="salto_linea"></div>
-			<div class="comanda_info">
-            {% for mesa in mesas %}
-                <div class="badge badge-warning"> {{mesa}} </div>
-            {% endfor %}
+<div class="contenedor_secundario">
+    <div class="btn_anterior" id="btn_anterior"></div>
+
+    <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
+        <div class="label label-inverse titulo_menu">Finalizar Menu</div>
+        <br>
+
+        <div class="salto_linea"></div>
+        <div class="bloque_final">
+            <div class="salto_linea"></div>
+            <div class="label label-info titulo_menu">Comensales</div>
+            <div class="salto_linea"></div>
+            <div class="comanda_info">
+                <div class="badge badge-warning"> {{cantidad}}</div>
             </div>
-			<div class="salto_linea"></div>
-			 <!--
-			<div class="salto_linea"></div>
-			<div class="label label-info titulo_menu">Menu</div>
-			<div class="salto_linea"></div>
+            <div class="salto_linea"></div>
 
-                {% for m in menuS %}
-					<div class="comanda_info">Pedido:{{m.nombre}} Cantidad:{{m.cantidad}} Total:{{m.total}}</div>
-					<div class="salto_linea"></div>
+            <div class="salto_linea"></div>
+            <div class="label label-info titulo_menu">Mesas Seleccionadas</div>
+            <div class="salto_linea"></div>
+            <div class="comanda_info">
+                {% for mesa in mesas %}
+                <div class="badge badge-warning"> {{mesa}}</div>
                 {% endfor %}
-          //-->
-          <!-- inicio dela modificacion //-->
+            </div>
+            <div class="salto_linea"></div>
 
-          <div class="label label-info header_detalle_cajero centrar">
-              <div class="listado_item_campo_base listado_item_campo_05 flotar_iz">Nombre</div>
-              <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Cantidad</div>
-              <div class="listado_item_campo_base listado_item_campo_03 flotar_der">Subtotal</div>
-              <div class="salto_linea"></div>
-          </div>
-          {% for m in menuS %}
-          <div class="header_detalle_cajero centrar">
-              <div class="listado_item_campo_base listado_item_campo_05 flotar_iz texto_iz">{{ m.nombre|capfirst}}</div>
-              <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_centro">{{ m.cantidad }}</div>
-              <div class="listado_item_campo_base listado_item_campo_03 flotar_der">{{ m.total }}</div>
-          </div>
-          <div class="salto_linea"></div>
-          {% endfor %}
 
-          <!-- fin de la modificacion //-->
+            <div class="label label-info header_detalle_cajero centrar">
+                <div class="listado_item_campo_base listado_item_campo_05 flotar_iz">Nombre</div>
+                <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Cantidad</div>
+                <div class="listado_item_campo_base listado_item_campo_03 flotar_der">Subtotal</div>
+                <div class="salto_linea"></div>
+            </div>
+            {% for m in menuS %}
+            <div class="header_detalle_cajero centrar">
+                <div class="listado_item_campo_base listado_item_campo_05 flotar_iz texto_iz">{{ m.nombre|capfirst}}
+                </div>
+                <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_centro">{{ m.cantidad }}</div>
+                <div class="listado_item_campo_base listado_item_campo_03 flotar_der">{{ m.total }}</div>
+            </div>
+            <div class="salto_linea"></div>
+            {% endfor %}
+
+            <!-- fin de la modificacion //-->
             <div class="salto_linea"></div>
             <div class="label label-info titulo_menu">Total: {{total}}</div>
             <div class="salto_linea"></div>
-		    </div>
-		<br>
-		<input type="button" name="finaliza" id="finalizar_menu" class="btn btn-large btn-primary" value="Finalizar Menu">
+        </div>
+        <br>
+        <input type="button" name="finaliza" id="finalizar_menu" class="btn btn-large btn-primary"
+               value="Finalizar Menu">
         <input type="button" name="cancelar" id="cancelar_menu" class="btn btn-large btn-primary" value="Cancelar Menu">
-	  <br>
-	  </div><!-- fin contenedor principal//-->
-	  </div><!-- fin de contenedor secundario //-->
-	  <div class="salto_linea"></div>
-      </div><!-- fin contenedor principal centro//-->
-	  
-    {% endblock %}
+        <br>
+    </div>
+    <!-- fin contenedor principal//-->
+</div><!-- fin de contenedor secundario //-->
+<div class="salto_linea"></div>
+</div><!-- fin contenedor principal centro//-->
+
+{% endblock %}
 
 {% block script %}
-  <!-- fin del contenido de la pagina -->
+<!-- fin del contenido de la pagina -->
 
 <script>
+
+
+
 $(document).ready(function(){
 	
 	$("#btn_anterior").click(function(){
 		document.location.href = "{% url 'seleccionarproductos' %}";
 	});
+	
 
 	$("#finalizar_menu").click(function(){
 	    if ($("#puedeMesas").val() == "False"){
@@ -93,10 +92,12 @@ $(document).ready(function(){
 	        }
 	});
 
+
 	$("#cancelar_menu").click(function(){
 		document.location.href = "{% url 'cancelarComandajax' %}";
 	});
 	
 });
+
 </script>
 {% endblock %}

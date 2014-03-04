@@ -98,12 +98,6 @@ def seleccionarproductos(request):
     comanda = Comanda.objects.get(pk=idcomanda)
     seccion = comanda.filtrar_secciones()
     total = request.session["total"]
-    #TODO mi no enteder esto
-    try:
-        pass
-    except:
-        print("Excepcion en seleccionar productos")
-
     lista = request.session['listaProductosComanda']
     listaPlatos = []
     for producto in lista:
@@ -294,13 +288,6 @@ def finalizar(request):
         puedeMesas = False
     else:
         puedeMesas = True
-    #id_comanda = request.session["id_comanda"]
-    #comanda = Comanda.objects.get(pk=id_comanda)
-
-    #mesas = ""
-    #listam = request.session['listaMesasComanda']
-    #for mesa in listam:
-    #    mesas = mesas+str(mesa)+", "
 
     menuS = []
     for producto in lista:
@@ -331,6 +318,8 @@ def finalizar(request):
 
     return render_to_response('Mozo/finalizar_comanda.html', {"finalizar":True,'cantidad': cantidadComensales, 'mesas': request.session['listaMesasComanda'], 'menuS':menuS, 'total':total, 'puedeMesas':puedeMesas, 'puedeProducto':puedeProducto},
                               context_instance=RequestContext(request))
+
+
 
 
 @permission_required('Administrador.is_mozo', login_url="login")
@@ -629,6 +618,3 @@ def una_comanda(request, id_comanda=None):
 
     except Exception:
         return HttpResponse("Error, la comanda no fue encontreda en el Systema")
-
-
-
