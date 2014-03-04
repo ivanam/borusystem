@@ -66,7 +66,6 @@ def crearcomanda(request):
 
 
             #lo inserto en el resto del template y lo muestro
-            print("Lo sig es la lista")
             print(lista)
             return render_to_response('Mozo/seleccionar_mesas.html', {"seleccionar_mesa":True, 'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas, 'lista':lista }, context_instance=RequestContext(request))
 
