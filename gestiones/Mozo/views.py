@@ -38,6 +38,7 @@ def crearcomanda(request):
 
             request.session['cantidadC']=cantidad
             request.session['total'] = 0
+            lista = ""
 
             #recupero las mesas que estan activas
             mesas=Mesa.objects.filter(activo__exact=1).order_by("sector")
@@ -60,10 +61,14 @@ def crearcomanda(request):
                     mesa = Mesa.objects.get(pk=id_mesa)
                     mesa.ocupada = False
                     mesa.save()
+                    lista = lista + str(id_mesa)+ "_"
                 request.session['listaMesasComanda'] = []
 
+
             #lo inserto en el resto del template y lo muestro
-            return render_to_response('Mozo/seleccionar_mesas.html', {"seleccionar_mesa":True, 'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas }, context_instance=RequestContext(request))
+            print("Lo sig es la lista")
+            print(lista)
+            return render_to_response('Mozo/seleccionar_mesas.html', {"seleccionar_mesa":True, 'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas, 'lista':lista }, context_instance=RequestContext(request))
 
         return HttpResponseRedirect(reverse('mozo'))
     else:
@@ -74,16 +79,18 @@ def crearcomanda(request):
 @permission_required('Administrador.is_mozo', login_url="login")
 def vistaMesas(request):
     cantidad = request.session['cantidadC']
+    lista =""
     mesas_seleccionadas = request.session['listaMesasComanda']
     for id_mesa in mesas_seleccionadas:
         mesa = Mesa.objects.get(pk=id_mesa)
         mesa.ocupada = False
         mesa.save()
+        lista = lista + str(id_mesa) + "_"
     mesas_seleccionadas = []
     request.session['listaMesasComanda']= mesas_seleccionadas
     mesas=Mesa.objects.filter(activo__exact=1).order_by("sector")
     panel_seleccionar_mesa=get_template('Mozo/panel_mesas_seleccionadas.html')
-    return render_to_response('Mozo/seleccionar_mesas.html', {'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas }, context_instance=RequestContext(request))
+    return render_to_response('Mozo/seleccionar_mesas.html', {'panel_seleccionar_mesa':panel_seleccionar_mesa.render( Context({'cantidadC': cantidad}) ),'mesas':mesas, 'lista':lista }, context_instance=RequestContext(request))
 
 
 @permission_required('Administrador.is_mozo', login_url="login")
