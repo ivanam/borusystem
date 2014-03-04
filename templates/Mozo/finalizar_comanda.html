@@ -8,7 +8,7 @@
     <div class="btn_anterior" id="btn_anterior"></div>
 
     <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
-        <div class="label label-inverse titulo_menu">Finalizar Menu</div>
+        <div class="label label-inverse titulo_menu">Finalizar Comanda</div>
         <br>
 
         <div class="salto_linea"></div>
@@ -33,14 +33,14 @@
 
 
             <div class="label label-info header_detalle_cajero centrar">
-                <div class="listado_item_campo_base listado_item_campo_05 flotar_iz">Nombre</div>
+                <div class="listado_item_campo_base listado_item_campo_08 flotar_iz">Nombre</div>
                 <div class="listado_item_campo_base listado_item_campo_03 flotar_iz">Cantidad</div>
                 <div class="listado_item_campo_base listado_item_campo_03 flotar_der">Subtotal</div>
                 <div class="salto_linea"></div>
             </div>
             {% for m in menuS %}
             <div class="header_detalle_cajero centrar">
-                <div class="listado_item_campo_base listado_item_campo_05 flotar_iz texto_iz">{{ m.nombre|capfirst}}
+                <div class="listado_item_campo_base listado_item_campo_08 flotar_iz texto_iz">{{ m.nombre|capfirst}}
                 </div>
                 <div class="listado_item_campo_base listado_item_campo_03 flotar_iz texto_centro">{{ m.cantidad }}</div>
                 <div class="listado_item_campo_base listado_item_campo_03 flotar_der">{{ m.total }}</div>
@@ -55,8 +55,8 @@
         </div>
         <br>
         <input type="button" name="finaliza" id="finalizar_menu" class="btn btn-large btn-primary"
-               value="Finalizar Menu">
-        <input type="button" name="cancelar" id="cancelar_menu" class="btn btn-large btn-primary" value="Cancelar Menu">
+               value="Finalizar">
+        <input type="button" name="cancelar" id="cancelar_menu" class="btn btn-large btn-primary" value="Cancelar">
         <br>
     </div>
     <!-- fin contenedor principal//-->

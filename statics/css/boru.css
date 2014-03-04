@@ -477,6 +477,12 @@ width:115px;
 height:auto;
 width:130px;
 }
+
+.listado_item_campo_08{
+height:auto;
+width:180px;
+}
+
 .listado_item_campo_201{
 height:auto;
 width:45px;
@@ -1214,7 +1220,7 @@ border-radius:7px 7px;
 border:1px solid #999999;
 margin:5px auto 5px auto;
 height:auto;
-width:250px;
+width:330px;
 padding:5px 0px 15px 0px;
 -webkit-border-radius:7px 7px;
 -moz-border-radius:7px 7px;
