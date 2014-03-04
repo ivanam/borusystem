@@ -62,6 +62,7 @@ function cargar_mesa(id_mesa, id_comanda){
 
 $.ajax({
                 type: "GET",
+                async: false,
                 url: "{% url 'cargararmesasjax' %}",
                 data: "id_mesa="+id_mesa,
                 success: function(platos){
@@ -73,6 +74,7 @@ function sacar_mesa(id_mesa, id_comanda){
 
 $.ajax({
                 type: "GET",
+                async: false,
                 url: "{% url 'sacarmesasjax' %}",
                 data: "id_mesa="+id_mesa,
                 success: function(platos){
@@ -130,8 +132,6 @@ $("#btn_siguiente").click(function(){
                 $("#mesa_" + mesas[i]).attr("seleccionado", "true");
                 $("#mesa_" + mesas[i]).removeClass("mesa_item2");
                 $("#mesa_" + mesas[i]).addClass("mesa_item_inhabilitada");
-                alert($("#mesa_" + mesas[i]).attr("numero_mesa"));
-                //cargar_mesa($("#mesa_" + mesas[i]).attr("numero_mesa"), $("#mesa_" + mesas[i]).attr("id_comanda"));
 
                 var capacidad = $("#mesa_" + mesas[i]).attr("capacidad");
                 var numero_mesa = $("#mesa_" + mesas[i]).attr("numero_mesa");
