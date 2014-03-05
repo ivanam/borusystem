@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/boru2.iml" filepath="$PROJECT_DIR$/.idea/boru2.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/borusystem.iml" filepath="$PROJECT_DIR$/.idea/borusystem.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/borusystem.iml" filepath="$PROJECT_DIR$/.idea/borusystem.iml" />
     </modules>
   </component>
 </project>

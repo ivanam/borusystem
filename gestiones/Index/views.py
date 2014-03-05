@@ -2,19 +2,19 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
-from django.contrib.auth.models import User
 from django.template import RequestContext
 
 
 def Index(request):
-    if not request.user.is_anonymous():
-        return HttpResponseRedirect(request.path)
 
+    """if not request.user.is_anonymous():
+        return HttpResponseRedirect(request.path)
+        print request.path
+        pass
+    """
     if request.method == 'POST':
 
         formulario = AuthenticationForm(request.POST)
-
-        print(formulario.is_valid)
 
         if formulario.is_valid:
 

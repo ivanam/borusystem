@@ -132,8 +132,8 @@ INSTALLED_APPS = (
     #URL Propias del Proyecto Boru
     'gestiones.Index',
     'gestiones.Administrador',
-    #'gestiones.Administrador.registrousuarios',
-    #'gestiones.Administrador.modificarusuarios',
+    'gestiones.Administrador.registrousuarios',
+    'gestiones.Administrador.modificarusuarios',
 
     'gestiones.Producto.altabebida',
     'gestiones.Producto.modificarbebida',

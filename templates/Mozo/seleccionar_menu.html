@@ -166,7 +166,13 @@ $(document).ready(function(){
 		document.location.href = "{% url 'vistaMesas' %}";
 	});	
 	$("#btn_siguiente").click(function(){
-		document.location.href = "{% url 'finalizar' %}";
+
+	var hay_productos = $(".nombreProducto").size();
+
+	    if( hay_productos > 0 )
+			document.location.href = "{% url 'finalizar' %}";
+		else
+		    alert("Debe seleccionar al menos un producto!");
 	});
 
 

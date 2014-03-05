@@ -196,7 +196,8 @@ def masVendidos(request):
                                   context_instance=RequestContext(request))
 
 
-@permission_required('Administrador.is_admin', login_url="login")
+
+@permission_required('Administrador.is_cajero', login_url="login")
 def ayudaContextual(request):
     if request.method == 'GET':
 

@@ -215,7 +215,27 @@ function titulo(str){
     var titulo = $("title").html("Boru - Cajero "+str);
 }
 
+function colapsar(id){
+ $("#"+id).slideToggle(1000);
+
+ $("#arrow_toggle").toggleClass( "toggle_arrow_up" );
+}
+
+
 $(document).ready(function(){
+
+$("#id_criterio_listado").on('change',function(){
+    $("#id_historico_page").val(1);
+});
+
+$("#id_mozo").on('change',function(){
+    $("#id_historico_page").val(1);
+});
+
+$("#id_fecha_Inicio").attr("readonly",true);
+$("#id_fecha_Inicio").datepicker();
+$("#id_fecha_fin").attr("readonly",true);
+$("#id_fecha_fin").datepicker();
 
 pollingComandas();
 var revisar_comandas = setInterval(function(){pollingComandas()},5000);
@@ -243,22 +263,5 @@ var revisar_comandas = setInterval(function(){pollingComandas()},5000);
         });
     });
 });
-
-function colapsar(id){
- $("#"+id).slideToggle(1000);
-
- $("#arrow_toggle").toggleClass( "toggle_arrow_up" );
-}
-
-    $("#id_criterio_listado").on('change',function(){
-        $("#id_historico_page").val(1);
-    });
-
-    $("#id_fecha_Inicio").attr("readonly",true);
-	$("#id_fecha_Inicio").datepicker();
-	$("#id_fecha_fin").attr("readonly",true);
-	$("#id_fecha_fin").datepicker();
-
-
 </script>
 {% endblock %}
