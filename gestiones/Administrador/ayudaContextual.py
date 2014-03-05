@@ -1,6 +1,17 @@
 # -*- encoding: utf-8 -*-
 
 ayudaMsg = {
+    "administrador":
+        {
+            "titulo":
+                "Bienvenidos a Borusystem!",
+            "plantilla":
+                "administrador.html",
+            "msg":
+                ""
+        }
+    ,
+
     #mozos
     "altamozo":
         {
@@ -64,5 +75,15 @@ ayudaMsg = {
             "msg":
                 ""
         }
+    ,
+    "pretickets":
+    {
+        "titulo":
+            "Pretickets",
+        "plantilla":
+            "pretickets.html",
+        "msg":
+            "En esta pantalla se muestra los pretickets de todos los mozos, del dia y del dia anterior."
+    }
 
 }

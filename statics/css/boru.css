@@ -1,3 +1,21 @@
+.sin_resultados{
+color:#ffffff;
+background:#ff0000;
+height:35px;
+width:350px;
+overflow:hidden;
+margin:1px auto;
+-webkit-border-radius: 7px 7px 7px 7px;
+-moz-border-radius: 7px 7px 7px 7px;
+border-radius: 7px 7px 7px 7px;
+text-align:center;
+vertical-align:middle;
+padding-top:12px;
+font-weight:bold;
+-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 0,0, 1);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0,0,0, 1);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2), 0 0 10px rgba(0, 0,0, 1);
+}
 .listado_modificar_user_item:hover{
 background-image:linear-gradient(to bottom, rgb(0, 136, 204), rgb(0, 119, 179));
 }
@@ -770,8 +788,8 @@ margin: 10px auto 10px auto;
 text-align:center;
 padding: 10px 10px;
 border: 1px solid #cccccc;
-opacity:0.5;
-filter: alpha(opacity = 55);
+opacity:0.8;
+filter: alpha(opacity = 88);
 overflow:hidden;
 }
 
@@ -1691,6 +1709,34 @@ text-transform:capitalize;
 }
 
 .usuario_log:hover{
+opacity:1;
+filter: alpha(opacity = 100);
+-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+
+
+
+.accesos_directos{
+border: 1px solid #cccccc;
+background-color: #F7F7F7;
+opacity:0.5;
+filter: alpha(opacity = 55);
+height:auto;
+width:150px;
+overflow: hidden;
+padding:5px 5px;
+-webkit-border-radius: 0px 0px 7px 7px;
+-moz-border-radius: 0px 0px 7px 7px;
+border-radius: 0px 0px 7px 7px;
+position:relative;
+top:-19px;
+z-index:1;
+}
+
+
+.accesos_directos:hover{
 opacity:1;
 filter: alpha(opacity = 100);
 -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);

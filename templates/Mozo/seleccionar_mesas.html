@@ -5,7 +5,6 @@
 <div class="contenedor_secundario">
     <div class="btn_anterior" id="btn_anterior"></div>
     <div class="btn_siguiente" id="btn_siguiente"></div>
-    <input type="hidden" class="lista" id="lista" value="{{lista}}">
     <div id="con_menu_mozo" class="cont_redondeado contenedor_principal">
         <div class="label label-inverse titulo_menu">Seleccionar Mesas</div>
         <br>
@@ -33,7 +32,7 @@
                       mesa_item_ocupada
                       {% endif %}"
                      numero_mesa="{{m.id}}" capacidad="{{m.capacidad}}" tipo="{{m.get_tipo_display}}"
-                     seleccionado="false" title="{% if not m.ocupada %}Mesa Libre{% else %}Mesa Ocupada{% endif %}" mesa_item="mesa_item">
+                     seleccionado="false" title="{% if not m.ocupada %}Mesa Libre{% else %}Mesa Ocupada{% endif %}">
                     <div class="num_sec" title="Numero de Sector {{m.sector.id}}">{{m.sector.id}}</div>
                     <div class="num_mesa">
                         <div class="fondo_transparente badge badge-inverse">{{m.id}}</div>
@@ -62,7 +61,6 @@ function cargar_mesa(id_mesa, id_comanda){
 
 $.ajax({
                 type: "GET",
-                async: false,
                 url: "{% url 'cargararmesasjax' %}",
                 data: "id_mesa="+id_mesa,
                 success: function(platos){
@@ -74,7 +72,6 @@ function sacar_mesa(id_mesa, id_comanda){
 
 $.ajax({
                 type: "GET",
-                async: false,
                 url: "{% url 'sacarmesasjax' %}",
                 data: "id_mesa="+id_mesa,
                 success: function(platos){
@@ -94,17 +91,17 @@ $.ajax({
     });
 }
 
-
-//var bPreguntar = true;
-//window.onbeforeunload = preguntarAntesDeSalir;
+/*
+var bPreguntar = true;
+window.onbeforeunload = preguntarAntesDeSalir;
 
     function preguntarAntesDeSalir()
     {
-        //if (bPreguntar)
-          //  return "¿Debe seleccionar al menos una mesa para continuar?";
+      if (bPreguntar)
+        return "¿Seguro que quieres salir?";
     }
 
-
+*/
 
 
 $(document).ready(function(){
@@ -116,42 +113,15 @@ $("#btn_anterior").click(function(){
 
 
 $("#btn_siguiente").click(function(){
-        var m = document.getElementById("mesas");
-        if (m.innerText== ""){
-            alert("Debe ingresar al menos una mesa")
-        }
-        else{
-		    document.location.href = "{% url 'seleccionarproductos' %}";
-		}
-	});
-    listaL = $(".lista").val();
-    if (listaL != ""){
-        var mesas = listaL.split('_');
-        for (i in mesas){
-            if(mesas[i] != ""){
-                $("#mesa_" + mesas[i]).attr("seleccionado", "true");
-                $("#mesa_" + mesas[i]).removeClass("mesa_item2");
-                $("#mesa_" + mesas[i]).addClass("mesa_item_inhabilitada");
 
-                var capacidad = $("#mesa_" + mesas[i]).attr("capacidad");
-                var numero_mesa = $("#mesa_" + mesas[i]).attr("numero_mesa");
-                var tipo = $("#mesa_" + mesas[i]).attr("tipo");
-                var seleccionado = $("#mesa_" + mesas[i]).attr("seleccionado");
+    var hay_mesa = $(".hay_mesa").size();
 
-                var total_comensales=$("#total_comensales").html();
+	if( hay_mesa > 0)
+		document.location.href = "{% url 'seleccionarproductos' %}";
+	else
+	    alert("Debe seleccionar una mesa para continuar!");
+});
 
-                var m = $(".mesas").html();
-                var cad = '<div class="label label-info mesa_seleccionada_item">'+tipo+': '+numero_mesa+'<br> Capacidad: '+capacidad+'</div>';
-                m = m + cad;
-                $(".mesas").html(m);
-
-                total_comensales = parseInt(total_comensales)+parseInt(capacidad);
-
-                $("#total_comensales").html(total_comensales);
-                cargar_mesa($("#mesa_" + mesas[i]).attr("numero_mesa"), $("#mesa_" + mesas[i]).attr("id_comanda"));
-            }
-        }
-    }
 	//le asocio una funcion a cada miembro d ela clase mesa_item
 	$(".mesa_item").each(function(i){
 
@@ -164,7 +134,7 @@ $("#btn_siguiente").click(function(){
             var total_comensales=$("#total_comensales").html();
 
 			var mesas = $(".mesas").html();
-			var cad = '<div class="label label-info mesa_seleccionada_item">'+tipo+': '+numero_mesa+'<br> Capacidad: '+capacidad+'</div>';
+			var cad = '<div class="label label-info mesa_seleccionada_item hay_mesa">'+tipo+': '+numero_mesa+'<br> Capacidad: '+capacidad+'</div>';
 
 				if(seleccionado == "false"){
 
@@ -209,7 +179,7 @@ $("#btn_siguiente").click(function(){
      });
 
 
-	$('.dropdown-toggle').dropdownHover(options);
+	$('.dropdown-toggle').dropdownHover();
 });
 </script>
 {% endblock %}

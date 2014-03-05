@@ -6,6 +6,7 @@
           media="all"/>
     <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/jquery.hotkeys.js"></script>
     <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/bootstrap.js"></script>
     <script type="text/javascript" language="javascript" src="{{STATIC_URL}}js/funciones.js"></script>
     <script type="text/javascript" language="javascript"
@@ -31,7 +32,7 @@
                 </div>
                 <ul class="nav">
 
-                    <li class="dropdown {%if activar_comandas %}active{% endif %}"><a href="{% url 'cajero' %}"> Comandas Abiertas
+                    <li class="dropdown {%if activar_comandas %}active{% endif %}"><a href="{% url 'cajero' %}"> <span class="atajo_teclado" title="Atajo de Teclado Alt+C">C</span>omandas Abiertas
                         {%if activar_comandas %}
                         <b class="caret"></b>
                         {% endif %}
@@ -39,14 +40,14 @@
                        <div id="comandas_nuevas"></div>
                     </li>
 
-                    <li class="dropdown {%if activar_pretickets %}active{% endif %}"><a href="{% url 'pretickets' %}">Pretickets
+                    <li class="dropdown {%if activar_pretickets %}active{% endif %}"><a href="{% url 'pretickets' %}"><span class="atajo_teclado" title="Atajo de Teclado Alt+P">P</span>retickets
                     {%if activar_pretickets %}
                         <b class="caret"></b>
                         {% endif %}
                         </a>
                     </li>
 
-                    <li class="dropdown {%if activar_pedidos %}active{% endif %}"><a href="{% url 'pedidos_pub' %}">Pedidos
+                    <li class="dropdown {%if activar_pedidos %}active{% endif %}"><a href="{% url 'pedidos_pub' %}">Pe<span class="atajo_teclado" title="Atajo de Teclado Alt+D">d</span>idos
                     {%if activar_pedidos %}
                         <b class="caret"></b>
                         {% endif %}
@@ -55,7 +56,7 @@
                     <div id="pedidos_nuevos"></div>
                     </li>
 
-                    <li class="dropdown {%if activar_facturas %}active{% endif %}"><a href="{% url 'facturas' %}">Facturas
+                    <li class="dropdown {%if activar_facturas %}active{% endif %}"><a href="{% url 'facturas' %}"><span class="atajo_teclado" title="Atajo de Teclado Alt+F">F</span>acturas
                     {%if activar_facturas %}
                         <b class="caret"></b>
                         {% endif %}
@@ -63,7 +64,7 @@
                     </li>
 
 
-                    <li class="dropdown {%if activar_historico %}active{% endif %}"><a href="{% url 'historico' %}">Historico de Ventas
+                    <li class="dropdown {%if activar_historico %}active{% endif %}"><a href="{% url 'historico' %}"><span class="atajo_teclado" title="Atajo de Teclado Alt+H">H</span>istorico de Ventas
                     {%if activar_historico %}
                         <b class="caret"></b>
                         {% endif %}
@@ -71,12 +72,15 @@
                     </li>
                 </ul>
                 <div class="cerrar_sesion_fix" id="cerrar_sescion_actual">
-                    <a href="{% url 'logout' %}" target="_self">
-                        <div class="label label-inverse">
-                            &nbsp;&nbsp;Cerrar Sesion&nbsp;&nbsp;
-                        </div>
-                    </a>
-                </div>
+            <a href="{% url 'logout' %}" target="_self">
+            	<div class="label label-inverse">
+            		&nbsp;&nbsp;Cerrar Sesion&nbsp;&nbsp;
+            	</div>
+            </a>
+            <a href="#" onclick="ayudaContextual();" title="F1 para Ayuda en linea">
+              <img src="{{STATIC_URL}}img/conf/glyphicons_194_circle_question_mark.png">
+            </a>
+          </div>
             </div>
         </div>
         <!-- fin de nav bar //-->
@@ -90,16 +94,41 @@
                     <!-- inicio mesas selecionadas //-->
                     <div class="label label-success mesa_seleccionada_item mesa_seleccionada_item_cjr">
                         <div class="contenedor_texto_link"><a href="{% url 'administrador' %}" target="_self">Panel de
-                            Adm</a></div>
+                            <span class="atajo_teclado" title="Atajo de Teclado Ctrl+A">A</span>dm</a></div>
                     </div>
                     <div class="label label-success mesa_seleccionada_item mesa_seleccionada_item_cjr">
-                        <div class="contenedor_texto_link"><a href="{% url 'mozo' %}" target="_self">Panel de Mozo</a>
+                        <div class="contenedor_texto_link"><a href="{% url 'mozo' %}" target="_self">Panel de <span class="atajo_teclado" title="Atajo de Teclado Ctrl+M">M</span>ozo</a>
                         </div>
                     </div>
                     <!-- fin mesas selecionadas //-->
                 </div>
             </div>
+            <script>
+                 //accesos directos
+                $(document).bind('keydown', 'Ctrl+a',function (evt){irAtajos("{% url 'administrador' %}"); return false; });
+                $(document).bind('keydown', 'Ctrl+m',function (evt){irAtajos("{% url 'mozo' %}"); return false; });
+            </script>
             {% endif %}
+
+            {% if perms.Administrador.is_mozo and not perms.Administrador.is_admin%}
+            <div class="mesas_seleccionadas">
+                <div class="label label-inverse mesa_seleccionada_item">Accesos Directos</div>
+                <div class="mesas">
+                    <!-- inicio mesas selecionadas //-->
+
+                    <div class="label label-success mesa_seleccionada_item mesa_seleccionada_item_cjr">
+                        <div class="contenedor_texto_link"><a href="{% url 'mozo' %}" target="_self">Panel de <span class="atajo_teclado" title="Atajo de Teclado Ctrl+M">M</span>ozo</a>
+                        </div>
+                    </div>
+                    <!-- fin mesas selecionadas //-->
+                </div>
+            </div>
+            <script>
+                 //accesos directos
+                $(document).bind('keydown', 'Ctrl+m',function (evt){irAtajos("{% url 'mozo' %}"); return false; });
+            </script>
+            {% endif %}
+
             <!-- div puesto solo para mantener el ancho del contenedor izq//-->
             <div class="mesas_seleccionadas cont_" style="visibility:hidden;">&nbsp</div>
         </div>
@@ -170,6 +199,64 @@
 </div>
 <!-- Fin Modal Preticket -->
 
+<!-- Modal Ayuda-->
+<div id="myModalAyuda" class="modal_ventana_ayuda modal hide fade" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel3" class="modal-titulo"><img src="{{STATIC_URL}}img/conf/glyphicons_194_circle_question_mark.png"> Ayuda en linea
+</h3>
+    </div>
+    <div class="modal-body modal-body-ayuda"></div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+    </div>
+</div>
+<!-- Fin Modal Ayuda -->
+
+<script>
+function ayudaContextual(){
+
+var uri = location.href;
+var pattern = /cajero\/([a-zA-Z]*)/
+var fuente;
+fuente = pattern.exec(uri);
+
+    $.ajax({
+        type: "GET",
+        url: "{% url 'ayudaContextual' %}",
+        data: "fuente="+fuente[1],
+        success: function(datos){
+
+            $('.modal-body-ayuda').html(datos);
+            $('#myModalAyuda').modal("show");
+          }
+    });
+}
+
+function irAtajos(uri){
+        document.location.href = uri;
+}
+
+$(document).ready(function(){
+
+  //ayuda contextual
+  $(document).bind('keydown', 'f1',function (evt){ayudaContextual(); return false; });
+
+ //atajos de teclado
+ $(document).bind('keydown', 'Alt+c',function (evt){irAtajos("{% url 'cajero' %}"); return false; });
+ $(document).bind('keydown', 'Alt+p',function (evt){irAtajos("{% url 'pretickets' %}"); return false; });
+ $(document).bind('keydown', 'Alt+d',function (evt){irAtajos("{% url 'pedidos_pub' %}"); return false; });
+ $(document).bind('keydown', 'Alt+f',function (evt){irAtajos("{% url 'facturas' %}"); return false; });
+ $(document).bind('keydown', 'Alt+h',function (evt){irAtajos("{% url 'historico' %}"); return false; });
+
+
+ //accesos directos
+    $(document).bind('keydown', 'Ctrl+m',function (evt){irAtajos("{% url 'mozo' %}"); return false; });
+    $(document).bind('keydown', 'Ctrl+o',function (evt){irAtajos("{% url 'cajero' %}"); return false; });
+});
+</script>
 {% block script %}{% endblock %}
 </body>
 </html>

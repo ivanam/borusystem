@@ -24,7 +24,8 @@ class historicoVentasForm(forms.Form):
     criterio_listado = forms.ChoiceField(required=True, choices=CRITERIO_LISTADO, initial='Todos')
     historico_page = forms.CharField(required=True, widget=forms.HiddenInput, initial=1)
 
-    query_set_mozos = User.objects.filter(Q(user_permissions__codename="is_mozo") | Q(is_superuser=True) ).order_by('username', '-is_active')
+    query_set_mozos = User.objects.filter(Q(user_permissions__codename="is_mozo") | Q(is_superuser=True)
+    ).order_by('username').distinct()
     mozo = forms.ModelChoiceField(queryset=query_set_mozos,required=False,empty_label="Todos")
 
     def clean_fecha_fin(self):
