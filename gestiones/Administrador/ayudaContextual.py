@@ -7,12 +7,9 @@ ayudaMsg = {
         "titulo":
             "Alta Mozo",
         "plantilla":
-            None,
+            "altaMozo.html",
         "msg":
-            "Seccion desde la cual usted va apoder dar de alta un mozo. Seccion desde la cual usted va apoder dar de alta un mozo."
-            "Seccion desde la cual usted va apoder dar de alta un mozo. Seccion desde la cual usted va apoder dar de alta un mozo."
-            "Seccion desde la cual usted va apoder dar de alta un mozo. Seccion desde la cual usted va apoder dar de alta un mozo."
-            "Seccion desde la cual usted va apoder dar de alta un mozo. Seccion desde la cual usted va apoder dar de alta un mozo."
+            ""
         }
     ,
 
@@ -20,12 +17,9 @@ ayudaMsg = {
         "titulo":
             "Modificar Mozo",
         "plantilla":
-            None,
+            "modificarmozo.html",
         "msg":
-            "Seccion desde la cual usted va apoder dar de alta un mozo. Seccion desde la cual usted va apoder dar de alta un mozo."
-            "Seccion desde la cual usted va apoder dar de alta un mozo. Seccion desde la cual usted va apoder dar de alta un mozo."
-            "Seccion desde la cual usted va apoder dar de alta un mozo. Seccion desde la cual usted va apoder dar de alta un mozo."
-            "Seccion desde la cual usted va apoder dar de alta un mozo. Seccion desde la cual usted va apoder dar de alta un mozo."
+            ""
     }
 
     ,
@@ -35,12 +29,9 @@ ayudaMsg = {
         "titulo":
             "Eliminar Mozo",
         "plantilla":
-            None,
+          "eliminarmozo.html",
         "msg":
-            "Seccion desde la cual usted va apoder dar de alta un mozo. Seccion desde la cual usted va apoder dar de alta un mozo."
-            "Seccion desde la cual usted va apoder dar de alta un mozo. Seccion desde la cual usted va apoder dar de alta un mozo."
-            "Seccion desde la cual usted va apoder dar de alta un mozo. Seccion desde la cual usted va apoder dar de alta un mozo."
-            "Seccion desde la cual usted va apoder dar de alta un mozo. Seccion desde la cual usted va apoder dar de alta un mozo."
+            ""
         }
     ,
     "altamesa":
@@ -50,9 +41,85 @@ ayudaMsg = {
         "plantilla":
             None,
         "msg":
-            "Seccion del panel del Administrador desde donde podemos dar de alta las mesas de nuestro local, los datos obligatorios estan marcados con un * "
-            "la mayoria de los datos a ingresar se seleccionan de un menu desplegable, el unico dato que usted debe ingresar de forma manual es la capacidad "
-            "de la mesa, la cual debe ser un numero entero positivo, ej 5."
+            "Debe completar los datos en el formulario, los campos obligatorios son los indicados con un asterisco (*) en color rojo: Tipo, capacidad, ocupada, activo y sector."
+            "   Nota: Los campos Tipo, Capacidad, Activo y Sector deben seleccionarse del menú desplegable que posee cada campo. La capacidad es un número entero." ,
+
+        }
+    ,
+
+
+    "modificarmesa":
+        {
+        "titulo":
+            "Modificar Mesa",
+        "plantilla":
+          "modificarmesa.html",
+        "msg":
+            ""
+        }
+    ,
+
+
+    "altasector":
+        {
+        "titulo":
+            "Alta de Sector",
+        "plantilla":
+          None,
+        "msg":
+            "Debe completar los datos de formulario, el campo obligatorio es el indicado con un asterisco (*) en color rojo: Descripción. "
+            "Al terminar de cargar los datos del nuevo sector debe hacer clic sobre el botón “Alta Sector”."
+        }
+    ,
+
+    "modificarsector":
+        {
+        "titulo":
+            "Modificar Sector",
+        "plantilla":
+          "modificarsector.html",
+        "msg":
+            ""
+        }
+
+    ,
+
+    "altabebida":
+        {
+        "titulo":
+            "Alta de Bebida",
+        "plantilla":
+          None,
+        "msg":
+            "Debe completar los datos del formulario, los campos obligatorios son los indicados con un asterisco (*) en color rojo: Nombre, Precio, Stock, sección y activo."
+            "Nota: Los campos Promoción, Descuento, Sección y Activo deben seleccionarse del menú desplegable que posee cada campo. El stock es un número entero."
+            "Al finalizar de cargar los datos de la nueva bebida debe hacer clic sobre el botón “Alta Bebida”."
+
+        }
+    ,
+
+
+    "altaplato":
+        {
+        "titulo":
+            "Alta de Plato",
+        "plantilla":
+          None,
+        "msg":
+            "Debe completar los datos del formulario, los campos obligatorios son los indicados con un asterisco (*) en color rojo: Nombre, Precio, Stock, sección y activo."
+            " Nota: Los campos Promoción, Descuento, Sección y Activo deben seleccionarse del menú desplegable que posee cada campo. El stock es un número entero"
+            "Al finalizar de cargar los datos del nuevo plato debe hacer clic sobre el botón “Alta Plato”."
+        }
+    ,
+
+    "altamenudia":
+        {
+            "titulo":
+                "Alta Menu del Dia",
+            "plantilla":
+                "altamenudia.html",
+            "msg":
+                ""
         }
     ,
     "modificarmenudia":
@@ -64,5 +131,120 @@ ayudaMsg = {
             "msg":
                 ""
         }
+    ,
+    "modificarbebida":
+        {
+            "titulo":
+                "Modificar Bebida",
+            "plantilla":
+                "modificarbebida.html",
+            "msg":
+                ""
+        }
+    ,
+
+    "modificarplato":
+        {
+            "titulo":
+                "Modificar Plato",
+            "plantilla":
+                "modificarplato.html",
+            "msg":
+                ""
+        }
+    ,
+
+    "altamenuejecutivo":
+        {
+            "titulo":
+                "Alta Menu Ejecutivo",
+            "plantilla":
+                "altamenuejecutivo.html",
+            "msg":
+                ""
+        }
+    ,
+    "modificarmenuejecutivo":
+        {
+            "titulo":
+                "Modificar Menu Ejecutivo",
+            "plantilla":
+                "modificarmenuejecutivo.html",
+            "msg":
+                ""
+        }
+    ,
+
+    "altacarta":
+        {
+            "titulo":
+                "Alta de Carta",
+            "plantilla":
+                None,
+            "msg":
+                "Debe completar los datos en el formulario de la figura 101, los campos obligatorios son los indicados con un asterisco (*) en color rojo: Nombre y vigente."
+                "Al terminar de cargar los datos de la nueva carta debe hacer clic sobre el botón “Alta Carta”."
+        }
+    ,
+
+    "altaseccion":
+        {
+            "titulo":
+                "Alta de Sección Carta",
+            "plantilla":
+                None,
+            "msg":
+                "Debe completar los datos en el formulario de la figura 104, los campos obligatorios son los indicados con un asterisco (*) en color rojo: Nombre, Categoría e imagen."
+                "Al terminar de cargar los datos de la nueva sección debe hacer clic sobre el botón “Alta Sección”."
+
+
+        }
+    ,
+
+    "modificarseccion":
+        {
+            "titulo":
+                "Modificar Sección Carta",
+            "plantilla":
+                None,
+            "msg":
+                "Debe seleccionar la sección que desea modificar del listado que se encuentra a la izquierda."
+                " Al hacer clic sobre la sección se cargarán los datos en el formulario de la derecha. "
+                "Luego, modifique los campos del formulario de la derecha que desea modificar, al finalizar hacer clic sobre el botón “Modificar Sección”."
+
+
+        }
+    ,
+        "stockplato":
+        {
+            "titulo":
+                "Incrementar/Decrementar Stock Plato",
+            "plantilla":
+                None,
+            "msg":
+                "Debe seleccionar el stock que desea modificar del listado que se encuentra a la izquierda."
+                " Al hacer clic sobre la sección se cargarán los datos en el formulario de la derecha. "
+                "Luego, modifique el campo stock del formulario de la derecha, al finalizar hacer clic sobre el botón "
+                "“Modificar Stock Plato”."
+
+
+        }
+    ,
+
+        "stockbebida":
+        {
+            "titulo":
+                "Incrementar/Decrementar Stock Bebida",
+            "plantilla":
+                None,
+            "msg":
+                "Debe seleccionar el stock que desea modificar del listado que se encuentra a la izquierda."
+                " Al hacer clic sobre la sección se cargarán los datos en el formulario de la derecha. "
+                "Luego, modifique el campo stock del formulario de la derecha, al finalizar hacer clic sobre el botón "
+                "“Modificar Stock Bebida”."
+
+
+        }
+
 
 }
