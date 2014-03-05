@@ -285,4 +285,38 @@ ayudaMsg = {
             "-6- Dar de Alta los Usuarios"
     }
 
+    ,
+
+    "registrousuarios":
+    {
+        "titulo":
+            "Registro de Usuarios",
+        "plantilla":
+            None,
+        "msg":
+            "En esta pantalla se registran los usuarios, debe completar los campos, los obligatorios son: Usuario, Contraseña y Permisos."
+    }
+    ,
+    "modificarusuarios":
+    {
+        "titulo":
+            "Modificar Usuarios",
+        "plantilla":
+            None,
+        "msg":
+            "En esta pantalla se modifican los datos de los usarios, debe elegir un usuario a modificar haciendo clic sobre el listado de la izquierda,"
+            "así los datos se completan en el formulario de la derecha para ser modificados."
+    }
+
+    ,
+
+    "consultavendidos":
+    {
+        "titulo":
+            "Consulta de Productos Vendidos",
+        "plantilla":
+            None,
+        "msg":
+            "En esta pantalla debe completar los criterios para hacer una consulta de los productos vendidos entre dos fechas."
+    }
 }
