@@ -143,7 +143,7 @@ ayudaMsg = {
                 ""
         }
     ,
-<<<<<<< HEAD
+
     "modificarbebida":
         {
             "titulo":
@@ -257,8 +257,7 @@ ayudaMsg = {
 
 
         }
-
-=======
+    ,
     "pretickets":
     {
         "titulo":
@@ -268,6 +267,22 @@ ayudaMsg = {
         "msg":
             "En esta pantalla se muestra los pretickets de todos los mozos, del dia y del dia anterior."
     }
->>>>>>> 8de1af7d307607570e70a6b1397bb7c9332fe266
+
+    ,
+      "administrador":
+    {
+        "titulo":
+            "Administrador",
+        "plantilla":
+            None,
+        "msg":
+            "Este es el administrador del Sistema Boru, para comenzar a utilizarlo debe: "
+            "-1- Crear una carta "
+            "-2- Crear una Sección Carta  "
+            "-3- Dar de Alta Bebidas y/o Platos"
+            "-4- Dar de Alta Sector"
+            "-5- Dar de Alta Mesas"
+            "-6- Dar de Alta los Usuarios"
+    }
 
 }
